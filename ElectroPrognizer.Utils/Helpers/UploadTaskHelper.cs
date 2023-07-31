@@ -10,6 +10,8 @@ public static class UploadTaskHelper
     private static int _currentIndex;
     private static bool _isCanceled;
 
+    public static Task UploadTask { get; set; }
+
     public static bool IsCompleted => !_isInProgress;
 
     public static bool StartUpload(int totalCount)

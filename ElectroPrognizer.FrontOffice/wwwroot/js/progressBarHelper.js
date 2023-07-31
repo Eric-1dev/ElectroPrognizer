@@ -10,7 +10,7 @@ let progressBarHelper = {
         progressBarHelper._updateStatus();
 
         $('#progress-bar-cancel-button').click(() => {
-
+            progressBarHelper._cancelUpload();
         });
     },
 
@@ -25,11 +25,23 @@ let progressBarHelper = {
             type: 'POST',
             success: (data) => {
                 if (data.isComplete) {
-                    progressBarHelper._hideProgressBar()
+                    progressBarHelper._hideProgressBar();
                 } else {
                     progressBarHelper._setPercents(data.percents);
                 }
             }
+        });
+    },
+
+    _cancelUpload: () => {
+        $.ajax({
+            url: progressBarHelper._cancelUploadUrl,
+            type: 'POST',
+            success: () => {
+                progressBarHelper._hideProgressBar();
+            }
+        }).fail(() => {
+            progressBarHelper._updateStatus();
         });
     },
 

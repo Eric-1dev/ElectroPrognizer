@@ -1,4 +1,5 @@
-﻿using ElectroPrognizer.Services.Interfaces;
+﻿using ElectroPrognizer.Entities.Models;
+using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models;
 using ElectroPrognizer.Utils.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -19,28 +20,44 @@ public class UploadController : Controller
     {
         var files = Request.Form.Files;
 
-        var uploadedFIles = new List<UploadedFile>();
+        if (!files.Any())
+            return Json(OperationResult.Fail("Не выбраны файлы для импорта"));
 
-        foreach (var file in files)
+        var uploadTask = Task.Run(() =>
         {
-            using (var ms = new MemoryStream())
+            var uploadedFIles = new List<UploadedFile>();
+
+            foreach (var file in files)
             {
-                file.OpenReadStream().CopyTo(ms);
+                using (var ms = new MemoryStream())
+                {
+                    file.OpenReadStream().CopyTo(ms);
 
-                var bytes = ms.ToArray();
+                    var bytes = ms.ToArray();
 
-                uploadedFIles.Add(new UploadedFile { Name = file.FileName, Content = bytes });
+                    uploadedFIles.Add(new UploadedFile { Name = file.FileName, Content = bytes });
+                }
             }
-        }
 
-        var result = ImportFileService.Import(uploadedFIles, overrideExisting);
+            var result = ImportFileService.Import(uploadedFIles, overrideExisting);
+        });
 
-        return Json(result);
+        UploadTaskHelper.UploadTask = uploadTask;
+
+        return Json(OperationResult.Success());
     }
 
     [HttpPost]
     public JsonResult GetProgressStatus()
     {
         return Json(UploadTaskHelper.GetProgressStatus());
+    }
+
+    [HttpPost]
+    public IActionResult CancelUpload()
+    {
+        UploadTaskHelper.Cancel();
+
+        return Ok();
     }
 }

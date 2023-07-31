@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Main", "Main\Main.csproj", "{5726A889-0F12-4D92-A3BC-62371E6C6647}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroPrognizer.Services", "ElectroPrognizer.Services\ElectroPrognizer.Services.csproj", "{74D9F6FA-5167-4383-A384-D7205529674D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroPrognizer.IoC", "ElectroPrognizer.IoC\ElectroPrognizer.IoC.csproj", "{3F3BECC2-0084-4C32-89D0-4C598681B36A}"
@@ -25,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5726A889-0F12-4D92-A3BC-62371E6C6647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5726A889-0F12-4D92-A3BC-62371E6C6647}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5726A889-0F12-4D92-A3BC-62371E6C6647}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5726A889-0F12-4D92-A3BC-62371E6C6647}.Release|Any CPU.Build.0 = Release|Any CPU
 		{74D9F6FA-5167-4383-A384-D7205529674D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{74D9F6FA-5167-4383-A384-D7205529674D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74D9F6FA-5167-4383-A384-D7205529674D}.Release|Any CPU.ActiveCfg = Release|Any CPU

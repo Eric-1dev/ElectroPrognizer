@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory(builder =>
 {
     builder.RegisterType<HomeController>().PropertiesAutowired();
+    builder.RegisterType<UploadController>().PropertiesAutowired();
 
     builder.InitContainer();
 }));
