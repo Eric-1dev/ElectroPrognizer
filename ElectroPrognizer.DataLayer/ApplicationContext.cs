@@ -6,8 +6,9 @@ namespace ElectroPrognizer.DataLayer
 {
     public class ApplicationContext : DbContext
     {
+        public DbSet<Substation> Substations { get; set; }
         public DbSet<EnergyConsumption> EnergyConsumptions { get; set; }
-        public DbSet<Node> Nodes { get; set; }
+        public DbSet<ElectricityMeter> ElectricityMeters { get; set; }
         public DbSet<MeasuringChannel> MeasuringChannels { get; set; }
 
         public ApplicationContext()
@@ -18,7 +19,7 @@ namespace ElectroPrognizer.DataLayer
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<EnergyConsumption>().HasIndex(x => new { x.Date, x.NodeId, x.MeasuringChannelId }, "IX_Date_NodeId_MeasuringChannelId");
+            modelBuilder.Entity<EnergyConsumption>().HasIndex(x => new { x.Date, x.ElectricityMeterId, x.MeasuringChannelId }, "IX_Date_NodeId_MeasuringChannelId");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

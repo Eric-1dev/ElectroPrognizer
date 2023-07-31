@@ -17,10 +17,17 @@ public static class MessageExtensions
 
         foreach (var area in message.Area)
         {
+            var substation = new Substation
+            {
+                Inn = area.Inn,
+                Name = area.Name
+            };
+
             foreach (var measuringPoint in area.MeasuringPoint)
             {
-                var node = new Node
+                var electricityMeter = new ElectricityMeter
                 {
+                    Substation = substation,
                     Name = measuringPoint.Name
                 };
 
@@ -35,7 +42,7 @@ public static class MessageExtensions
 
                         var energyConsumption = new EnergyConsumption
                         {
-                            Node = node,
+                            ElectricityMeter = electricityMeter,
                             MeasuringChannel = new MeasuringChannel { Code = measuringChannel.Code, Desc = measuringChannel.Desc },
                             Value = double.Parse(period.Value),
                             Date = date

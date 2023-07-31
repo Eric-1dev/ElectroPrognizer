@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Прогноз</title>
+    <bundle name="wwwroot/bundles/css/libraries.bundle.css" />
+    <bundle name="wwwroot/bundles/css/common.bundle.css" />
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <header>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer>
+        <div id="progress-bar-form-wrapper">
+            <div id="progress-bar-form" get-status-url="@Url.Action("GetProgressStatus", "Upload")" cancel-upload-url="@Url.Action("Cancel", "Upload")">
+                <div class="text-dark">Идет загрузка файлов</div>
+                <div id="progress-bar-wrapper">
+                    <div class="progress" id="prognizer-progress-bar">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-sm btn-warning" id="progress-bar-cancel-button">Прервать</button>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <bundle name="wwwroot/bundles/js/libraries.bundle.js" />
+    <bundle name="wwwroot/bundles/js/common.bundle.js" />
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

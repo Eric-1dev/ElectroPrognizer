@@ -22,6 +22,11 @@ namespace ElectroPrognizer.IoC
                 .As<IEnergyConsumptionSaverService>()
                 .SingleInstance()
                 .PropertiesAutowired();
+            
+            builder.RegisterType<ImportFileService>()
+                .As<IImportFileService>()
+                .SingleInstance()
+                .PropertiesAutowired();
         }
     }
 }

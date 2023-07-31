@@ -1,8 +1,11 @@
 ﻿using ElectroPrognizer.DataModel.Entities;
+using ElectroPrognizer.Services.Models;
 
 namespace ElectroPrognizer.Services.Interfaces;
 
 public interface IXmlReaderService
 {
-    public List<EnergyConsumption> ParseXml(params string[] fileNames);
+    List<EnergyConsumption> ParseXml(params string[] fileNames);
+
+    List<EnergyConsumption> ParseXml(IEnumerable<UploadedFile> files);
 }

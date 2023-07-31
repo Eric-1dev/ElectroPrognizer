@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Загрузка данных";
+}
+
+@section Styles {
+    <bundle name="wwwroot/bundles/css/uploadData.bundle.css" />
+}
+
+@section Scripts {
+    <bundle name="wwwroot/bundles/js/uploadData.bundle.js" />
+}
+
+<h3>Загрузка данных о потреблении</h3>
+
+<form id="file-upload-form" enctype="multipart/form-data" upload-file-action="@Url.Action("UploadInputFiles", "Upload")">
+    <div class="prognizer-upload-block">
+        <div>
+            <input class="form-control" type="file" accept=".xml" id="file-upload-input" multiple>
+        </div>
+        <div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="override-existing">
+                <label class="form-check-label" for="override-existing">Перезаписывать существующие</label>
+            </div>
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary" id="file-upload-button">Загрузить</button>
+        </div>
+    </div>
+</form>

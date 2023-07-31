@@ -3,17 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Main", "Main\Main.csproj", "{5726A889-0F12-4D92-A3BC-62371E6C6647}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Main", "Main\Main.csproj", "{5726A889-0F12-4D92-A3BC-62371E6C6647}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectroPrognizer.Services", "ElectroPrognizer.Services\ElectroPrognizer.Services.csproj", "{74D9F6FA-5167-4383-A384-D7205529674D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroPrognizer.Services", "ElectroPrognizer.Services\ElectroPrognizer.Services.csproj", "{74D9F6FA-5167-4383-A384-D7205529674D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectroPrognizer.IoC", "ElectroPrognizer.IoC\ElectroPrognizer.IoC.csproj", "{3F3BECC2-0084-4C32-89D0-4C598681B36A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroPrognizer.IoC", "ElectroPrognizer.IoC\ElectroPrognizer.IoC.csproj", "{3F3BECC2-0084-4C32-89D0-4C598681B36A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectroPrognizer.DataModel", "ElectroPrognizer.DataModel\ElectroPrognizer.DataModel.csproj", "{0038157A-B6FB-4E4B-85AC-44C71CA3DDD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroPrognizer.DataModel", "ElectroPrognizer.DataModel\ElectroPrognizer.DataModel.csproj", "{0038157A-B6FB-4E4B-85AC-44C71CA3DDD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectroPrognizer.DataLayer", "ElectroPrognizer.DataLayer\ElectroPrognizer.DataLayer.csproj", "{66E1F459-DF7B-467C-ACB6-E2E9816515F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroPrognizer.DataLayer", "ElectroPrognizer.DataLayer\ElectroPrognizer.DataLayer.csproj", "{66E1F459-DF7B-467C-ACB6-E2E9816515F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectroPrognizer.Utils", "ElectroPrognizer.Utils\ElectroPrognizer.Utils.csproj", "{C4FC1B40-A22D-4B1E-93B1-D5A3542C376D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroPrognizer.Utils", "ElectroPrognizer.Utils\ElectroPrognizer.Utils.csproj", "{C4FC1B40-A22D-4B1E-93B1-D5A3542C376D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroPrognizer.FrontOffice", "ElectroPrognizer.FrontOffice\ElectroPrognizer.FrontOffice.csproj", "{382814DB-0F43-493A-B3EA-B61FBD66AFCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectroPrognizer.Entities", "ElectroPrognizer.Entities\ElectroPrognizer.Entities.csproj", "{98D143CC-C125-4091-BC85-F37CAC868D9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{C4FC1B40-A22D-4B1E-93B1-D5A3542C376D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4FC1B40-A22D-4B1E-93B1-D5A3542C376D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4FC1B40-A22D-4B1E-93B1-D5A3542C376D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{382814DB-0F43-493A-B3EA-B61FBD66AFCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{382814DB-0F43-493A-B3EA-B61FBD66AFCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{382814DB-0F43-493A-B3EA-B61FBD66AFCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{382814DB-0F43-493A-B3EA-B61FBD66AFCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98D143CC-C125-4091-BC85-F37CAC868D9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98D143CC-C125-4091-BC85-F37CAC868D9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98D143CC-C125-4091-BC85-F37CAC868D9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98D143CC-C125-4091-BC85-F37CAC868D9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

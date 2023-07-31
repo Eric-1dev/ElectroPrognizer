@@ -1,34 +1,52 @@
 ﻿using ElectroPrognizer.DataLayer;
 using ElectroPrognizer.DataModel.Entities;
 using ElectroPrognizer.Services.Interfaces;
-using ElectroPrognizer.Services.Models;
+using ElectroPrognizer.Utils.Helpers;
 
 namespace ElectroPrognizer.Services.Implementation;
 
 public class EnergyConsumptionSaverService : IEnergyConsumptionSaverService
 {
-    public void SaveToDatabase(IEnumerable<EnergyConsumption> energyConsumptions, ref SaverProgressModel progress)
+    public void SaveToDatabase(IEnumerable<EnergyConsumption> energyConsumptions, bool overrideExisting)
     {
         var dbContext = new ApplicationContext();
-        
-        progress.TotalCount = energyConsumptions.Count();
-        progress.CurrentIndex = 0;
 
+        UploadTaskHelper.StartUpload(energyConsumptions.Count());
+
+        using var tran = dbContext.Database.BeginTransaction();
 
         foreach (var energyConsumption in energyConsumptions)
         {
+            if (UploadTaskHelper.IsCanceled())
+            {
+                tran.Rollback();
+                throw new OperationCanceledException("Загрузка прервана пользователем");
+            }
+
             // порефачить добавление чилдренов - вынести в дженерик метод
 
-            // Node
-            var existingNode = dbContext.Nodes.FirstOrDefault(x => x.Name == energyConsumption.Node.Name);
-
-            if (existingNode != null)
+            // Substation
+            var existingSubstation = dbContext.Substations.FirstOrDefault(x => x.Inn == energyConsumption.ElectricityMeter.Substation.Inn);
+            if (existingSubstation != null)
             {
-                energyConsumption.Node = existingNode;
+                energyConsumption.ElectricityMeter.Substation = existingSubstation;
             }
             else
             {
-                dbContext.Nodes.Add(energyConsumption.Node);
+                dbContext.Substations.Add(energyConsumption.ElectricityMeter.Substation);
+                dbContext.SaveChanges();
+            }
+
+            // Node
+            var existingElectricityMeter = dbContext.ElectricityMeters.FirstOrDefault(x => x.Name == energyConsumption.ElectricityMeter.Name);
+
+            if (existingElectricityMeter != null)
+            {
+                energyConsumption.ElectricityMeter = existingElectricityMeter;
+            }
+            else
+            {
+                dbContext.ElectricityMeters.Add(energyConsumption.ElectricityMeter);
                 dbContext.SaveChanges();
             }
 
@@ -45,16 +63,19 @@ public class EnergyConsumptionSaverService : IEnergyConsumptionSaverService
                 dbContext.SaveChanges();
             }
 
-            // порефачить - сделать метод добавления, в который передается экспрешны с чилдрами (where T : IdentityEntity)
+            // порефачить - сделать метод добавления, в который передается экспрешены с чилдрами (where T : IdentityEntity)
             // EnergyConsumption
             var existingConsumption = dbContext.EnergyConsumptions.FirstOrDefault(x => x.Date == energyConsumption.Date
-            && x.NodeId == energyConsumption.Node.Id
+            && x.ElectricityMeterId == energyConsumption.ElectricityMeter.Id
             && x.MeasuringChannel.Id == energyConsumption.MeasuringChannel.Id);
 
             if (existingConsumption != null)
             {
-                existingConsumption.Value = energyConsumption.Value;
-                dbContext.EnergyConsumptions.Update(existingConsumption);
+                if (overrideExisting)
+                {
+                    existingConsumption.Value = energyConsumption.Value;
+                    dbContext.EnergyConsumptions.Update(existingConsumption);
+                }
             }
             else
             {
@@ -63,7 +84,11 @@ public class EnergyConsumptionSaverService : IEnergyConsumptionSaverService
 
             dbContext.SaveChanges();
 
-            progress.CurrentIndex++;
+            UploadTaskHelper.IncrementCurrentIndex();
         }
+
+        tran.Commit();
+
+        UploadTaskHelper.FinishUpload();
     }
 }
