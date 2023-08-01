@@ -66,7 +66,7 @@ public class EnergyConsumptionSaverService : IEnergyConsumptionSaverService
 
             // порефачить - сделать метод добавления, в который передается экспрешены с чилдрами (where T : IdentityEntity)
             // EnergyConsumption
-            var existingConsumption = dbContext.EnergyConsumptions.FirstOrDefault(x => x.Date == energyConsumption.Date
+            var existingConsumption = dbContext.EnergyConsumptions.FirstOrDefault(x => x.StartDate == energyConsumption.StartDate
             && x.ElectricityMeterId == energyConsumption.ElectricityMeter.Id
             && x.MeasuringChannel.Id == energyConsumption.MeasuringChannel.Id);
 

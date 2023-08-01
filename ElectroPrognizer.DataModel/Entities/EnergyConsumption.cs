@@ -4,7 +4,9 @@ namespace ElectroPrognizer.DataModel.Entities
 {
     public class EnergyConsumption : IdentityEntity
     {
-        public DateTime Date { get; set; }
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
 
         public int ElectricityMeterId { get; set; }
 

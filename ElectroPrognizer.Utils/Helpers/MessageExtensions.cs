@@ -33,27 +33,59 @@ public static class MessageExtensions
 
                 foreach (var measuringChannel in measuringPoint.MeasuringChannel)
                 {
+                    // собиарем данные по одному каналу для объединения временных интервалов
+                    var measuringChannelData = new List<EnergyConsumption>();
 
                     foreach (var period in measuringPoint.MeasuringChannel.First(x => x.Code == "01").Period)
                     {
-                        var startHour = int.Parse(period.Start.Substring(0, 2));
-                        var startMinutes = int.Parse(period.Start.Substring(2, 2));
-                        var date = reportDate.AddHours(startHour).AddMinutes(startMinutes);
+                        var startDate = ParseDate(period.Start, reportDate);
+                        var endDate = ParseDate(period.End, reportDate);
 
                         var energyConsumption = new EnergyConsumption
                         {
                             ElectricityMeter = electricityMeter,
                             MeasuringChannel = new MeasuringChannel { Code = measuringChannel.Code, Desc = measuringChannel.Desc },
                             Value = double.Parse(period.Value),
-                            Date = date
+                            StartDate = startDate,
+                            EndDate = endDate,
                         };
 
-                        list.Add(energyConsumption);
+                        measuringChannelData.Add(energyConsumption);
                     }
+
+                    var mergedData = MergeHours(measuringChannelData);
+
+                    list.AddRange(mergedData);
                 }
             }
         }
 
         return list;
+    }
+
+    private static List<EnergyConsumption> MergeHours(List<EnergyConsumption> measuringChannelData)
+    {
+        var channelMergedData = new List<EnergyConsumption>();
+
+        foreach (var firstHalfHourData in measuringChannelData.Where(x => x.EndDate.Minute == 30))
+        {
+            var secondHalfHourData = measuringChannelData.First(x => x.StartDate == firstHalfHourData.EndDate);
+
+            secondHalfHourData.StartDate = firstHalfHourData.StartDate;
+            secondHalfHourData.Value += firstHalfHourData.Value;
+
+            channelMergedData.Add(secondHalfHourData);
+        }
+
+        return channelMergedData;
+    }
+
+    private static DateTime ParseDate(string stringDate, DateTime reportDate)
+    {
+        var hour = int.Parse(stringDate.Substring(0, 2));
+        var minutes = int.Parse(stringDate.Substring(2, 2));
+        var resultDate = reportDate.AddHours(hour).AddMinutes(minutes);
+
+        return resultDate;
     }
 }

@@ -36,7 +36,7 @@ public class XmlReaderService : IXmlReaderService
 
             var xml = Encoding.UTF8.GetString(utfEncodedBytes);
 
-            using TextReader tr = new StringReader(xml);
+            using var tr = new StringReader(xml);
 
             var message = xmlSerializer.Deserialize(tr) as Message;
 

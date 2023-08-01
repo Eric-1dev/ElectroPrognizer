@@ -12,7 +12,7 @@ public class ImportFileService : IImportFileService
     public IXmlReaderService XmlReaderService { get; set; }
     public IEnergyConsumptionSaverService EnergyConsumptionSaverService { get; set; }
 
-    public void Import(List<UploadedFile> uploadedFIles, bool overrideExisting)
+    public void Import(List<UploadedFile> uploadedFiles, bool overrideExisting)
     {
         try
         {
@@ -27,7 +27,7 @@ public class ImportFileService : IImportFileService
                 UploadTaskHelper.Init();
             }
 
-            var energyComsumption = XmlReaderService.ParseXml(uploadedFIles);
+            var energyComsumption = XmlReaderService.ParseXml(uploadedFiles);
 
             EnergyConsumptionSaverService.SaveToDatabase(energyComsumption, overrideExisting);
 

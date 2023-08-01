@@ -52,7 +52,7 @@ public class ExcelConsumptionReader : IExcelConsumptionReader
 
                 var energyConsumption = new EnergyConsumption
                 {
-                    Date = DateTime.Parse($"{date} {time}"),
+                    StartDate = DateTime.Parse($"{date} {time}"),
                     Value = double.Parse(value, CultureInfo.InvariantCulture)
                 };
 
