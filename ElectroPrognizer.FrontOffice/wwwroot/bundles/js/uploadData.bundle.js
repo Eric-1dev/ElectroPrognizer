@@ -30,7 +30,12 @@ let uploadHelper = {
                 type: 'POST',
                 data: formData,
                 success: (data) => {
-                    console.log(data);
+                    if (data.isFail) {
+                        alert('Ошибка при загрузке файлов: ' + data.message);
+                        return;
+                    }
+
+                    progressBarHelper.startMonitoring();
                 },
                 cache: false,
                 contentType: false,
@@ -39,7 +44,5 @@ let uploadHelper = {
         });
     },
 
-    _fileUploadUrl: '',
-
-
+    _fileUploadUrl: ''
 };

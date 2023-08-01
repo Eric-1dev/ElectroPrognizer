@@ -14,22 +14,36 @@ let progressBarHelper = {
         });
     },
 
+    startMonitoring: () => {
+        progressBarHelper._setPercents(0);
+        progressBarHelper._updateStatus();
+    },
+
     _getStatusUrl: '',
     _cancelUploadUrl: '',
     _progressBarFormWrapper: $('#progress-bar-form-wrapper'),
     _progressBarForm: $('#progress-bar-form'),
 
+    _progressUpdateInterval: 3000,
+
     _updateStatus: () => {
         $.ajax({
             url: progressBarHelper._getStatusUrl,
-            type: 'POST',
-            success: (data) => {
-                if (data.isComplete) {
-                    progressBarHelper._hideProgressBar();
-                } else {
+            type: 'POST'
+        }).always((data) => {
+            if (data.isFinished) {
+                progressBarHelper._hideProgressBar();
+
+                if (data.message) {
+                    alert(data.message);
+                }
+            } else {
+                if (data.percents) {
                     progressBarHelper._setPercents(data.percents);
                 }
-            }
+
+                setTimeout(() => progressBarHelper._updateStatus(progressBarHelper._onStatusRecieved), progressBarHelper._progressUpdateInterval);
+            };
         });
     },
 
@@ -38,7 +52,7 @@ let progressBarHelper = {
             url: progressBarHelper._cancelUploadUrl,
             type: 'POST',
             success: () => {
-                progressBarHelper._hideProgressBar();
+                progressBarHelper._setPercents(0);
             }
         }).fail(() => {
             progressBarHelper._updateStatus();

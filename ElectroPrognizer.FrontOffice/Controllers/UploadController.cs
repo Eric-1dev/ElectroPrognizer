@@ -23,26 +23,24 @@ public class UploadController : Controller
         if (!files.Any())
             return Json(OperationResult.Fail("Не выбраны файлы для импорта"));
 
+        var uploadedFIles = new List<UploadedFile>();
+
+        foreach (var file in files)
+        {
+            using var ms = new MemoryStream();
+            using var fileStream = file.OpenReadStream();
+
+            fileStream.CopyTo(ms);
+
+            var bytes = ms.ToArray();
+
+            uploadedFIles.Add(new UploadedFile { Name = file.FileName, Content = bytes });
+        }
+
         var uploadTask = Task.Run(() =>
         {
-            var uploadedFIles = new List<UploadedFile>();
-
-            foreach (var file in files)
-            {
-                using (var ms = new MemoryStream())
-                {
-                    file.OpenReadStream().CopyTo(ms);
-
-                    var bytes = ms.ToArray();
-
-                    uploadedFIles.Add(new UploadedFile { Name = file.FileName, Content = bytes });
-                }
-            }
-
-            var result = ImportFileService.Import(uploadedFIles, overrideExisting);
+            ImportFileService.Import(uploadedFIles, overrideExisting);
         });
-
-        UploadTaskHelper.UploadTask = uploadTask;
 
         return Json(OperationResult.Success());
     }

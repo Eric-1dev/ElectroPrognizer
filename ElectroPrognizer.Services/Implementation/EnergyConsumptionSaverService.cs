@@ -1,5 +1,6 @@
 ﻿using ElectroPrognizer.DataLayer;
 using ElectroPrognizer.DataModel.Entities;
+using ElectroPrognizer.Entities.Exceptions;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Utils.Helpers;
 
@@ -11,16 +12,16 @@ public class EnergyConsumptionSaverService : IEnergyConsumptionSaverService
     {
         var dbContext = new ApplicationContext();
 
-        UploadTaskHelper.StartUpload(energyConsumptions.Count());
+        UploadTaskHelper.SetTotalCount(energyConsumptions.Count());
 
         using var tran = dbContext.Database.BeginTransaction();
 
         foreach (var energyConsumption in energyConsumptions)
         {
-            if (UploadTaskHelper.IsCanceled())
+            if (UploadTaskHelper.IsCanceled)
             {
                 tran.Rollback();
-                throw new OperationCanceledException("Загрузка прервана пользователем");
+                throw new WorkflowException("Загрузка прервана пользователем");
             }
 
             // порефачить добавление чилдренов - вынести в дженерик метод
@@ -88,7 +89,5 @@ public class EnergyConsumptionSaverService : IEnergyConsumptionSaverService
         }
 
         tran.Commit();
-
-        UploadTaskHelper.FinishUpload();
     }
 }

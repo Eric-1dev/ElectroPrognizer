@@ -4,63 +4,67 @@ namespace ElectroPrognizer.Utils.Helpers;
 
 public static class UploadTaskHelper
 {
-    private static readonly object _locker = new();
-    private static bool _isInProgress = false;
-    private static int _totalCount;
-    private static int _currentIndex;
-    private static bool _isCanceled;
+    public static int TotalCount { get; private set; }
 
-    public static Task UploadTask { get; set; }
+    public static int CurrentIndex { get; private set; }
 
-    public static bool IsCompleted => !_isInProgress;
+    public static bool IsFinished { get; private set; }
 
-    public static bool StartUpload(int totalCount)
+    public static bool IsCanceled { get; private set; }
+
+    public static string Message { get; private set; }
+
+    static UploadTaskHelper()
     {
-        if (_isInProgress)
-            return false;
+        IsFinished = true;
+    }
 
-        lock (_locker)
-        {
-            if (_isInProgress)
-                return false;
+    public static void Init()
+    {
+        IsFinished = false;
+        IsCanceled = false;
+        CurrentIndex = 0;
+        Message = null;
+    }
 
-            _isInProgress = true;
-            _isCanceled = false;
-            _totalCount = totalCount;
-            _currentIndex = 0;
-
-            return true;
-        }
+    public static void SetTotalCount(int totalCount)
+    {
+        TotalCount = totalCount;
     }
 
     public static void IncrementCurrentIndex()
     {
-        _currentIndex++;
+        CurrentIndex++;
     }
 
-    public static void FinishUpload()
+    public static void SetToFinishedWithError(string error)
     {
-        _isInProgress = false;
+        SetToFinished();
+        Message = error;
+    }
+
+    public static void SetToFinished()
+    {
+        IsFinished = true;
+        Message = "Импорт успешно завершен";
     }
 
     public static void Cancel()
     {
-        _isCanceled = true;
-    }
-
-    public static bool IsCanceled()
-    {
-        return _isCanceled;
+        IsCanceled = true;
     }
 
     public static UploadProgressStatus GetProgressStatus()
     {
-        int? percents = null;
+        int? percents = TotalCount == 0 || IsCanceled
+            ? null
+            : CurrentIndex * 100 / TotalCount;
 
-        if (_totalCount != 0)
-            percents = _currentIndex * 100 / _totalCount;
+        var message = Message;
 
-        //return UploadProgressStatus.Create(IsCompleted, percents);
-        return UploadProgressStatus.Create(false, 59);
+        // сбрасываем сообщение для следующего запроса статуса
+        Message = null;
+
+        return UploadProgressStatus.Create(IsFinished, message, percents);
     }
 }

@@ -2,14 +2,20 @@
 
 public class UploadProgressStatus
 {
-    public bool IsComplete { get; private set; }
+    public bool IsFinished { get; private set; }
     public int? Percents { get; private set; }
+    public string Message { get; private set; }
 
     private UploadProgressStatus()
     { }
 
-    public static UploadProgressStatus Create(bool isComplete, int? percents)
+    public static UploadProgressStatus Create(bool isFinished, string message, int? percents)
     {
-        return new UploadProgressStatus { IsComplete = isComplete, Percents = percents };
+        return new UploadProgressStatus
+        {
+            IsFinished = isFinished,
+            Message = message,
+            Percents = percents
+        };
     }
 }
