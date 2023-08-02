@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Загрузка данных";
+    ViewData["Title"] = "Загрузка данных о потреблении";
 }
 
 @section Styles {
@@ -9,8 +9,6 @@
 @section Scripts {
     <bundle name="wwwroot/bundles/js/uploadData.bundle.js" />
 }
-
-<h3>Загрузка данных о потреблении</h3>
 
 <form id="file-upload-form" enctype="multipart/form-data" upload-file-action="@Url.Action("UploadInputFiles", "Upload")">
     <div class="prognizer-upload-block">

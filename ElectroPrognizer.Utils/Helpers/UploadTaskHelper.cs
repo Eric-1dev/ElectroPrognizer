@@ -49,6 +49,11 @@ public static class UploadTaskHelper
         Message = "Импорт успешно завершен";
     }
 
+    public static void SetMessage(string message)
+    {
+        Message = message;
+    }
+
     public static void Cancel()
     {
         IsCanceled = true;

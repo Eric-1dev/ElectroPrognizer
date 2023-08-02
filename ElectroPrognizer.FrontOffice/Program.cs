@@ -28,6 +28,8 @@ ConfigurationHelper.SetConfiguration(configSection);
 builder.Services.AddMvc().AddControllersAsServices();
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddBundles(options =>
 {
     options.AppendVersion = true;

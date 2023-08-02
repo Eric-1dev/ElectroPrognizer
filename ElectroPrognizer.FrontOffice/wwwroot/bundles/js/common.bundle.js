@@ -25,24 +25,25 @@ let progressBarHelper = {
     _progressBarForm: $('#progress-bar-form'),
 
     _progressUpdateInterval: 3000,
+    _timer: {},
 
     _updateStatus: () => {
         $.ajax({
             url: progressBarHelper._getStatusUrl,
             type: 'POST'
         }).always((data) => {
+            if (data.message) {
+                alert(data.message);
+            }
+
             if (data.isFinished) {
                 progressBarHelper._hideProgressBar();
-
-                if (data.message) {
-                    alert(data.message);
-                }
             } else {
                 if (data.percents) {
                     progressBarHelper._setPercents(data.percents);
                 }
 
-                setTimeout(() => progressBarHelper._updateStatus(progressBarHelper._onStatusRecieved), progressBarHelper._progressUpdateInterval);
+                progressBarHelper._timer = setTimeout(() => progressBarHelper._updateStatus(progressBarHelper._onStatusRecieved), progressBarHelper._progressUpdateInterval);
             };
         });
     },

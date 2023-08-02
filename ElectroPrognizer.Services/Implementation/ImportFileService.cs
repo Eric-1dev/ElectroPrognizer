@@ -16,13 +16,11 @@ public class ImportFileService : IImportFileService
     {
         try
         {
-            if (!UploadTaskHelper.IsFinished)
-                throw new WorkflowException("Выполняется другой процесс . Дождитесь окончания или отмените его.");
+            ThrowIsBusy();
 
             lock (_locker)
             {
-                if (!UploadTaskHelper.IsFinished)
-                    throw new WorkflowException("Выполняется другой процесс . Дождитесь окончания или отмените его.");
+                ThrowIsBusy();
 
                 UploadTaskHelper.Init();
             }
@@ -33,6 +31,10 @@ public class ImportFileService : IImportFileService
 
             UploadTaskHelper.SetToFinished();
         }
+        catch (UploaderIsBusyException ex)
+        {
+            UploadTaskHelper.SetMessage(ex.Message);
+        }
         catch (WorkflowException ex)
         {
             UploadTaskHelper.SetToFinishedWithError(ex.Message);
@@ -41,5 +43,11 @@ public class ImportFileService : IImportFileService
         {
             UploadTaskHelper.SetToFinishedWithError($"Ошибка при импорте данных: {ex}");
         }
+    }
+    
+    private void ThrowIsBusy()
+    {
+        if (!UploadTaskHelper.IsFinished)
+            throw new UploaderIsBusyException("Выполняется другой процесс . Дождитесь окончания или отмените его.");
     }
 }
