@@ -5,7 +5,6 @@
 
 @{
     var currentPath = HttpContextAccessor.HttpContext.Request.Path;
-    ;
 }
 
 <!DOCTYPE html>
@@ -30,6 +29,7 @@
             <div class="prognizer-sidebar-menu-header">Меню</div>
             @{ RenderNavItem(Url.Action("Index", "Home"), "Домашняя"); }
             @{ RenderNavItem(Url.Action("Index", "Upload"), "Загрузка данных"); }
+            @{ RenderNavItem(Url.Action("Index", "Prognizer"), "Прогноз протребления"); }
         </div>
     </div>
 
@@ -72,8 +72,5 @@
         var additionalClass = HttpContextAccessor.HttpContext.Request.Path == url ? "btn-primary" : "";
 
         <a class="btn @additionalClass" href="@url">@name</a>
-    }
-
-    //Func<dynamic, IHtmlContent> RenderNavItem(string url, string name) = @
-        
+    }        
 }

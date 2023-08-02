@@ -1,18 +1,24 @@
+using System.Reflection;
 using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BundlerMinifier.TagHelpers;
 using ElectroPrognizer.DataModel.Models;
-using ElectroPrognizer.FrontOffice.Controllers;
 using ElectroPrognizer.IoC;
 using ElectroPrognizer.Utils.Helpers;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory(builder =>
 {
-    builder.RegisterType<HomeController>().PropertiesAutowired();
-    builder.RegisterType<UploadController>().PropertiesAutowired();
+    var assembly = Assembly.GetEntryAssembly();
+    var controllers = assembly.GetTypes().Where(type => !type.IsAbstract && type.IsPublic && type.IsAssignableTo(typeof(ControllerBase)));
+
+    foreach (var controller in controllers)
+    {
+        builder.RegisterType(controller).PropertiesAutowired();
+    }
 
     builder.InitContainer();
 }));

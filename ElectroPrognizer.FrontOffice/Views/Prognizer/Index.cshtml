@@ -1,0 +1,24 @@
+﻿@model PrognizerViewModel
+
+@{
+    ViewData["Title"] = "Прогнозирование потребления энергии";
+
+    var currentDate = DateTime.Now;
+
+    var currentYear = currentDate.Year;
+    var currentMonth = currentDate.Month;
+}
+
+<div class="mb-3 row">
+    <label for="prognizer-month-selector" class="col">Месяц</label>
+    <div class="col">
+        <select class="form-select" id="prognizer-month-selector">
+            @foreach (var month in Model.Months)
+            {
+                var selectedAttr = month.Key == currentMonth ? "selected" : string.Empty;
+
+                <!option value="@month.Key" @selectedAttr>@month.Value</!option>
+            }
+        </select>
+    </div>
+</div>

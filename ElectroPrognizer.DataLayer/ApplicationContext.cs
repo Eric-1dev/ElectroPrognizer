@@ -20,6 +20,7 @@ namespace ElectroPrognizer.DataLayer
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<EnergyConsumption>().HasIndex(x => new { x.StartDate, x.ElectricityMeterId, x.MeasuringChannelId }, "IX_Date_NodeId_MeasuringChannelId");
+            modelBuilder.Entity<EnergyConsumption>().HasIndex(x => new { x.StartDate }, "IX_StartDate");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
