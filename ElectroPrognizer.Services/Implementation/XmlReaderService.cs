@@ -1,10 +1,10 @@
-﻿using System.Text;
+using System.Text;
 using System.Xml.Serialization;
 using ElectroPrognizer.DataModel.Entities;
-using ElectroPrognizer.DataModel.Models.XmlModels;
+using ElectroPrognizer.Services.Extensions;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models;
-using ElectroPrognizer.Utils.Helpers;
+using ElectroPrognizer.Services.Models.XmlModels;
 
 namespace ElectroPrognizer.Services.Implementation;
 

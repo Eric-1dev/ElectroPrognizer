@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 $(document).ready(() => {
     progressBarHelper.init();
 });
@@ -10,7 +12,7 @@ let progressBarHelper = {
         progressBarHelper._updateStatus();
 
         $('#progress-bar-cancel-button').click(() => {
-            progressBarHelper._cancelUpload();
+            modalHelper.showConfirm('Действительно хотите отменить импорт данных?', () => { progressBarHelper._cancelUpload(); });
         });
     },
 
@@ -33,7 +35,7 @@ let progressBarHelper = {
             type: 'POST'
         }).always((data) => {
             if (data.message) {
-                alert(data.message);
+                modalHelper.showMessage(data.message);
             }
 
             if (data.isFinished) {
@@ -44,7 +46,7 @@ let progressBarHelper = {
                 }
 
                 progressBarHelper._timer = setTimeout(() => progressBarHelper._updateStatus(progressBarHelper._onStatusRecieved), progressBarHelper._progressUpdateInterval);
-            };
+            }
         });
     },
 

@@ -1,7 +1,9 @@
-﻿using ElectroPrognizer.DataModel.Entities;
-using ElectroPrognizer.DataModel.Models.XmlModels;
+using ElectroPrognizer.DataModel.Entities;
+using ElectroPrognizer.Entities.Enums;
+using ElectroPrognizer.Services.Models.XmlModels;
+using ElectroPrognizer.Utils.Extensions;
 
-namespace ElectroPrognizer.Utils.Helpers;
+namespace ElectroPrognizer.Services.Extensions;
 
 public static class MessageExtensions
 {
@@ -41,10 +43,13 @@ public static class MessageExtensions
                         var startDate = ParseDate(period.Start, reportDate);
                         var endDate = ParseDate(period.End, reportDate);
 
+                        var measuringChannelType = Enum.Parse<MeasuringChannelTypeEnum>(measuringChannel.Code);
+                        var measuringChannelDescription = measuringChannelType.GetDescription();
+
                         var energyConsumption = new EnergyConsumption
                         {
                             ElectricityMeter = electricityMeter,
-                            MeasuringChannel = new MeasuringChannel { Code = measuringChannel.Code, Desc = measuringChannel.Desc },
+                            MeasuringChannel = new MeasuringChannel { MeasuringChannelType = measuringChannelType, Description = measuringChannelDescription },
                             Value = double.Parse(period.Value),
                             StartDate = startDate,
                             EndDate = endDate,

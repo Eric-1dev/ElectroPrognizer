@@ -1,4 +1,6 @@
-﻿using ElectroPrognizer.FrontOffice.Models;
+using ElectroPrognizer.Entities.Models;
+using ElectroPrognizer.FrontOffice.Models;
+using ElectroPrognizer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElectroPrognizer.FrontOffice.Controllers;
@@ -6,6 +8,8 @@ namespace ElectroPrognizer.FrontOffice.Controllers;
 public class PrognizerController : Controller
 {
     private readonly IDictionary<int, string> _months;
+
+    public IPrognizerService PrognizerService { get; set; }
 
     public PrognizerController()
     {
@@ -28,12 +32,35 @@ public class PrognizerController : Controller
 
     public IActionResult Index()
     {
+        var availableYears = PrognizerService.GetAvailableYears();
+
         var model = new PrognizerViewModel
         {
             Months = _months,
-            AvailableYears = new[] { 2020 }
+            Years = availableYears
         };
 
         return View(model);
+    }
+
+    [HttpPost]
+    public JsonResult GetTableContent(int year, int month)
+    {
+        var data = PrognizerService.GetTableContent(year, month);
+
+        if (!data.DayDatas.Any())
+            return Fail("Нет данных за выбранный период");
+
+        return Success(data);
+    }
+
+    private JsonResult Fail(string message)
+    {
+        return Json(OperationResult.Fail(message));
+    }
+
+    private JsonResult Success<T>(T entity)
+    {
+        return Json(OperationResult<T>.Success(entity));
     }
 }

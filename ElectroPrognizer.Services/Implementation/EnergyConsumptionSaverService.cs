@@ -1,4 +1,4 @@
-﻿using ElectroPrognizer.DataLayer;
+using ElectroPrognizer.DataLayer;
 using ElectroPrognizer.DataModel.Entities;
 using ElectroPrognizer.Entities.Exceptions;
 using ElectroPrognizer.Services.Interfaces;
@@ -52,7 +52,7 @@ public class EnergyConsumptionSaverService : IEnergyConsumptionSaverService
             }
 
             // Channel
-            var existingMeasureChannel = dbContext.MeasuringChannels.FirstOrDefault(x => x.Code == energyConsumption.MeasuringChannel.Code);
+            var existingMeasureChannel = dbContext.MeasuringChannels.FirstOrDefault(x => x.MeasuringChannelType == energyConsumption.MeasuringChannel.MeasuringChannelType);
 
             if (existingMeasureChannel != null)
             {

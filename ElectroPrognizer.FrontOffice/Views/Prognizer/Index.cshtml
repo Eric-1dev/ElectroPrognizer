@@ -1,4 +1,4 @@
-﻿@model PrognizerViewModel
+@model PrognizerViewModel
 
 @{
     ViewData["Title"] = "Прогнозирование потребления энергии";
@@ -9,10 +9,18 @@
     var currentMonth = currentDate.Month;
 }
 
-<div class="mb-3 row">
-    <label for="prognizer-month-selector" class="col">Месяц</label>
-    <div class="col">
-        <select class="form-select" id="prognizer-month-selector">
+@section Styles {
+    <bundle name="wwwroot/bundles/css/prognizer.bundle.css" />
+}
+
+@section Scripts {
+    <bundle name="wwwroot/bundles/js/prognizer.bundle.js" />
+}
+
+<div id="prognizer-date-selector" table-content-url="@Url.Action("GetTableContent", "Prognizer")">
+    @Html.LabelFor(x => x.Months, new { @for="prognizer-month-selector" })
+    <div>
+        <select class="form-select prognizer-date-control" id="prognizer-month-selector">
             @foreach (var month in Model.Months)
             {
                 var selectedAttr = month.Key == currentMonth ? "selected" : string.Empty;
@@ -21,4 +29,18 @@
             }
         </select>
     </div>
+
+    @Html.LabelFor(x => x.Years, new { @for="prognizer-year-selector" })
+    <div>
+        <select class="form-select prognizer-date-control" id="prognizer-year-selector">
+            @foreach (var year in Model.Years)
+            {
+                var selectedAttr = year == currentYear ? "selected" : string.Empty;
+
+                <!option value="@year" @selectedAttr>@year</!option>
+            }
+        </select>
+    </div>
 </div>
+
+<div id="prognizer-result-table"></div>

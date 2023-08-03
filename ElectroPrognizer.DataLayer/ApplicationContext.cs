@@ -1,4 +1,4 @@
-﻿using ElectroPrognizer.DataModel.Entities;
+using ElectroPrognizer.DataModel.Entities;
 using ElectroPrognizer.Utils.Helpers;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +13,7 @@ namespace ElectroPrognizer.DataLayer
 
         public ApplicationContext()
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 

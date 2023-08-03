@@ -20,4 +20,11 @@
 	  <ProjectReference Include="..\ElectroPrognizer.Utils\ElectroPrognizer.Utils.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Content Update="wwwroot\css\prognizer.css">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </Content>
+	</ItemGroup>
+
 </Project>

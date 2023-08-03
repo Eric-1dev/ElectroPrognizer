@@ -1,8 +1,13 @@
-﻿namespace ElectroPrognizer.DataModel.Entities
+using System.ComponentModel.DataAnnotations.Schema;
+using ElectroPrognizer.Entities.Enums;
+
+namespace ElectroPrognizer.DataModel.Entities
 {
     public class MeasuringChannel : IdentityEntity
     {
-        public string Code { get; set; }
-        public string Desc { get; set; }
+        [Column("MeasuringChannelCode")]
+        public MeasuringChannelTypeEnum MeasuringChannelType { get; set; }
+
+        public string Description { get; set; }
     }
 }

@@ -27,6 +27,11 @@ namespace ElectroPrognizer.IoC
                 .As<IImportFileService>()
                 .SingleInstance()
                 .PropertiesAutowired();
+
+            builder.RegisterType<PrognizerService>()
+                .As<IPrognizerService>()
+                .SingleInstance()
+                .PropertiesAutowired();
         }
     }
 }

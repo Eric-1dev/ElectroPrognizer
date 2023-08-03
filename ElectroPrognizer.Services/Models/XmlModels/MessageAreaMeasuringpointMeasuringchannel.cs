@@ -1,7 +1,7 @@
 ﻿using System.Xml.Schema;
 using System.Xml.Serialization;
 
-namespace ElectroPrognizer.DataModel.Models.XmlModels;
+namespace ElectroPrognizer.Services.Models.XmlModels;
 
 [Serializable()]
 [XmlRoot("messageAreaMeasuringpointMeasuringchannel")]

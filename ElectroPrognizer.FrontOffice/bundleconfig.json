@@ -30,7 +30,8 @@
   {
     "outputFileName": "wwwroot/bundles/js/common.bundle.js",
     "inputFiles": [
-      "wwwroot/js/progressBarHelper.js"
+      "wwwroot/js/progressBarHelper.js",
+      "wwwroot/js/modalHelper.js"
     ],
     "minify": {
       "enabled": true
@@ -49,6 +50,24 @@
     "outputFileName": "wwwroot/bundles/css/uploadData.bundle.css",
     "inputFiles": [
       "wwwroot/css/uploadData.css"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/bundles/js/prognizer.bundle.js",
+    "inputFiles": [
+      "wwwroot/js/prognizerHelper.js"
+    ],
+    "minify": {
+      "enabled": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/bundles/css/prognizer.bundle.css",
+    "inputFiles": [
+      "wwwroot/css/prognizer.css"
     ],
     "minify": {
       "enabled": true

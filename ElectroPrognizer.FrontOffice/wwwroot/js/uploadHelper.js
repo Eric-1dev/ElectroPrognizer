@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 $(document).ready(() => {
     uploadHelper.init();
 });
@@ -31,7 +33,7 @@ let uploadHelper = {
                 data: formData,
                 success: (data) => {
                     if (data.isFail) {
-                        alert('Ошибка при загрузке файлов: ' + data.message);
+                        modalHelper.showMessage('Ошибка при загрузке файлов: ' + data.message);
                         return;
                     }
 
@@ -40,7 +42,7 @@ let uploadHelper = {
                 cache: false,
                 contentType: false,
                 processData: false
-            }); 
+            });
         });
     },
 
