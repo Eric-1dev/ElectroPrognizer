@@ -1,8 +1,8 @@
-﻿namespace ElectroPrognizer.Services.Models.Prognizer;
+namespace ElectroPrognizer.Services.Models.Prognizer;
 
 public class DayData
 {
-    public DateTime Date { get; set; }
+    public int DayNumber { get; set; }
 
     public HourData[] HourDatas { get; set; }
 }

@@ -4,3 +4,15 @@
     gap: 10px;
     align-items: center;
 }
+
+.prognizer-table td, .prognizer-table th {
+    padding: 2px 5px;
+}
+
+.prognizer-table th {
+    text-align: center;
+}
+
+.prognizer-table td {
+    text-align: center;
+}

@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using ElectroPrognizer.DataModel.Entities;
 using ElectroPrognizer.Utils.Helpers;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,8 @@ namespace ElectroPrognizer.DataLayer
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(ConfigurationHelper.ConntectionString);
+
+            optionsBuilder.LogTo((message) => { Debug.WriteLine(message); });
         }
     }
 }

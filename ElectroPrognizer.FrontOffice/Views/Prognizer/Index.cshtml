@@ -17,7 +17,7 @@
     <bundle name="wwwroot/bundles/js/prognizer.bundle.js" />
 }
 
-<div id="prognizer-date-selector" table-content-url="@Url.Action("GetTableContent", "Prognizer")">
+<div id="prognizer-date-selector" class="mb-3" table-content-url="@Url.Action("GetTableContent", "Prognizer")">
     @Html.LabelFor(x => x.Months, new { @for="prognizer-month-selector" })
     <div>
         <select class="form-select prognizer-date-control" id="prognizer-month-selector">
@@ -43,4 +43,8 @@
     </div>
 </div>
 
-<div id="prognizer-result-table"></div>
+<div id="prognizer-result-table">
+    <table class="table table-bordered table-striped">
+        
+    </table>
+</div>

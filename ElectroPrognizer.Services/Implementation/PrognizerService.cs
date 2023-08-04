@@ -1,8 +1,7 @@
 using ElectroPrognizer.DataLayer;
-using ElectroPrognizer.DataModel.Entities;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models.Prognizer;
-using ElectroPrognizer.Utils.Helpers;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ElectroPrognizer.Services.Implementation;
 
@@ -22,12 +21,52 @@ public class PrognizerService : IPrognizerService
 
     public ConsumptionTableData GetTableContent(int year, int month)
     {
+        var consumptionTableData = new ConsumptionTableData
+        {
+            Month = month,
+            Year = year
+        };
+
         var dbContext = new ApplicationContext();
 
-        var energyConsuptions = dbContext.EnergyConsumptions.Where(x => x.StartDate.Month == month && x.StartDate.Year == year).ToArray();
+        var energyConsuptions = dbContext.EnergyConsumptions
+            .Where(x => x.MeasuringChannel.MeasuringChannelType == Entities.Enums.MeasuringChannelTypeEnum.ActiveInput
+                && x.StartDate.Month == month
+                && x.StartDate.Year == year)
+            .ToArray();
 
-        // пока заглушка
+        if (!energyConsuptions.Any())
+            return consumptionTableData;
 
-        return new ConsumptionTableData();
+        var minDate = energyConsuptions.Min(x => x.StartDate).Day;
+        var maxDate = energyConsuptions.Max(x => x.StartDate).Day;
+
+        var dayDatas = new DayData[maxDate];
+
+        for (int dayCounter = 0; dayCounter < dayDatas.Length; dayCounter++)
+        {
+            dayDatas[dayCounter] = new DayData
+            {
+                DayNumber = dayCounter + 1,
+                HourDatas = new HourData[24]
+            };
+
+            var date = new DateTime(year, month, dayCounter + 1);
+
+            for (int hourCounter = 0; hourCounter < 24; hourCounter++)
+            {
+                var value = energyConsuptions.FirstOrDefault(x => x.StartDate == date.AddHours(hourCounter))?.Value;
+
+                dayDatas[dayCounter].HourDatas[hourCounter] = new HourData
+                {
+                    Hour = hourCounter,
+                    Value = value
+                };
+            }
+        }
+
+        consumptionTableData.DayDatas = dayDatas;
+
+        return consumptionTableData;
     }
 }
