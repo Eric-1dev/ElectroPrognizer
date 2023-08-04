@@ -1,7 +1,6 @@
 using ElectroPrognizer.DataLayer;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models.Prognizer;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ElectroPrognizer.Services.Implementation;
 
@@ -46,10 +45,20 @@ public class PrognizerService : IPrognizerService
 
         for (int dayCounter = 0; dayCounter < dayDatas.Length; dayCounter++)
         {
+            var currentDate = new DateTime(year, month, dayCounter + 1);
+
             dayDatas[dayCounter] = new DayData
             {
                 DayNumber = dayCounter + 1,
-                HourDatas = new HourData[24]
+                HourDatas = new HourData[24],
+
+                Total = energyConsuptions
+                    .Where(x => x.StartDate.Date == currentDate)
+                    .Sum(x => x.Value),
+
+                CumulativeTotal = energyConsuptions
+                    .Where(x => x.StartDate.Date <= currentDate)
+                    .Sum(x => x.Value)
             };
 
             var date = new DateTime(year, month, dayCounter + 1);

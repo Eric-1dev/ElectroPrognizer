@@ -99,8 +99,34 @@ let prognizerHelper = {
             }
 
             tBody.append(tr);
-            table.append(tBody);
         }
+
+        let totalForDayRow = $('<tr class="fw-bold">');
+        totalForDayRow.append('<td>Итого за день:');
+
+        for (let dayNumber = 1; dayNumber < dayCount + 1; dayNumber++) {
+            let td = $('<td>');
+
+            td.html(tableData.dayDatas[dayNumber - 1].total);
+
+            totalForDayRow.append(td);
+        }
+
+        tBody.append(totalForDayRow);
+
+        let cumulativeTotalRow = $('<tr class="fw-bold">');
+        cumulativeTotalRow.append('<td>Нарастающий итог:');
+        tBody.append(cumulativeTotalRow);
+
+        for (let dayNumber = 1; dayNumber < dayCount + 1; dayNumber++) {
+            let td = $('<td>');
+
+            td.html(tableData.dayDatas[dayNumber - 1].cumulativeTotal);
+
+            cumulativeTotalRow.append(td);
+        }
+
+        table.append(tBody);
 
         prognizerHelper._resultTable.append(table);
 
