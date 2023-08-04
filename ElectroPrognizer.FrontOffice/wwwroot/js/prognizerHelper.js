@@ -64,15 +64,20 @@ let prognizerHelper = {
             tr.append(th);
         }
 
-        let nextDayHeader = $('<th>');
-        nextDayHeader.html(prognizerHelper._formarDate(dayCount + 1, tableData.month, tableData.year));
+        if (dayCount + 1 <= tableData.maxDay) {
+            let nextDayHeader = $('<th>');
 
-        let twoDayHeader = $('<th>');
-        twoDayHeader.html(prognizerHelper._formarDate(dayCount + 2, tableData.month, tableData.year));
+            nextDayHeader.html(prognizerHelper._formarDate(dayCount + 1, tableData.month, tableData.year));
+            tr.append(nextDayHeader);
 
-        tr.append(nextDayHeader);
-        tr.append(twoDayHeader);
+            if (dayCount + 2 <= tableData.maxDay) {
+                let twoDayHeader = $('<th>');
 
+                twoDayHeader.html(prognizerHelper._formarDate(dayCount + 2, tableData.month, tableData.year));
+                tr.append(twoDayHeader);
+            }
+        }
+        
         tHead.append(tr);
         table.append(tHead);
 

@@ -6,6 +6,8 @@ public class ConsumptionTableData
 
     public int Year { get; set; }
 
+    public int MaxDay { get; set; }
+
     public DayData[] DayDatas { get; set; }
 
     public ConsumptionTableData()

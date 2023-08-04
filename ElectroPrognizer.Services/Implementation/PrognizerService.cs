@@ -24,7 +24,8 @@ public class PrognizerService : IPrognizerService
         var consumptionTableData = new ConsumptionTableData
         {
             Month = month,
-            Year = year
+            Year = year,
+            MaxDay = DateTime.DaysInMonth(year, month)
         };
 
         var dbContext = new ApplicationContext();
