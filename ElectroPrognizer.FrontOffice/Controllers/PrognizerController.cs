@@ -1,3 +1,4 @@
+using DocumentFormat.OpenXml.Wordprocessing;
 using ElectroPrognizer.Entities.Models;
 using ElectroPrognizer.FrontOffice.Models;
 using ElectroPrognizer.Services.Interfaces;
@@ -11,8 +12,16 @@ public class PrognizerController : Controller
 
     public IActionResult Index()
     {
+        var substations = PrognizerService.GetSubstationList();
+
         var model = new PrognizerViewModel
         {
+            Substations = substations.Select(s => new SubstationViewModel
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).ToArray(),
+
             StartDate = DateTime.Now.AddDays(2).ToString("yyyy-MM-dd"),
         };
 
@@ -20,9 +29,12 @@ public class PrognizerController : Controller
     }
 
     [HttpPost]
-    public JsonResult GetTableContent(DateTime calculationDate)
+    public JsonResult GetTableContent(int? substationId, DateTime calculationDate)
     {
-        var data = PrognizerService.GetTableContent(calculationDate);
+        if (substationId == null)
+            return Fail("Не выбрана подстанция");
+
+        var data = PrognizerService.GetTableContent(substationId.Value, calculationDate);
 
         if (!data.DayDatas.Any())
             return Fail("Нет данных за выбранный период");

@@ -4,6 +4,9 @@ namespace ElectroPrognizer.FrontOffice.Models;
 
 public class SubstationViewModel
 {
+    [DisplayName("Идентификатор")]
+    public int Id { get; set; }
+
     [DisplayName("ИНН")]
     public string Inn { get; set; }
 

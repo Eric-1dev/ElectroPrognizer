@@ -1,4 +1,5 @@
 using ElectroPrognizer.DataLayer;
+using ElectroPrognizer.DataModel.Entities;
 using ElectroPrognizer.Entities.Enums;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models.Prognizer;
@@ -9,14 +10,21 @@ public class PrognizerService : IPrognizerService
 {
     private const int prognozeDayCount = 31;
 
-    public ConsumptionTableData GetTableContent(DateTime calculationDate)
+    public Substation[] GetSubstationList()
     {
-        var consumptionTableData = new ConsumptionTableData();
-
         var dbContext = new ApplicationContext();
 
+        return dbContext.Substations.ToArray();
+    }
+
+    public ConsumptionTableData GetTableContent(int sunstationId, DateTime calculationDate)
+    {
+        var dbContext = new ApplicationContext();
+
+        var consumptionTableData = new ConsumptionTableData();
+
         var energyConsuptions = dbContext.EnergyConsumptions
-            .Where(x => x.ElectricityMeter.SubstationId == 1 //todo брать из параметров запроса
+            .Where(x => x.ElectricityMeter.SubstationId == sunstationId
                 && x.ElectricityMeterId == 1 //todo брать все, сумму рассчитывать исходя из настроек счетчика
                 && x.MeasuringChannel.MeasuringChannelType == MeasuringChannelTypeEnum.ActiveInput
                 && x.StartDate.Date > calculationDate.AddDays(-prognozeDayCount - 2).Date

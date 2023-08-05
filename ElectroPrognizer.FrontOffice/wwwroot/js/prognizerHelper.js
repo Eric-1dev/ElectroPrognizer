@@ -20,12 +20,13 @@ let prognizerHelper = {
     getTableContent: () => {
         prognizerHelper._resultTable.html('');
 
+        let substationId = $('#prognizer-substation-selector').val();
         let calculationDate = $('#prognizer-date-picker').val();
 
         $.ajax({
             url: prognizerHelper._getTableContentUrl,
             type: 'POST',
-            data: { calculationDate: calculationDate },
+            data: { substationId: substationId, calculationDate: calculationDate },
             success: (data) => {
                 if (data.isFail) {
                     prognizerHelper._resultTable.html(data.message);

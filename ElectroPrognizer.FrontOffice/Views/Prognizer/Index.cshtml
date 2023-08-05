@@ -19,6 +19,16 @@
 
 <div id="prognizer-date-selector" class="mb-3" table-content-url="@Url.Action("GetTableContent", "Prognizer")">
 
+    @Html.LabelFor(x => x.Substations, new { @for="prognizer-substation" })
+    <div>
+        <select id="prognizer-substation-selector" class="form-select">
+            @foreach (var substation in Model.Substations)
+            {
+                <!option value="@substation.Id">@substation.Name</!option>
+            }
+        </select>
+    </div>
+
     @Html.LabelFor(x => x.StartDate, new { @for="prognizer-date-picker" })
     <div>
         <input id="prognizer-date-picker" class="form-control" type="date" value="@Model.StartDate" />
