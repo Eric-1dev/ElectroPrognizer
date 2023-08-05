@@ -1,4 +1,3 @@
-using DocumentFormat.OpenXml.Wordprocessing;
 using ElectroPrognizer.Entities.Models;
 using ElectroPrognizer.FrontOffice.Models;
 using ElectroPrognizer.Services.Interfaces;
