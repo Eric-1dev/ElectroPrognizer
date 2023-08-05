@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using ElectroPrognizer.Services.Implementation;
 using ElectroPrognizer.Services.Interfaces;
 
@@ -25,6 +25,11 @@ namespace ElectroPrognizer.IoC
             
             builder.RegisterType<ImportFileService>()
                 .As<IImportFileService>()
+                .SingleInstance()
+                .PropertiesAutowired();
+
+            builder.RegisterType<SubstationService>()
+                .As<ISubstationService>()
                 .SingleInstance()
                 .PropertiesAutowired();
 

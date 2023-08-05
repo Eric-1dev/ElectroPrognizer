@@ -1,5 +1,4 @@
 using ElectroPrognizer.DataLayer;
-using ElectroPrognizer.DataModel.Entities;
 using ElectroPrognizer.Entities.Enums;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models.Prognizer;
@@ -9,13 +8,6 @@ namespace ElectroPrognizer.Services.Implementation;
 public class PrognizerService : IPrognizerService
 {
     private const int prognozeDayCount = 31;
-
-    public Substation[] GetSubstationList()
-    {
-        var dbContext = new ApplicationContext();
-
-        return dbContext.Substations.ToArray();
-    }
 
     public ConsumptionTableData GetTableContent(int sunstationId, DateTime calculationDate)
     {

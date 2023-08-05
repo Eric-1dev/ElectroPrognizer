@@ -1,4 +1,4 @@
-﻿using ElectroPrognizer.Entities.Models;
+using ElectroPrognizer.Entities.Models;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models;
 using ElectroPrognizer.Utils.Helpers;
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ElectroPrognizer.FrontOffice.Controllers;
 
-public class UploadController : Controller
+public class UploadController : BaseController
 {
     public IImportFileService ImportFileService { get; set; }
 

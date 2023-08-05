@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Html;
+@using Microsoft.AspNetCore.Html;
 @using Microsoft.AspNetCore.Http
 
 @inject IHttpContextAccessor HttpContextAccessor
@@ -30,6 +30,7 @@
             @{ RenderNavItem(Url.Action("Index", "Home"), "Домашняя"); }
             @{ RenderNavItem(Url.Action("Index", "Upload"), "Загрузка данных"); }
             @{ RenderNavItem(Url.Action("Index", "Prognizer"), "Прогноз протребления"); }
+            @{ RenderNavItem(Url.Action("Index", "Settings"), "Настройки"); }
         </div>
     </div>
 

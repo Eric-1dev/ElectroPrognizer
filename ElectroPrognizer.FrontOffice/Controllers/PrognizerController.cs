@@ -1,17 +1,17 @@
-using ElectroPrognizer.Entities.Models;
 using ElectroPrognizer.FrontOffice.Models;
 using ElectroPrognizer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElectroPrognizer.FrontOffice.Controllers;
 
-public class PrognizerController : Controller
+public class PrognizerController : BaseController
 {
+    public ISubstationService SubstationService { get; set; }
     public IPrognizerService PrognizerService { get; set; }
 
     public IActionResult Index()
     {
-        var substations = PrognizerService.GetSubstationList();
+        var substations = SubstationService.GetAll();
 
         var model = new PrognizerViewModel
         {
@@ -39,15 +39,5 @@ public class PrognizerController : Controller
             return Fail("Нет данных за выбранный период");
 
         return Success(data);
-    }
-
-    private JsonResult Fail(string message)
-    {
-        return Json(OperationResult.Fail(message));
-    }
-
-    private JsonResult Success<T>(T entity)
-    {
-        return Json(OperationResult<T>.Success(entity));
     }
 }

@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ElectroPrognizer.FrontOffice.Controllers;
 
-public class HomeController : Controller
+public class HomeController : BaseController
 {
     public IActionResult Index()
     {
