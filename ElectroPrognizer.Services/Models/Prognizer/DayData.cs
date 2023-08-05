@@ -2,7 +2,9 @@ namespace ElectroPrognizer.Services.Models.Prognizer;
 
 public class DayData
 {
-    public int DayNumber { get; set; }
+    public DateTime Date { get; set; }
+
+    public bool IsRealData { get; set; }
 
     public double Total { get; set; }
 

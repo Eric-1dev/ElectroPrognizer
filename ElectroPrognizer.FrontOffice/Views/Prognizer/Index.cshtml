@@ -18,33 +18,13 @@
 }
 
 <div id="prognizer-date-selector" class="mb-3" table-content-url="@Url.Action("GetTableContent", "Prognizer")">
-    @Html.LabelFor(x => x.Months, new { @for="prognizer-month-selector" })
-    <div>
-        <select class="form-select prognizer-date-control" id="prognizer-month-selector">
-            @foreach (var month in Model.Months)
-            {
-                var selectedAttr = month.Key == currentMonth ? "selected" : string.Empty;
 
-                <!option value="@month.Key" @selectedAttr>@month.Value</!option>
-            }
-        </select>
+    @Html.LabelFor(x => x.StartDate, new { @for="prognizer-date-picker" })
+    <div>
+        <input id="prognizer-date-picker" class="form-control" type="date" value="@Model.StartDate" />
     </div>
 
-    @Html.LabelFor(x => x.Years, new { @for="prognizer-year-selector" })
-    <div>
-        <select class="form-select prognizer-date-control" id="prognizer-year-selector">
-            @foreach (var year in Model.Years)
-            {
-                var selectedAttr = year == currentYear ? "selected" : string.Empty;
-
-                <!option value="@year" @selectedAttr>@year</!option>
-            }
-        </select>
-    </div>
+    <button type="button" class="btn btn-primary" id="prognizer-button-calculate">Рассчитать</button>
 </div>
 
-<div id="prognizer-result-table">
-    <table class="table table-bordered table-striped">
-        
-    </table>
-</div>
+<div id="prognizer-result-table"></div>

@@ -1,4 +1,5 @@
 using ElectroPrognizer.DataLayer;
+using ElectroPrognizer.Entities.Enums;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models.Prognizer;
 
@@ -6,50 +7,36 @@ namespace ElectroPrognizer.Services.Implementation;
 
 public class PrognizerService : IPrognizerService
 {
-    public int[] GetAvailableYears()
+    private const int prognozeDayCount = 31;
+
+    public ConsumptionTableData GetTableContent(DateTime calculationDate)
     {
-        var dbContext = new ApplicationContext();
-
-        var minYear = dbContext.EnergyConsumptions.Select(x => x.StartDate).DefaultIfEmpty().Min().Year;
-        var maxYear = dbContext.EnergyConsumptions.Select(x => x.StartDate).DefaultIfEmpty().Max().Year;
-
-        var years = Enumerable.Range(minYear, maxYear - minYear).Append(DateTime.Now.Year);
-
-        return years.Distinct().ToArray();
-    }
-
-    public ConsumptionTableData GetTableContent(int year, int month)
-    {
-        var consumptionTableData = new ConsumptionTableData
-        {
-            Month = month,
-            Year = year,
-            MaxDay = DateTime.DaysInMonth(year, month)
-        };
+        var consumptionTableData = new ConsumptionTableData();
 
         var dbContext = new ApplicationContext();
 
         var energyConsuptions = dbContext.EnergyConsumptions
-            .Where(x => x.MeasuringChannel.MeasuringChannelType == Entities.Enums.MeasuringChannelTypeEnum.ActiveInput
-                && x.StartDate.Month == month
-                && x.StartDate.Year == year)
+            .Where(x => x.ElectricityMeter.SubstationId == 1 //todo брать из параметров запроса
+                && x.ElectricityMeterId == 1 //todo брать все, сумму рассчитывать исходя из настроек счетчика
+                && x.MeasuringChannel.MeasuringChannelType == MeasuringChannelTypeEnum.ActiveInput
+                && x.StartDate.Date > calculationDate.AddDays(-prognozeDayCount - 2).Date
+                && x.StartDate.Date <= calculationDate.Date)
             .ToArray();
 
         if (!energyConsuptions.Any())
             return consumptionTableData;
 
-        var minDate = energyConsuptions.Min(x => x.StartDate).Day;
-        var maxDate = energyConsuptions.Max(x => x.StartDate).Day;
-
-        var dayDatas = new DayData[maxDate];
+        var dayDatas = new DayData[prognozeDayCount + 2];
 
         for (int dayCounter = 0; dayCounter < dayDatas.Length; dayCounter++)
         {
-            var currentDate = new DateTime(year, month, dayCounter + 1);
+            var currentDate = calculationDate.AddDays(-prognozeDayCount - 1 + dayCounter).Date;
+
+            var isRealData = true;
 
             dayDatas[dayCounter] = new DayData
             {
-                DayNumber = dayCounter + 1,
+                Date = currentDate,
                 HourDatas = new HourData[24],
 
                 Total = energyConsuptions
@@ -61,11 +48,12 @@ public class PrognizerService : IPrognizerService
                     .Sum(x => x.Value)
             };
 
-            var date = new DateTime(year, month, dayCounter + 1);
-
             for (int hourCounter = 0; hourCounter < 24; hourCounter++)
             {
-                var value = energyConsuptions.FirstOrDefault(x => x.StartDate == date.AddHours(hourCounter))?.Value;
+                var value = energyConsuptions.FirstOrDefault(x => x.StartDate == currentDate.AddHours(hourCounter))?.Value;
+
+                if (value == null)
+                    isRealData = false;
 
                 dayDatas[dayCounter].HourDatas[hourCounter] = new HourData
                 {
@@ -73,6 +61,8 @@ public class PrognizerService : IPrognizerService
                     Value = value
                 };
             }
+
+            dayDatas[dayCounter].IsRealData = isRealData;
         }
 
         consumptionTableData.DayDatas = dayDatas;

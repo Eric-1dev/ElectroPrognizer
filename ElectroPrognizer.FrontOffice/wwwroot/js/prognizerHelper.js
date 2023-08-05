@@ -3,7 +3,7 @@
 $(document).ready(() => {
     prognizerHelper.init();
 
-    prognizerHelper.getTableContent();
+    //prognizerHelper.getTableContent();
 });
 
 let prognizerHelper = {
@@ -13,18 +13,19 @@ let prognizerHelper = {
         prognizerHelper._resultTable = $('#prognizer-result-table');
 
         $('.prognizer-date-control').change(prognizerHelper.getTableContent);
+
+        $('#prognizer-button-calculate').click(prognizerHelper.getTableContent);
     },
 
     getTableContent: () => {
         prognizerHelper._resultTable.html('');
 
-        let month = $('#prognizer-month-selector').val();
-        let year = $('#prognizer-year-selector').val();
+        let calculationDate = $('#prognizer-date-picker').val();
 
         $.ajax({
             url: prognizerHelper._getTableContentUrl,
             type: 'POST',
-            data: { month, year },
+            data: { calculationDate: calculationDate },
             success: (data) => {
                 if (data.isFail) {
                     prognizerHelper._resultTable.html(data.message);
@@ -49,6 +50,8 @@ let prognizerHelper = {
         let table = $('<table>');
         table.addClass('prognizer-table table table-bordered table-striped table-hover');
 
+        // заголовок
+
         let tHead = $('<thead>');
 
         let dayCount = tableData.dayDatas.length;
@@ -57,43 +60,54 @@ let prognizerHelper = {
 
         tr.append($('<th>'));
 
-        for (let dayNumber = 1; dayNumber < dayCount + 1; dayNumber++) {
+        for (let i = 0; i < dayCount; i++) {
             let th = $('<th>');
 
-            th.html(prognizerHelper._formarDate(dayNumber, tableData.month, tableData.year));
+            th.html(prognizerHelper._formatDate(tableData.dayDatas[i].date));
             tr.append(th);
         }
 
-        if (dayCount + 1 <= tableData.maxDay) {
-            let nextDayHeader = $('<th>');
-
-            nextDayHeader.html(prognizerHelper._formarDate(dayCount + 1, tableData.month, tableData.year));
-            tr.append(nextDayHeader);
-
-            if (dayCount + 2 <= tableData.maxDay) {
-                let twoDayHeader = $('<th>');
-
-                twoDayHeader.html(prognizerHelper._formarDate(dayCount + 2, tableData.month, tableData.year));
-                tr.append(twoDayHeader);
-            }
-        }
-        
         tHead.append(tr);
         table.append(tHead);
 
+        // тело
+
         let tBody = $('<tbody>');
 
-        for (let hourNumber = 0; hourNumber < 24; hourNumber++) {
+        for (var i = 0; i < 26; i++) {
             let tr = $('<tr>');
 
-            let tdHourNumber = $('<td>');
-            tdHourNumber.html(('0' + hourNumber).slice(-2) + ':00');
-            tr.append(tdHourNumber);
+            let td = $('<td>');
 
-            for (let dayNumber = 1; dayNumber < dayCount + 1; dayNumber++) {
+            if (i === 24) {
+                td.addClass('fw-bold');
+                td.html('Итого за день:')
+            } else if (i === 25) {
+                td.addClass('fw-bold');
+                td.html('Нарастающий итог:')
+            } else {
+                td.html(('0' + i).slice(-2) + ':00');
+            }
+
+            tr.append(td);
+
+            for (var j = 0; j < dayCount; j++) {
                 let td = $('<td>');
-                td.attr('hour', hourNumber);
-                td.attr('day', dayNumber);
+
+                if (i === 24) {
+                    td.addClass('fw-bold');
+                    td.html(tableData.dayDatas[j].total);
+                } else if (i === 25) {
+                    td.addClass('fw-bold');
+                    td.html(tableData.dayDatas[j].cumulativeTotal);
+                } else {
+                    let value = tableData.dayDatas[j].hourDatas[i].value
+
+                    if (!value)
+                        value = '-';
+
+                    td.html(value);
+                }
 
                 tr.append(td);
             }
@@ -101,52 +115,29 @@ let prognizerHelper = {
             tBody.append(tr);
         }
 
-        let totalForDayRow = $('<tr class="fw-bold">');
-        totalForDayRow.append('<td>Итого за день:');
-
-        for (let dayNumber = 1; dayNumber < dayCount + 1; dayNumber++) {
-            let td = $('<td>');
-
-            td.html(tableData.dayDatas[dayNumber - 1].total);
-
-            totalForDayRow.append(td);
-        }
-
-        tBody.append(totalForDayRow);
-
-        let cumulativeTotalRow = $('<tr class="fw-bold">');
-        cumulativeTotalRow.append('<td>Нарастающий итог:');
-        tBody.append(cumulativeTotalRow);
-
-        for (let dayNumber = 1; dayNumber < dayCount + 1; dayNumber++) {
-            let td = $('<td>');
-
-            td.html(tableData.dayDatas[dayNumber - 1].cumulativeTotal);
-
-            cumulativeTotalRow.append(td);
-        }
-
         table.append(tBody);
 
         prognizerHelper._resultTable.append(table);
-
-        // заполняем данные
-
-        let dataArray = Object(tableData.dayDatas);
-
-        dataArray.forEach((day) => {
-            let hourArray = Object(day.hourDatas);
-
-            hourArray.forEach((hourData) => {
-                $('td[hour="' + hourData.hour + '"][day="' + day.dayNumber + '"]').html(hourData.value);
-            });
-        });
     },
 
-    _formarDate: (day, month, year) => {
-        let dayFormat = ('0' + day).slice(-2);
-        let monthFormat = ('0' + month).slice(-2);
+    _formatDate: (dateInput) => {
 
-        return `${dayFormat}.${monthFormat}.${year}`;
+        let date = new Date(dateInput);
+
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+
+        if (day < 10) {
+            day = '0' + day;
+        }
+
+        if (month < 10) {
+            month = `0${month}`;
+        }
+
+        let formatDate = `${day}.${month}.${year}`;
+
+        return formatDate;
     }
 };

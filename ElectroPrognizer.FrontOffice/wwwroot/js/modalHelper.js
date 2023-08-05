@@ -3,7 +3,7 @@
 $(document).ready(() => {
     modalHelper.init();
 });
-
+// todo переписать на нормальные модалки
 let modalHelper = {
     init: () => {
 
