@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ElectroPrognizer.DataModel.Entities;
 
@@ -14,4 +14,6 @@ public class ElectricityMeter : IdentityEntity
     public Substation Substation { get; set; }
 
     public virtual ICollection<EnergyConsumption> EnergyConsumptions { get; set; }
+
+    public bool IsPositiveCounter { get; set; }
 }

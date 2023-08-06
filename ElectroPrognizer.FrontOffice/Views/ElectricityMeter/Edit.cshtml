@@ -1,0 +1,62 @@
+@model ElectricityMeterViewModel
+
+@{
+    var title = "Редактирование счетчика";
+    ViewData["Title"] = title;
+}
+
+@section Scripts {
+    <bundle name="wwwroot/bundles/js/electricityMeterEdit.bundle.js" />
+}
+
+<h4>@title</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form id="prognizer-electricity-meter-edit-form" substation-save-url="@Url.Action("Save", "ElectricityMeter")">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" readonly />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="SubstationId" class="control-label"></label>
+                <input asp-for="SubstationId" class="form-control" readonly />
+                <span asp-validation-for="SubstationId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" readonly />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="IsPositiveCounter" class="control-label"></label>
+                <div>
+                    <input asp-for="IsPositiveCounter"/>
+                </div>
+                <span asp-validation-for="IsPositiveCounter" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <input type="submit" class="btn btn-primary" value="Сохранить" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Substation" asp-action="Edit" asp-route-id="@Model.SubstationId">Назад к настройкам подстанции</a>
+</div>

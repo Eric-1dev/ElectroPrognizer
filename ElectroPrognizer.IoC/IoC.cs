@@ -33,6 +33,11 @@ namespace ElectroPrognizer.IoC
                 .SingleInstance()
                 .PropertiesAutowired();
 
+            builder.RegisterType<ElectricityMeterService>()
+                .As<IElectricityMeterService>()
+                .SingleInstance()
+                .PropertiesAutowired();
+
             builder.RegisterType<PrognizerService>()
                 .As<IPrognizerService>()
                 .SingleInstance()

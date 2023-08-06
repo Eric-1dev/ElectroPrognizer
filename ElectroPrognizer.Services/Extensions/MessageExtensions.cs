@@ -30,7 +30,8 @@ public static class MessageExtensions
                 var electricityMeter = new ElectricityMeter
                 {
                     Substation = substation,
-                    Name = measuringPoint.Name
+                    Name = measuringPoint.Name,
+                    IsPositiveCounter = true
                 };
 
                 foreach (var measuringChannel in measuringPoint.MeasuringChannel)

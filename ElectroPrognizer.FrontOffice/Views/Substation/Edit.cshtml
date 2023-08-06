@@ -1,38 +1,92 @@
-@model ElectroPrognizer.FrontOffice.Models.SubstationViewModel
+@model SubstationViewModel
 
-<h4>SubstationViewModel</h4>
+@{
+    var title = "Редактирование подстанции";
+    ViewData["Title"] = title;
+}
+
+@section Styles {
+    <bundle name="wwwroot/bundles/css/substationEdit.bundle.css" />
+}
+
+@section Scripts {
+    <bundle name="wwwroot/bundles/js/substationEdit.bundle.js" />
+}
+
+<h4>@title</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form id="prognizer-substation-edit-form" substation-save-url="@Url.Action("Save", "Substation")">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+
+            <div class="form-group mb-3">
                 <label asp-for="Id" class="control-label"></label>
                 <input asp-for="Id" class="form-control" readonly />
                 <span asp-validation-for="Id" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-3">
                 <label asp-for="Inn" class="control-label"></label>
                 <input asp-for="Inn" class="form-control" readonly />
                 <span asp-validation-for="Inn" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-3">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-3">
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <div class="form-group mb-3">
+                <input type="submit" class="btn btn-primary" value="Сохранить" />
             </div>
+
         </form>
     </div>
 </div>
 
+<div class="mb3 col-md-6">
+    <button class="btn btn-outline-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#electricityMeters" aria-expanded="false">Список счетчиков</button>
+
+    <div class="collapse mb-3" id="electricityMeters">
+        <div class="card card-body">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Название</th>
+                        <th>Описание</th>
+                        <th>Показания учитываются в плюс</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var electricityMeter in Model.ElectricityMeters)
+                    {
+                        var isPositiveCounter = electricityMeter.IsPositiveCounter ? "Да" : "Нет";
+
+                        <tr>
+                            <td>@electricityMeter.Id</td>
+                            <td>@electricityMeter.Name</td>
+                            <td>@electricityMeter.Description</td>
+                            <td>@isPositiveCounter</td>
+                            <td><a href="@Url.Action("Edit", "ElectricityMeter", new { Id = electricityMeter.Id })" class="btn btn-primary">Настройка</a></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Назад</a>
 </div>

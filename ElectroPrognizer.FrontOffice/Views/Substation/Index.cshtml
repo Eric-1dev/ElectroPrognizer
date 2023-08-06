@@ -4,12 +4,26 @@
     ViewData["Title"] = "Настройка подстанции";
 }
 
-<table class="table table-bordered table-striped table-hover">
-@foreach (var substation in Model)
-{
-    <tr>
-            <td>@substation.Name</td>
-            <td><a href="@Url.Action("Edit", "Substation", new { Id = substation.Id })" class="btn btn-primary">Настройка</a></td>
-    </tr>
-}
-</table>
+<div class="col-md-6">
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th>ИНН</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var substation in Model)
+            {
+                <tr>
+                    <td>@substation.Inn</td>
+                    <td>@substation.Name</td>
+                    <td>@substation.Description</td>
+                    <td><a href="@Url.Action("Edit", "Substation", new { Id = substation.Id })" class="btn btn-primary">Настройка</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -10,6 +10,11 @@ public abstract class BaseController : Controller
         return Json(OperationResult.Fail(message));
     }
 
+    protected JsonResult Success(string message = null)
+    {
+        return Json(OperationResult.Success(message));
+    }
+
     protected JsonResult Success<T>(T entity)
     {
         return Json(OperationResult<T>.Success(entity));

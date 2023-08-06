@@ -1,10 +1,13 @@
 using ElectroPrognizer.DataModel.Entities;
+using ElectroPrognizer.Services.Dto;
 
 namespace ElectroPrognizer.Services.Interfaces;
 
 public interface ISubstationService
 {
-    Substation[] GetAll();
+    SubstationDto[] GetAll();
 
-    Substation GetById(int id);
+    SubstationDto GetById(int id);
+
+    void Save(SubstationDto substation);
 }

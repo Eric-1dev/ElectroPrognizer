@@ -1,76 +1,96 @@
 [
-  {
-    "outputFileName": "wwwroot/bundles/js/libraries.bundle.js",
-    "inputFiles": [
-      "wwwroot/lib/jquery/dist/jquery.min.js",
-      "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
-    ],
-    "minify": {
-      "enabled": false
+    {
+        "outputFileName": "wwwroot/bundles/js/libraries.bundle.js",
+        "inputFiles": [
+            "wwwroot/lib/jquery/dist/jquery.min.js",
+            "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
+            "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
+            "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
+        ],
+        "minify": {
+            "enabled": false
+        }
+    },
+    {
+        "outputFileName": "wwwroot/bundles/css/libraries.bundle.css",
+        "inputFiles": [
+            "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css"
+        ],
+        "minify": {
+            "enabled": false
+        }
+    },
+    {
+        "outputFileName": "wwwroot/bundles/css/common.bundle.css",
+        "inputFiles": [
+            "wwwroot/css/common.css"
+        ],
+        "minify": {
+            "enabled": true
+        }
+    },
+    {
+        "outputFileName": "wwwroot/bundles/js/common.bundle.js",
+        "inputFiles": [
+            "wwwroot/js/progressBarHelper.js",
+            "wwwroot/js/modalHelper.js"
+        ],
+        "minify": {
+            "enabled": true
+        }
+    },
+    {
+        "outputFileName": "wwwroot/bundles/js/uploadData.bundle.js",
+        "inputFiles": [
+            "wwwroot/js/uploadHelper.js"
+        ],
+        "minify": {
+            "enabled": true
+        }
+    },
+    {
+        "outputFileName": "wwwroot/bundles/css/uploadData.bundle.css",
+        "inputFiles": [
+            "wwwroot/css/uploadData.css"
+        ],
+        "minify": {
+            "enabled": true
+        }
+    },
+    {
+        "outputFileName": "wwwroot/bundles/js/prognizer.bundle.js",
+        "inputFiles": [
+            "wwwroot/js/prognizerHelper.js"
+        ],
+        "minify": {
+            "enabled": true
+        }
+    },
+    {
+        "outputFileName": "wwwroot/bundles/css/prognizer.bundle.css",
+        "inputFiles": [
+            "wwwroot/css/prognizer.css"
+        ],
+        "minify": {
+            "enabled": true
+        }
+    },
+    {
+        "outputFileName": "wwwroot/bundles/js/substationEdit.bundle.js",
+        "inputFiles": [
+            "wwwroot/js/substationEditHelper.js"
+        ],
+        "minify": {
+            "enabled": true
+        }
+    },
+    {
+        "outputFileName": "wwwroot/bundles/js/electricityMeterEdit.bundle.js",
+        "inputFiles": [
+            "wwwroot/js/electricityMeterEditHelper.js"
+        ],
+        "minify": {
+            "enabled": true
+        }
     }
-  },
-  {
-    "outputFileName": "wwwroot/bundles/css/libraries.bundle.css",
-    "inputFiles": [
-      "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css"
-    ],
-    "minify": {
-      "enabled": false
-    }
-  },
-  {
-    "outputFileName": "wwwroot/bundles/css/common.bundle.css",
-    "inputFiles": [
-      "wwwroot/css/common.css"
-    ],
-    "minify": {
-      "enabled": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/bundles/js/common.bundle.js",
-    "inputFiles": [
-      "wwwroot/js/progressBarHelper.js",
-      "wwwroot/js/modalHelper.js"
-    ],
-    "minify": {
-      "enabled": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/bundles/js/uploadData.bundle.js",
-    "inputFiles": [
-      "wwwroot/js/uploadHelper.js"
-    ],
-    "minify": {
-      "enabled": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/bundles/css/uploadData.bundle.css",
-    "inputFiles": [
-      "wwwroot/css/uploadData.css"
-    ],
-    "minify": {
-      "enabled": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/bundles/js/prognizer.bundle.js",
-    "inputFiles": [
-      "wwwroot/js/prognizerHelper.js"
-    ],
-    "minify": {
-      "enabled": true
-    }
-  },
-  {
-    "outputFileName": "wwwroot/bundles/css/prognizer.bundle.css",
-    "inputFiles": [
-      "wwwroot/css/prognizer.css"
-    ],
-    "minify": {
-      "enabled": true
-    }
-  }
 ]

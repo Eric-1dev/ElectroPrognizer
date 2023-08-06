@@ -1,3 +1,4 @@
+using System.Linq;
 using ElectroPrognizer.DataLayer;
 using ElectroPrognizer.Entities.Enums;
 using ElectroPrognizer.Services.Interfaces;
@@ -44,7 +45,7 @@ public class PrognizerService : IPrognizerService
                     .Sum(x => x.Value),
 
                 CumulativeTotal = energyConsuptions
-                    .Where(x => x.StartDate.Date <= currentDate)
+                    .Where(x => x.StartDate >= new DateTime(currentDate.Year, currentDate.Month, 1) && x.StartDate.Date <= currentDate)
                     .Sum(x => x.Value)
             };
 
