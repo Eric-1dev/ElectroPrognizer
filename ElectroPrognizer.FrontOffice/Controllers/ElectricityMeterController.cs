@@ -1,4 +1,5 @@
 using ElectroPrognizer.FrontOffice.Models;
+using ElectroPrognizer.Services.Dto;
 using ElectroPrognizer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,5 +23,29 @@ public class ElectricityMeterController : BaseController
         };
 
         return View(model);
+    }
+
+    [HttpPost]
+    public JsonResult Save(ElectricityMeterViewModel electricityMeter)
+    {
+        if (!ModelState.IsValid)
+            return Fail("Некорректные данные");
+
+        var dto = new ElectricityMeterDto
+        {
+            Id = electricityMeter.Id,
+            Description = electricityMeter.Description,
+            IsPositiveCounter = electricityMeter.IsPositiveCounter
+        };
+
+        try
+        {
+            ElectricityMeterService.Save(dto);
+            return Success("Успешно сохранено");
+        }
+        catch (Exception ex)
+        {
+            return Fail(ex.Message);
+        }
     }
 }

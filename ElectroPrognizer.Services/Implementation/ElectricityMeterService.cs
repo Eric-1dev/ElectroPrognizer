@@ -42,4 +42,19 @@ public class ElectricityMeterService : IElectricityMeterService
             IsPositiveCounter = x.IsPositiveCounter
         }).ToArray();
     }
+
+    public void Save(ElectricityMeterDto electricityMeter)
+    {
+        var dbContext = new ApplicationContext();
+
+        var existingElectricityMeter = dbContext.ElectricityMeters.FirstOrDefault(x => x.Id == electricityMeter.Id);
+
+        if (existingElectricityMeter == null)
+            throw new Exception(NotFoundErrorMessage);
+
+        existingElectricityMeter.Description = electricityMeter.Description;
+        existingElectricityMeter.IsPositiveCounter = electricityMeter.IsPositiveCounter;
+
+        dbContext.SaveChanges();
+    }
 }

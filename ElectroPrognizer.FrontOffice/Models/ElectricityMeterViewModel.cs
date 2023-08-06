@@ -15,7 +15,6 @@ public class ElectricityMeterViewModel
     public string Name { get; set; }
 
     [DisplayName("Описание")]
-    [Required(ErrorMessage = "Обязательно для заполнения")]
     public string Description { get; set; }
 
     [DisplayName("Показания учитываются в плюс")]
