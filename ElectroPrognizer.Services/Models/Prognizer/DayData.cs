@@ -6,9 +6,9 @@ public class DayData
 
     public bool IsRealData { get; set; }
 
-    public double Total { get; set; }
+    public double? Total { get; set; }
 
-    public double CumulativeTotal { get; set; }
+    public double? CumulativeTotal { get; set; }
 
     public HourData[] HourDatas { get; set; }
 }

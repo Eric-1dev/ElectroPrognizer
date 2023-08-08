@@ -2,6 +2,7 @@ using ElectroPrognizer.DataLayer;
 using ElectroPrognizer.DataModel.Entities;
 using ElectroPrognizer.Entities.Enums;
 using ElectroPrognizer.Services.Interfaces;
+using ElectroPrognizer.Services.Models;
 using ElectroPrognizer.Services.Models.Prognizer;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,11 +19,13 @@ public class PrognizerService : IPrognizerService
 
         var consumptionTableData = new ConsumptionTableData();
 
+        var startAnalizingDate = calculationDate.AddDays(-analizingDayCount - prognozeDayCount).Date;
+
         // берем analizingDayCount дней от даты рассчета
         var energyConsuptions = dbContext.EnergyConsumptions
             .Where(x => x.ElectricityMeter.SubstationId == substationId
                 && x.MeasuringChannel.MeasuringChannelType == MeasuringChannelTypeEnum.ActiveInput
-                && x.StartDate.Date > calculationDate.AddDays(-analizingDayCount - prognozeDayCount).Date
+                && x.StartDate.Date >= startAnalizingDate
                 && x.StartDate.Date <= calculationDate.Date)
             .Include(x => x.ElectricityMeter)
             .ToArray();
@@ -41,13 +44,9 @@ public class PrognizerService : IPrognizerService
         // создаем массив из имеющихся дней + prognozeDayCount дней на прогнозирование
         var dayDatas = new DayData[totalExistingDays + prognozeDayCount];
 
-        var cumulativeTotal = 0.0;
-
         for (int dayCounter = 0; dayCounter < totalExistingDays; dayCounter++)
         {
-            var total = 0.0;
-
-            var currentDate = calculationDate.AddDays(-analizingDayCount - 1 + dayCounter).Date;
+            var currentDate = minExistingDate.AddDays(dayCounter).Date;
 
             dayDatas[dayCounter] = new DayData
             {
@@ -60,17 +59,9 @@ public class PrognizerService : IPrognizerService
             {
                 var consumptionOnHour = energyConsuptions.Where(x => x.StartDate == currentDate.AddHours(hourCounter)).ToArray();
 
-                double? value;
-
-                if (!consumptionOnHour.Any())
-                {
-                    value = null;
-                }
-                else
-                {
-                    value = consumptionOnHour.Aggregate(0.0, ValueAggregateFunction) + additionalValueConstant;
-                    total += value.Value;
-                }
+                double? value = consumptionOnHour.Any()
+                    ? consumptionOnHour.Aggregate(0.0, ValueAggregateFunction) + additionalValueConstant
+                    : null;
 
                 dayDatas[dayCounter].HourDatas[hourCounter] = new HourData
                 {
@@ -79,13 +70,10 @@ public class PrognizerService : IPrognizerService
                 };
             }
 
-            if (currentDate.Day == 1)
-                cumulativeTotal = total;
-            else
-                cumulativeTotal += total;
+            var totals = CalculateTotalValuesForDay(substationId, currentDate, additionalValueConstant);
 
-            dayDatas[dayCounter].Total = total;
-            dayDatas[dayCounter].CumulativeTotal = cumulativeTotal;
+            dayDatas[dayCounter].Total = totals.TotalForDay;
+            dayDatas[dayCounter].CumulativeTotal = totals.CumulativeTotalForMonth;
         }
 
         for (int dayCounter = 0; dayCounter < prognozeDayCount; dayCounter++)
@@ -99,8 +87,8 @@ public class PrognizerService : IPrognizerService
                 IsRealData = false,
                 Date = previousDayData.Date.AddDays(1),
                 HourDatas = new HourData[24],
-                Total = 0,
-                CumulativeTotal = 0
+                Total = null,
+                CumulativeTotal = null
             };
 
             for (int hourCounter = 0; hourCounter < 24; hourCounter++)
@@ -122,6 +110,57 @@ public class PrognizerService : IPrognizerService
         return consumptionTableData;
     }
 
+    public TotalConsumptionValues CalculateTotalValuesForDay(int substationId, DateTime calculationDate, double? additionalValueConstant)
+    {
+        var dbContext = new ApplicationContext();
+
+        additionalValueConstant ??= dbContext.Substations.Where(x => x.Id == substationId).Select(x => x.AdditionalValueConstant).Single() * 1000;
+
+        var startMonthDate = new DateTime(calculationDate.Year, calculationDate.Month, 1).Date;
+
+        var energyConsuptions = dbContext.EnergyConsumptions
+            .Where(x => x.ElectricityMeter.SubstationId == substationId
+                && x.MeasuringChannel.MeasuringChannelType == MeasuringChannelTypeEnum.ActiveInput
+                && x.StartDate.Date >= startMonthDate
+                && x.StartDate.Date <= calculationDate.Date)
+            .Include(x => x.ElectricityMeter)
+            .ToArray();
+
+        var dayRange = Enumerable.Range(startMonthDate.Day, calculationDate.Date.Day);
+
+        double? cumulativeTotal = 0;
+        double? total = null;
+
+        for (var dayCounter = 0; dayCounter < calculationDate.Date.Day; dayCounter++)
+        {
+            var currentDayStartDate = startMonthDate.AddDays(dayCounter);
+            var nextDayStartDate = startMonthDate.AddDays(dayCounter + 1);
+
+            total = 0;
+
+            var valuesForDay = energyConsuptions.Where(x => x.StartDate.Date == currentDayStartDate);
+
+            if (!valuesForDay.Any())
+            {
+                total = null;
+                cumulativeTotal = null;
+                break;
+            }
+
+            var dateGroups = valuesForDay.GroupBy(x => x.StartDate);
+
+            foreach (var group in dateGroups)
+            {
+                var totalForHour = group.Aggregate(0.0, ValueAggregateFunction) + additionalValueConstant;
+                total += totalForHour;
+            }
+
+            cumulativeTotal += total;
+        }
+
+        return new TotalConsumptionValues(total, cumulativeTotal);
+    }
+
     private static double ValueAggregateFunction(double x, EnergyConsumption energyConsumption)
     {
         var signedValue = energyConsumption.ElectricityMeter.IsPositiveCounter ? energyConsumption.Value : -energyConsumption.Value;
@@ -129,9 +168,15 @@ public class PrognizerService : IPrognizerService
         return x + signedValue;
     }
 
-    private static double PrognozeValue(double?[] prevData)
+    private static double? PrognozeValue(double?[] prevData)
     {
-        var value = prevData.Sum(x => x ?? 0) / prevData.Length;
+        var notNullValues = prevData.Where(x => x.HasValue).ToArray();
+
+        if (!notNullValues.Any())
+            return null;
+
+        var value = prevData.Sum(x => x ?? 0) / notNullValues.Length;
+
         return value;
     }
 }

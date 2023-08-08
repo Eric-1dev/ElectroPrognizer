@@ -42,6 +42,7 @@ let prognizerHelper = {
 
     _getTableContentUrl: '',
     _resultTable: {},
+    _emptyValueString: '-',
 
     _drawTable: (tableData) => {
         prognizerHelper._resultTable.html('');
@@ -96,18 +97,17 @@ let prognizerHelper = {
                 let td = $('<td>');
 
                 if (hourCounter === 24) {
+                    let value = prognizerHelper._handleValue(tableData.dayDatas[dayCounter].total);
+                    td.html(value);
                     td.addClass('fw-bold');
-                    td.html(prognizerHelper._valueToMegaWatt(tableData.dayDatas[dayCounter].total));
                 } else if (hourCounter === 25) {
+                    let value = prognizerHelper._handleValue(tableData.dayDatas[dayCounter].cumulativeTotal);
+                    td.html(value);
                     td.addClass('fw-bold');
-                    td.html(prognizerHelper._valueToMegaWatt(tableData.dayDatas[dayCounter].cumulativeTotal));
                 } else {
-                    let value = tableData.dayDatas[dayCounter].hourDatas[hourCounter].value;
+                    let value = prognizerHelper._handleValue(tableData.dayDatas[dayCounter].hourDatas[hourCounter].value);
 
-                    if (value == null) {
-                        value = '-';
-                    } else {
-                        value = prognizerHelper._valueToMegaWatt(value);
+                    if (value !== prognizerHelper._emptyValueString) {
                         if (tableData.dayDatas[dayCounter].isRealData) {
                             td.addClass('prognizer-real-data')
                         } else {
@@ -150,7 +150,13 @@ let prognizerHelper = {
         return formatDate;
     },
 
-    _valueToMegaWatt: (value) => {
-        return (value / 1000).toFixed(3);
+    _handleValue: (value) => {
+        if (value == null) {
+            value = prognizerHelper._emptyValueString;
+        } else {
+            value = (value / 1000).toFixed(3);
+        }
+
+        return value;
     }
 };
