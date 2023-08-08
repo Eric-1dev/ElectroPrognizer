@@ -1,5 +1,4 @@
 using ElectroPrognizer.DataLayer;
-using ElectroPrognizer.DataModel.Entities;
 using ElectroPrognizer.Services.Dto;
 using ElectroPrognizer.Services.Interfaces;
 
@@ -20,7 +19,8 @@ public class SubstationService : ISubstationService
             Id = x.Id,
             Inn = x.Inn,
             Name = x.Name,
-            Description = x.Description
+            Description = x.Description,
+            AdditionalValueConstant = x.AdditionalValueConstant
         }).ToArray();
     }
 
@@ -38,7 +38,8 @@ public class SubstationService : ISubstationService
             Id = id,
             Inn = substation.Inn,
             Name = substation.Name,
-            Description = substation.Description
+            Description = substation.Description,
+            AdditionalValueConstant = substation.AdditionalValueConstant
         };
     }
 
@@ -53,6 +54,7 @@ public class SubstationService : ISubstationService
 
         existingSubstation.Name = substation.Name;
         existingSubstation.Description = substation.Description;
+        existingSubstation.AdditionalValueConstant = substation.AdditionalValueConstant;
 
         dbContext.SaveChanges();
     }

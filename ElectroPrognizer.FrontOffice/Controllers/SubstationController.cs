@@ -46,7 +46,8 @@ public class SubstationController : BaseController
             Inn = substation.Inn,
             Description = substation.Description,
             Name = substation.Name,
-            ElectricityMeters = metersViewModel
+            ElectricityMeters = metersViewModel,
+            AdditionalValueConstant = substation.AdditionalValueConstant
         };
 
         return View(model);
@@ -63,6 +64,7 @@ public class SubstationController : BaseController
             Id = substation.Id,
             Name = substation.Name,
             Description = substation.Description,
+            AdditionalValueConstant= substation.AdditionalValueConstant
         };
 
         try

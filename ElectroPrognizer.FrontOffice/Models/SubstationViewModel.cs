@@ -22,4 +22,7 @@ public class SubstationViewModel
 
     [DisplayName("Список счетчиков")]
     public ElectricityMeterViewModel[] ElectricityMeters { get; set; }
+
+    [DisplayName("Константа, добавляемая к значению (в мегаваттах)")]
+    public double AdditionalValueConstant { get; set; }
 }

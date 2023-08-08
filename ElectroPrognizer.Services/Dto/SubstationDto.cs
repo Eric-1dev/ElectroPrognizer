@@ -6,4 +6,5 @@ public class SubstationDto
     public string Inn { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
+    public double AdditionalValueConstant { get; set; }
 }

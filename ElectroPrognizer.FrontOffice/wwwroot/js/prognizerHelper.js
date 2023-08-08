@@ -75,37 +75,45 @@ let prognizerHelper = {
 
         let tBody = $('<tbody>');
 
-        for (var i = 0; i < 26; i++) {
+        for (var hourCounter = 0; hourCounter < 26; hourCounter++) {
             let tr = $('<tr>');
 
             let td = $('<td>');
 
-            if (i === 24) {
+            if (hourCounter === 24) {
                 td.addClass('fw-bold');
                 td.html('Итого за день:')
-            } else if (i === 25) {
+            } else if (hourCounter === 25) {
                 td.addClass('fw-bold');
                 td.html('Нарастающий итог:')
             } else {
-                td.html(('0' + i).slice(-2) + ':00');
+                td.html(('0' + hourCounter).slice(-2) + ':00');
             }
 
             tr.append(td);
 
-            for (var j = 0; j < dayCount; j++) {
+            for (var dayCounter = 0; dayCounter < dayCount; dayCounter++) {
                 let td = $('<td>');
 
-                if (i === 24) {
+                if (hourCounter === 24) {
                     td.addClass('fw-bold');
-                    td.html(tableData.dayDatas[j].total);
-                } else if (i === 25) {
+                    td.html(prognizerHelper._valueToMegaWatt(tableData.dayDatas[dayCounter].total));
+                } else if (hourCounter === 25) {
                     td.addClass('fw-bold');
-                    td.html(tableData.dayDatas[j].cumulativeTotal);
+                    td.html(prognizerHelper._valueToMegaWatt(tableData.dayDatas[dayCounter].cumulativeTotal));
                 } else {
-                    let value = tableData.dayDatas[j].hourDatas[i].value
+                    let value = tableData.dayDatas[dayCounter].hourDatas[hourCounter].value;
 
-                    if (!value)
+                    if (value == null) {
                         value = '-';
+                    } else {
+                        value = prognizerHelper._valueToMegaWatt(value);
+                        if (tableData.dayDatas[dayCounter].isRealData) {
+                            td.addClass('prognizer-real-data')
+                        } else {
+                            td.addClass('prognizer-prognozed-data')
+                        }
+                    }
 
                     td.html(value);
                 }
@@ -140,5 +148,9 @@ let prognizerHelper = {
         let formatDate = `${day}.${month}.${year}`;
 
         return formatDate;
+    },
+
+    _valueToMegaWatt: (value) => {
+        return (value / 1000).toFixed(3);
     }
 };

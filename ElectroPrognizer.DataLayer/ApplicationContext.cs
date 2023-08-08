@@ -29,7 +29,7 @@ namespace ElectroPrognizer.DataLayer
             optionsBuilder.UseSqlServer(ConfigurationHelper.ConntectionString);
 
 #if DEBUG
-            optionsBuilder.LogTo((message) => { Debug.WriteLine(message); });
+            //optionsBuilder.LogTo((message) => { Debug.WriteLine(message); });
 #endif
         }
     }

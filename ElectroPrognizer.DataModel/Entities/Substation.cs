@@ -1,4 +1,4 @@
-﻿namespace ElectroPrognizer.DataModel.Entities;
+namespace ElectroPrognizer.DataModel.Entities;
 
 public class Substation : IdentityEntity
 {
@@ -9,4 +9,6 @@ public class Substation : IdentityEntity
     public string Description { get; set; }
 
     public virtual ICollection<ElectricityMeter> ElectricityMeters { get; set; }
+
+    public double AdditionalValueConstant { get; set; }
 }

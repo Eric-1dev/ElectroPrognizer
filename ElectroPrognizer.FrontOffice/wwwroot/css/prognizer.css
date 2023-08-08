@@ -16,3 +16,11 @@
 .prognizer-table td {
     text-align: center;
 }
+
+.prognizer-real-data {
+    background-color: #f2fff3 !important;
+}
+
+.prognizer-prognozed-data {
+    background-color: #ffe7e7 !important;
+}
