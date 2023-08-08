@@ -175,7 +175,7 @@ public class PrognizerService : IPrognizerService
         if (!notNullValues.Any())
             return null;
 
-        var value = prevData.Sum(x => x ?? 0) / notNullValues.Length;
+        var value = prevData.Sum(x => x.Value) / notNullValues.Length;
 
         return value;
     }
