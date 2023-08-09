@@ -26,7 +26,7 @@ public class PrognizerService : IPrognizerService
             .Where(x => x.ElectricityMeter.SubstationId == substationId
                 && x.MeasuringChannel.MeasuringChannelType == MeasuringChannelTypeEnum.ActiveInput
                 && x.StartDate.Date >= startAnalizingDate
-                && x.StartDate.Date <= calculationDate.Date)
+                && x.StartDate.Date < calculationDate.Date.AddDays(1 - prognozeDayCount))
             .Include(x => x.ElectricityMeter)
             .ToArray();
 
@@ -170,12 +170,16 @@ public class PrognizerService : IPrognizerService
 
     private static double? PrognozeValue(double?[] prevData)
     {
-        var notNullValues = prevData.Where(x => x.HasValue).ToArray();
+        var notNullValues = prevData.Where(x => x.HasValue).Select(x => x.Value).ToArray();
 
         if (!notNullValues.Any())
             return null;
 
-        var value = prevData.Sum(x => x.Value) / notNullValues.Length;
+        //var hourForecast = TimeSeries.AdaptiveRateSmoothing(notNullValues, 1, 0.5, 1);
+        var hourForecast = TimeSeries.ExponentialSmoothing(notNullValues, 1, 0.8);
+
+        var value = (double)hourForecast.Rows[notNullValues.Length]["Forecast"];
+        //var value = prevData.Sum(x => x.Value) / notNullValues.Length;
 
         return value;
     }
