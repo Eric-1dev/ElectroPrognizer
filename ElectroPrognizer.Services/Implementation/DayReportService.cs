@@ -11,6 +11,7 @@ public class DayReportService : IDayReportService
     private const string _cumulativeTotalPlaceholder = "#{CumulativeTotal}#";
 
     public IPrognizerService PrognizerService { get; set; }
+    public IMailSenderService MailSenderService { get; set; }
 
     public byte[] GenerateDayReport(int substationId, DateTime calculationDate)
     {

@@ -10,7 +10,7 @@ public class EnergyConsumptionSaverService : IEnergyConsumptionSaverService
 {
     public void SaveToDatabase(IEnumerable<EnergyConsumption> energyConsumptions, bool overrideExisting)
     {
-        var dbContext = new ApplicationContext();
+        using var dbContext = new ApplicationContext();
 
         UploadTaskHelper.SetTotalCount(energyConsumptions.Count());
 

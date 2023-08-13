@@ -3,7 +3,6 @@ using System.Text;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BundlerMinifier.TagHelpers;
-using ElectroPrognizer.DataModel.Models;
 using ElectroPrognizer.IoC;
 using ElectroPrognizer.Utils.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -25,11 +24,6 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory(builder
 
 var connectionString = builder.Configuration.GetConnectionString("Database");
 ConfigurationHelper.SetConnectionString(connectionString);
-
-var configSection = builder.Configuration.GetSection("AppConfiguration").Get<AppConfiguration>();
-
-builder.Services.Configure<AppConfiguration>(option => builder.Configuration.GetSection("AppConfiguration"));
-ConfigurationHelper.SetConfiguration(configSection);
 
 builder.Services.AddMvc().AddControllersAsServices();
 builder.Services.AddControllersWithViews();

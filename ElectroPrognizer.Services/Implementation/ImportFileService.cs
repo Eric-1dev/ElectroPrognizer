@@ -12,7 +12,7 @@ public class ImportFileService : IImportFileService
     public IXmlReaderService XmlReaderService { get; set; }
     public IEnergyConsumptionSaverService EnergyConsumptionSaverService { get; set; }
 
-    public void Import(List<UploadedFile> uploadedFiles, bool overrideExisting)
+    public void Import(List<FileData> uploadedFiles, bool overrideExisting)
     {
         try
         {

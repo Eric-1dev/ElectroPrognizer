@@ -7,5 +7,5 @@ public interface IXmlReaderService
 {
     List<EnergyConsumption> ParseXml(params string[] fileNames);
 
-    List<EnergyConsumption> ParseXml(IEnumerable<UploadedFile> files);
+    List<EnergyConsumption> ParseXml(IEnumerable<FileData> files);
 }

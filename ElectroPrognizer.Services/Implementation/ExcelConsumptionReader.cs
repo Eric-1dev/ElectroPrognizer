@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using ElectroPrognizer.DataLayer;
 using ElectroPrognizer.DataModel.Entities;
@@ -59,7 +59,7 @@ public class ExcelConsumptionReader : IExcelConsumptionReader
                 consumptionData.Add(energyConsumption);
             }
 
-            var dbContext = new ApplicationContext();
+            using var dbContext = new ApplicationContext();
 
             dbContext.EnergyConsumptions.AddRange(consumptionData);
 

@@ -92,5 +92,14 @@
         "minify": {
             "enabled": true
         }
+    },
+    {
+        "outputFileName": "wwwroot/bundles/js/applicationSettingEdit.bundle.js",
+        "inputFiles": [
+            "wwwroot/js/applicationSettingEditHelper.js"
+        ],
+        "minify": {
+            "enabled": true
+        }
     }
 ]

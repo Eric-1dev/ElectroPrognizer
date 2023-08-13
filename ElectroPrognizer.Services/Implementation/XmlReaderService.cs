@@ -12,19 +12,19 @@ public class XmlReaderService : IXmlReaderService
 {
     public List<EnergyConsumption> ParseXml(string[] fileNames)
     {
-        var files = new List<UploadedFile>();
+        var files = new List<FileData>();
 
         foreach (var fileName in fileNames)
         {
             var bytes = File.ReadAllBytes(fileName);
 
-            files.Add(new UploadedFile { Name = fileName, Content = bytes });
+            files.Add(new FileData { Name = fileName, Content = bytes });
         }
 
         return ParseXml(files);
     }
 
-    public List<EnergyConsumption> ParseXml(IEnumerable<UploadedFile> files)
+    public List<EnergyConsumption> ParseXml(IEnumerable<FileData> files)
     {
         var messages = new List<Message>();
 

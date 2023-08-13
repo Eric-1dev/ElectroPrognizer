@@ -1,5 +1,11 @@
 @{
-    ViewData["Title"] = "Настройка подстанций";
+    var title = "Настройки";
+    ViewData["Title"] = title;
 }
 
-<a href="@Url.Action("Index", "Substation")">Настройка подстанций</a>
+<div>
+    <a href="@Url.Action("Index", "ApplicationSettings")">Настройка приложения</a>
+</div>
+<div>
+    <a href="@Url.Action("Index", "Substation")">Настройка подстанций</a>
+</div>

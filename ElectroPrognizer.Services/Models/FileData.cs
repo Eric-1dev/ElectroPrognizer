@@ -1,6 +1,6 @@
-﻿namespace ElectroPrognizer.Services.Models;
+namespace ElectroPrognizer.Services.Models;
 
-public class UploadedFile
+public class FileData
 {
     public string Name { get; set; }
     public byte[] Content { get; set; }

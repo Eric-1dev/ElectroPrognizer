@@ -1,0 +1,28 @@
+@model ApplicationSettingViewModel[]
+
+@{
+    var title = "Настройки приложения";
+    ViewData["Title"] = title;
+}
+
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th class="text-center">Внутреннее наименование</th>
+            <th class="text-center">Описание</th>
+            <th class="text-center">Значение</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var setting in Model)
+        {
+            <tr>
+                <td>@setting.InternalName</td>
+                <td>@setting.Description</td>
+                <td>@setting.Value</td>
+                <td><a asp-controller="ApplicationSettings" asp-action="Edit" asp-route-id="@setting.Id" class="btn btn-primary">Изменить</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

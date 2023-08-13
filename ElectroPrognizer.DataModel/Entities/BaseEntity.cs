@@ -1,9 +1,11 @@
-﻿namespace ElectroPrognizer.DataModel.Entities
-{
-    public class BaseEntity : IdentityEntity
-    {
-        public DateTime Created { get; set; }
+using System.ComponentModel.DataAnnotations;
 
-        public BaseEntity() => Created = DateTime.Now;
-    }
+namespace ElectroPrognizer.DataModel.Entities;
+
+public class BaseEntity : IdentityEntity
+{
+    [Required]
+    public DateTime Created { get; set; }
+
+    public BaseEntity() => Created = DateTime.Now;
 }

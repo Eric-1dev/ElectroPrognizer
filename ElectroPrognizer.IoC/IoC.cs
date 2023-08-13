@@ -8,6 +8,11 @@ namespace ElectroPrognizer.IoC
     {
         public static void InitContainer(this ContainerBuilder builder)
         {
+            builder.RegisterType<ApplicationSettingsService>()
+                .As<IApplicationSettingsService>()
+                .SingleInstance()
+                .PropertiesAutowired();
+
             builder.RegisterType<ExcelConsumptionReader>()
                 .As<IExcelConsumptionReader>()
                 .SingleInstance()
@@ -45,6 +50,11 @@ namespace ElectroPrognizer.IoC
 
             builder.RegisterType<DayReportService>()
                 .As<IDayReportService>()
+                .SingleInstance()
+                .PropertiesAutowired();
+
+            builder.RegisterType<MailSenderService>()
+                .As<IMailSenderService>()
                 .SingleInstance()
                 .PropertiesAutowired();
         }

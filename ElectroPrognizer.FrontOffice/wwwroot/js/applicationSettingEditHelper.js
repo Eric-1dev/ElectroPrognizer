@@ -6,8 +6,8 @@ $(document).ready(() => {
 
 let applicationSettingEditHelper = {
     init: () => {
-        applicationSettingEditHelper._saveForm = $('#prognizer-electricity-meter-edit-form');
-        applicationSettingEditHelper._saveUrl = applicationSettingEditHelper._saveForm.attr('electricity-meter-save-url');
+        applicationSettingEditHelper._saveForm = $('#prognizer-application-setting-edit-form');
+        applicationSettingEditHelper._saveUrl = applicationSettingEditHelper._saveForm.attr('application-setting-save-url');
 
         applicationSettingEditHelper._saveForm.submit((event) => {
             applicationSettingEditHelper._save(event);

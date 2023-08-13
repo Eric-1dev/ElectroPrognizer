@@ -10,12 +10,14 @@ namespace ElectroPrognizer.Services.Implementation;
 
 public class PrognizerService : IPrognizerService
 {
-    private const int analizingDayCount = 31;
-    private const int prognozeDayCount = 2;
+    public IApplicationSettingsService ApplicationSettingsService { get; set; }
 
     public ConsumptionTableData GetTableContent(int substationId, DateTime calculationDate)
     {
-        var dbContext = new ApplicationContext();
+        var analizingDayCount = ApplicationSettingsService.GetIntValue(ApplicationSettingEnum.AnalizingDaysCount);
+        var prognozeDayCount = ApplicationSettingsService.GetIntValue(ApplicationSettingEnum.PrognizingDaysCount);
+
+        using var dbContext = new ApplicationContext();
 
         var consumptionTableData = new ConsumptionTableData
         {
@@ -115,7 +117,7 @@ public class PrognizerService : IPrognizerService
 
     public TotalConsumptionValues CalculateTotalValuesForDay(int substationId, DateTime calculationDate, double? additionalValueConstant = null)
     {
-        var dbContext = new ApplicationContext();
+        using var dbContext = new ApplicationContext();
 
         additionalValueConstant ??= dbContext.Substations.Where(x => x.Id == substationId).Select(x => x.AdditionalValueConstant).Single() * 1000;
 

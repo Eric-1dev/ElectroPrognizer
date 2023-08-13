@@ -10,7 +10,7 @@ public class ElectricityMeterService : IElectricityMeterService
 
     public ElectricityMeterDto GetById(int id)
     {
-        var dbContext = new ApplicationContext();
+        using var dbContext = new ApplicationContext();
 
         var electricityMeter = dbContext.ElectricityMeters.SingleOrDefault(x => x.Id == id);
 
@@ -29,7 +29,7 @@ public class ElectricityMeterService : IElectricityMeterService
 
     public ElectricityMeterDto[] GetBySubstantionId(int substantionId)
     {
-        var dbContext = new ApplicationContext();
+        using var dbContext = new ApplicationContext();
 
         var electricityMeterList = dbContext.ElectricityMeters.Where(x => x.SubstationId == substantionId).ToArray();
 
@@ -45,7 +45,7 @@ public class ElectricityMeterService : IElectricityMeterService
 
     public void Save(ElectricityMeterDto electricityMeter)
     {
-        var dbContext = new ApplicationContext();
+        using var dbContext = new ApplicationContext();
 
         var existingElectricityMeter = dbContext.ElectricityMeters.FirstOrDefault(x => x.Id == electricityMeter.Id);
 

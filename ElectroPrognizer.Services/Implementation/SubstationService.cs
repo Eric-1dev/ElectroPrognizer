@@ -10,7 +10,7 @@ public class SubstationService : ISubstationService
 
     public SubstationDto[] GetAll()
     {
-        var dbContext = new ApplicationContext();
+        using var dbContext = new ApplicationContext();
 
         var substationList = dbContext.Substations.ToArray();
 
@@ -26,7 +26,7 @@ public class SubstationService : ISubstationService
 
     public SubstationDto GetById(int id)
     {
-        var dbContext = new ApplicationContext();
+        using var dbContext = new ApplicationContext();
 
         var substation = dbContext.Substations.SingleOrDefault(x => x.Id == id);
 
@@ -45,7 +45,7 @@ public class SubstationService : ISubstationService
 
     public void Save(SubstationDto substation)
     {
-        var dbContext = new ApplicationContext();
+        using var dbContext = new ApplicationContext();
 
         var existingSubstation = dbContext.Substations.FirstOrDefault(x => x.Id == substation.Id);
 
