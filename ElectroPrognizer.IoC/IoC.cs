@@ -42,6 +42,11 @@ namespace ElectroPrognizer.IoC
                 .As<IPrognizerService>()
                 .SingleInstance()
                 .PropertiesAutowired();
+
+            builder.RegisterType<DayReportService>()
+                .As<IDayReportService>()
+                .SingleInstance()
+                .PropertiesAutowired();
         }
     }
 }

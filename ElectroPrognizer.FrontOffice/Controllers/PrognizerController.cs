@@ -8,6 +8,7 @@ public class PrognizerController : BaseController
 {
     public ISubstationService SubstationService { get; set; }
     public IPrognizerService PrognizerService { get; set; }
+    public IDayReportService DayReportService { get; set; }
 
     public IActionResult Index()
     {
@@ -39,5 +40,16 @@ public class PrognizerController : BaseController
             return Fail("Нет данных за выбранный период");
 
         return Success(data);
+    }
+
+    [HttpGet]
+    public FileResult GenerateDayReport(int? substationId, DateTime calculationDate)
+    {
+        if (substationId == null)
+            throw new ArgumentException("Не выбрана подстанция", nameof(substationId));
+
+        var data = DayReportService.GenerateDayReport(substationId.Value, calculationDate);
+
+        return File(data, "application/octet-stream", "Отчет за день.xlsx");
     }
 }

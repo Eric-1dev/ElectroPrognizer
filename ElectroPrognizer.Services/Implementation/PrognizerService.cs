@@ -17,7 +17,10 @@ public class PrognizerService : IPrognizerService
     {
         var dbContext = new ApplicationContext();
 
-        var consumptionTableData = new ConsumptionTableData();
+        var consumptionTableData = new ConsumptionTableData
+        {
+            SubstationId = substationId
+        };
 
         var startAnalizingDate = calculationDate.AddDays(-analizingDayCount - prognozeDayCount).Date;
 
@@ -110,7 +113,7 @@ public class PrognizerService : IPrognizerService
         return consumptionTableData;
     }
 
-    public TotalConsumptionValues CalculateTotalValuesForDay(int substationId, DateTime calculationDate, double? additionalValueConstant)
+    public TotalConsumptionValues CalculateTotalValuesForDay(int substationId, DateTime calculationDate, double? additionalValueConstant = null)
     {
         var dbContext = new ApplicationContext();
 
@@ -134,18 +137,13 @@ public class PrognizerService : IPrognizerService
         for (var dayCounter = 0; dayCounter < calculationDate.Date.Day; dayCounter++)
         {
             var currentDayStartDate = startMonthDate.AddDays(dayCounter);
-            var nextDayStartDate = startMonthDate.AddDays(dayCounter + 1);
 
             total = 0;
 
             var valuesForDay = energyConsuptions.Where(x => x.StartDate.Date == currentDayStartDate);
 
             if (!valuesForDay.Any())
-            {
-                total = null;
                 cumulativeTotal = null;
-                break;
-            }
 
             var dateGroups = valuesForDay.GroupBy(x => x.StartDate);
 
@@ -155,7 +153,8 @@ public class PrognizerService : IPrognizerService
                 total += totalForHour;
             }
 
-            cumulativeTotal += total;
+            if (cumulativeTotal != null)
+                cumulativeTotal += total;
         }
 
         return new TotalConsumptionValues(total, cumulativeTotal);

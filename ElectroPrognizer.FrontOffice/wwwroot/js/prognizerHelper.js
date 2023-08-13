@@ -9,6 +9,7 @@ $(document).ready(() => {
 let prognizerHelper = {
     init: () => {
         prognizerHelper._getTableContentUrl = $('#prognizer-date-selector').attr('table-content-url');
+        prognizerHelper._generateDayReportUrl = $('#prognizer-date-selector').attr('day-report-url');
 
         prognizerHelper._resultTable = $('#prognizer-result-table');
 
@@ -41,6 +42,7 @@ let prognizerHelper = {
     },
 
     _getTableContentUrl: '',
+    _generateDayReportUrl: '',
     _resultTable: {},
     _emptyValueString: '-',
 
@@ -65,7 +67,13 @@ let prognizerHelper = {
         for (let i = 0; i < dayCount; i++) {
             let th = $('<th>');
 
-            th.html(prognizerHelper._formatDate(tableData.dayDatas[i].date));
+            if (tableData.dayDatas[i].isRealData && tableData.dayDatas[i].cumulativeTotal != null) {
+                let cellContent = prognizerHelper._generateDayReportLink(tableData.dayDatas[i].date, tableData.substationId)
+                th.html(cellContent);
+            } else {
+                th.html(prognizerHelper._formatDate(tableData.dayDatas[i].date));
+            }
+
             tr.append(th);
         }
 
@@ -158,5 +166,19 @@ let prognizerHelper = {
         }
 
         return value;
+    },
+
+    _generateDayReportLink: (date, substationId) => {
+        let dateComponents = date.split('.');
+
+        let dateForLink = `${dateComponents[2]}-${dateComponents[1]}-${dateComponents[0]}`;
+
+        let link = $('<a>');
+        link.attr('href', `${prognizerHelper._generateDayReportUrl}?calculationDate=${date}&substationId=${substationId}`);
+        link.attr('target', '_blank');
+
+        link.html(prognizerHelper._formatDate(date));
+
+        return link;
     }
 };

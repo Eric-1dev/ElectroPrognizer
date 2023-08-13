@@ -7,5 +7,5 @@ public interface IPrognizerService
 {
     ConsumptionTableData GetTableContent(int sunstationId, DateTime calculationDate);
 
-    TotalConsumptionValues CalculateTotalValuesForDay(int substationId, DateTime calculationDate, double? additionalValueConstant);
+    TotalConsumptionValues CalculateTotalValuesForDay(int substationId, DateTime calculationDate, double? additionalValueConstant = null);
 }
