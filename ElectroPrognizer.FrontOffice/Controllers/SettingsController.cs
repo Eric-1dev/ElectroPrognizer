@@ -1,4 +1,3 @@
-using ElectroPrognizer.FrontOffice.Models;
 using ElectroPrognizer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

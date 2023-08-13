@@ -1,4 +1,3 @@
-using ElectroPrognizer.DataModel.Entities;
 using ElectroPrognizer.Services.Dto;
 
 namespace ElectroPrognizer.Services.Interfaces;

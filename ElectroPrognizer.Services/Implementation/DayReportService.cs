@@ -1,7 +1,6 @@
 using System.Reflection;
 using DocumentFormat.OpenXml.Packaging;
 using ElectroPrognizer.Services.Interfaces;
-using ElectroPrognizer.Services.Models;
 
 namespace ElectroPrognizer.Services.Implementation;
 
