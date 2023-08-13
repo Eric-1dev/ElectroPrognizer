@@ -169,10 +169,6 @@ let prognizerHelper = {
     },
 
     _generateDayReportLink: (date, substationId) => {
-        let dateComponents = date.split('.');
-
-        let dateForLink = `${dateComponents[2]}-${dateComponents[1]}-${dateComponents[0]}`;
-
         let link = $('<a>');
         link.attr('href', `${prognizerHelper._generateDayReportUrl}?calculationDate=${date}&substationId=${substationId}`);
         link.attr('target', '_blank');
