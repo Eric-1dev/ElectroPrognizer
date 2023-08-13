@@ -1,8 +1,7 @@
 @model SubstationViewModel
 
 @{
-    var title = "Редактирование подстанции";
-    ViewData["Title"] = title;
+    ViewData["Title"] = "Редактирование подстанции";
 }
 
 @section Styles {
@@ -13,8 +12,6 @@
     <bundle name="wwwroot/bundles/js/substationEdit.bundle.js" />
 }
 
-<h4>@title</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form id="prognizer-substation-edit-form" substation-save-url="@Url.Action("Save", "Substation")">

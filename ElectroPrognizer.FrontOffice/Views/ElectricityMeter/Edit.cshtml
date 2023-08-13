@@ -1,16 +1,13 @@
 @model ElectricityMeterViewModel
 
 @{
-    var title = "Редактирование счетчика";
-    ViewData["Title"] = title;
+    ViewData["Title"] = "Редактирование счетчика";
 }
 
 @section Scripts {
     <bundle name="wwwroot/bundles/js/electricityMeterEdit.bundle.js" />
 }
 
-<h4>@title</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form id="prognizer-electricity-meter-edit-form" electricity-meter-save-url="@Url.Action("Save", "ElectricityMeter")">

@@ -1,16 +1,13 @@
 @model ApplicationSettingViewModel
 
 @{
-    var title = "Редактирование настройки приложения";
-    ViewData["Title"] = title;
+    ViewData["Title"] = "Редактирование настроек приложения";
 }
 
 @section Scripts {
     <bundle name="wwwroot/bundles/js/applicationSettingEdit.bundle.js" />
 }
 
-<h4>@title</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form id="prognizer-application-setting-edit-form" application-setting-save-url="@Url.Action("Save", "ApplicationSettings")">
