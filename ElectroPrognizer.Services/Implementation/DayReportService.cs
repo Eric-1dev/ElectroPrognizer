@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Reflection;
 using DocumentFormat.OpenXml.Packaging;
 using ElectroPrognizer.Services.Interfaces;
@@ -6,31 +7,33 @@ namespace ElectroPrognizer.Services.Implementation;
 
 public class DayReportService : IDayReportService
 {
-    private const string _currentDatePlaceholder = "#{CurrentDate}#";
-    private const string _totalForDayPlaceholder = "#{TotalForDay}#";
-    private const string _cumulativeTotalPlaceholder = "#{CumulativeTotal}#";
-
     public IPrognizerService PrognizerService { get; set; }
     public IMailSenderService MailSenderService { get; set; }
 
     public byte[] GenerateDayReport(int substationId, DateTime calculationDate)
     {
+        var totalConsumptionValues = PrognizerService.CalculateTotalValuesForDay(substationId, calculationDate);
+
+        var placeholderCalculators = new Dictionary<string, Func<string>>
+        {
+            { "#{CurrentDayMonth}#", () => calculationDate.ToString("m", new CultureInfo("ru_RU")) },
+            { "#{CurrentYear}#", () => calculationDate.ToString("yyyy") },
+            { "#{TotalForDay}#", () => ValueToMegawatt(totalConsumptionValues.TotalForDay) },
+            { "#{CumulativeTotal}#", () => ValueToMegawatt(totalConsumptionValues.CumulativeTotalForMonth) },
+        };
+
         var templatePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Templates/DayReportTemplate.xlsx");
         var report = SpreadsheetDocument.CreateFromTemplate(templatePath);
 
-        var currentDateCell = report.WorkbookPart.GetPartsOfType<SharedStringTablePart>().First().SharedStringTable.First(x => x.InnerText == _currentDatePlaceholder);
-        var totalForDayCell = report.WorkbookPart.GetPartsOfType<SharedStringTablePart>().First().SharedStringTable.First(x => x.InnerText == _totalForDayPlaceholder);
-        var cumulativeTotalCell = report.WorkbookPart.GetPartsOfType<SharedStringTablePart>().First().SharedStringTable.First(x => x.InnerText == _cumulativeTotalPlaceholder);
+        foreach ( var item in placeholderCalculators )
+        {
+            var cell = report.WorkbookPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault()?.SharedStringTable.FirstOrDefault(x => x.InnerText == item.Key);
 
-        var totalConsumptionValues = PrognizerService.CalculateTotalValuesForDay(substationId, calculationDate);
+            if (cell == null)
+                throw new Exception($"Не найден плейсхолдер для {item.Key}");
 
-        var totalForDayStringValue = ValueToMegawatt(totalConsumptionValues.TotalForDay);
-
-        var cumulativeTotalStringValue = ValueToMegawatt(totalConsumptionValues.CumulativeTotalForMonth);
-
-        currentDateCell.InnerXml = currentDateCell.InnerXml.Replace(_currentDatePlaceholder, calculationDate.ToString("dd.MM.yyyy"));
-        totalForDayCell.InnerXml = totalForDayCell.InnerXml.Replace(_totalForDayPlaceholder, totalForDayStringValue);
-        cumulativeTotalCell.InnerXml = cumulativeTotalCell.InnerXml.Replace(_cumulativeTotalPlaceholder, cumulativeTotalStringValue);
+            cell.InnerXml = cell.InnerXml.Replace(item.Key, item.Value());
+        }
 
         using var ms = new MemoryStream();
 
