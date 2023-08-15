@@ -13,4 +13,14 @@ public enum ApplicationSettingEnum
     MailSmtpUsername = 5,
 
     MailSmtpPassword = 6,
+
+    MailImapAddress = 7,
+
+    MailImapPort = 8,
+
+    MailImapUsername = 9,
+
+    MailImapPassword = 10,
+
+    MailDataSenderEmail = 11
 }

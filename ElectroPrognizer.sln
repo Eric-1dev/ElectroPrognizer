@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroPrognizer.Utils", "E
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroPrognizer.FrontOffice", "ElectroPrognizer.FrontOffice\ElectroPrognizer.FrontOffice.csproj", "{382814DB-0F43-493A-B3EA-B61FBD66AFCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElectroPrognizer.Entities", "ElectroPrognizer.Entities\ElectroPrognizer.Entities.csproj", "{98D143CC-C125-4091-BC85-F37CAC868D9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElectroPrognizer.Entities", "ElectroPrognizer.Entities\ElectroPrognizer.Entities.csproj", "{98D143CC-C125-4091-BC85-F37CAC868D9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

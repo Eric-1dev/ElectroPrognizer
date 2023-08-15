@@ -53,8 +53,8 @@ namespace ElectroPrognizer.IoC
                 .SingleInstance()
                 .PropertiesAutowired();
 
-            builder.RegisterType<MailSenderService>()
-                .As<IMailSenderService>()
+            builder.RegisterType<EmailService>()
+                .As<IEmailService>()
                 .SingleInstance()
                 .PropertiesAutowired();
         }
