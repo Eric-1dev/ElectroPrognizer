@@ -24,8 +24,6 @@ public class EnergyConsumptionSaverService : IEnergyConsumptionSaverService
                 throw new WorkflowException("Загрузка прервана пользователем");
             }
 
-            // порефачить добавление чилдренов - вынести в дженерик метод
-
             // Substation
             var existingSubstation = dbContext.Substations.FirstOrDefault(x => x.Inn == energyConsumption.ElectricityMeter.Substation.Inn);
             if (existingSubstation != null)
@@ -64,8 +62,6 @@ public class EnergyConsumptionSaverService : IEnergyConsumptionSaverService
                 dbContext.SaveChanges();
             }
 
-            // порефачить - сделать метод добавления, в который передается экспрешены с чилдрами (where T : IdentityEntity)
-            // EnergyConsumption
             var existingConsumption = dbContext.EnergyConsumptions.FirstOrDefault(x => x.StartDate == energyConsumption.StartDate
             && x.ElectricityMeterId == energyConsumption.ElectricityMeter.Id
             && x.MeasuringChannel.Id == energyConsumption.MeasuringChannel.Id);

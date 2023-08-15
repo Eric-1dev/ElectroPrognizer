@@ -23,7 +23,9 @@
     {
         "outputFileName": "wwwroot/bundles/css/common.bundle.css",
         "inputFiles": [
-            "wwwroot/css/common.css"
+            "wwwroot/css/common.css",
+            "wwwroot/css/modalWindow.css",
+            "wwwroot/css/modalWindow.coloring.css"
         ],
         "minify": {
             "enabled": true
@@ -33,7 +35,7 @@
         "outputFileName": "wwwroot/bundles/js/common.bundle.js",
         "inputFiles": [
             "wwwroot/js/progressBarHelper.js",
-            "wwwroot/js/modalHelper.js"
+            "wwwroot/js/modalWindowHelper.js"
         ],
         "minify": {
             "enabled": true

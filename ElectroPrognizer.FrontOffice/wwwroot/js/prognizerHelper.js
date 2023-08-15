@@ -37,7 +37,7 @@ let prognizerHelper = {
                 prognizerHelper._drawTable(data.entity);
             }
         }).fail(() => {
-            modalHelper.showMessage('Произошла неизвестная ошибка');
+            modalWindowHelper.showError('Произошла неизвестная ошибка');
         });
     },
 

@@ -1,0 +1,20 @@
+.custom-modal-window-blocker {
+    background-color: rgba(127, 127, 127, 0.4);
+}
+
+.custom-modal-window {
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 0 5px gray;
+}
+
+.custom-modal-window-title {
+    background-color: aliceblue;
+    font-weight: bold;
+    border-bottom: 1px solid lightgray;
+}
+
+.custom-modal-window-buttons-block {
+    background-color: #f7f7f7;
+}

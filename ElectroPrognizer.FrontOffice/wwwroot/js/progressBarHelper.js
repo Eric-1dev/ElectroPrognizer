@@ -12,7 +12,7 @@ let progressBarHelper = {
         progressBarHelper._updateStatus();
 
         $('#progress-bar-cancel-button').click(() => {
-            modalHelper.showConfirm('Действительно хотите отменить импорт данных?', () => { progressBarHelper._cancelUpload(); });
+            modalWindowHelper.showConfirmDialog('Действительно хотите отменить импорт данных?', () => { progressBarHelper._cancelUpload(); return true; });
         });
     },
 
@@ -35,7 +35,7 @@ let progressBarHelper = {
             type: 'POST'
         }).always((data) => {
             if (data.message) {
-                modalHelper.showMessage(data.message);
+                modalWindowHelper.showInfo(data.message);
             }
 
             if (data.isFinished) {

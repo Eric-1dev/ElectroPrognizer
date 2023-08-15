@@ -1,0 +1,42 @@
+.custom-modal-window-blocker {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.custom-modal-window {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: default;
+    overflow: hidden;
+}
+
+.custom-modal-window-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.custom-modal-window-title {
+    padding: 10px 10px;
+    text-align: center;
+    font-size: 18px;
+    user-select: none;
+}
+
+.custom-modal-window-body {
+    overflow-y: auto;
+    overflow-wrap: break-word;
+    padding: 15px 10px;
+}
+
+.custom-modal-window-buttons-block {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 5px 10px;
+}

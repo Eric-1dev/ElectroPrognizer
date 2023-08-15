@@ -28,7 +28,7 @@ let substationEditHelper = {
             type: 'POST',
             data: formData,
             success: (data) => {
-                modalHelper.showMessage(data.message);
+                modalWindowHelper.showInfo(data.message);
             },
             processData: false,
             contentType: false

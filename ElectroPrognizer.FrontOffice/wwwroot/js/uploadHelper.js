@@ -33,7 +33,7 @@ let uploadHelper = {
                 data: formData,
                 success: (data) => {
                     if (data.isFail) {
-                        modalHelper.showMessage('Ошибка при загрузке файлов: ' + data.message);
+                        modalWindowHelper.showInfo('Ошибка при загрузке файлов: ' + data.message);
                         return;
                     }
 
