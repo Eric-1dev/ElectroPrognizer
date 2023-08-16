@@ -1,4 +1,4 @@
-﻿using ElectroPrognizer.Entities.Exceptions;
+using ElectroPrognizer.Entities.Exceptions;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models;
 using ElectroPrognizer.Utils.Helpers;
@@ -12,15 +12,15 @@ public class ImportFileService : IImportFileService
     public IXmlReaderService XmlReaderService { get; set; }
     public IEnergyConsumptionSaverService EnergyConsumptionSaverService { get; set; }
 
-    public void Import(List<FileData> uploadedFiles, bool overrideExisting)
+    public void Import(IEnumerable<FileData> uploadedFiles, bool overrideExisting)
     {
         try
         {
-            ThrowIsBusy();
+            ThrowIfBusy();
 
             lock (_locker)
             {
-                ThrowIsBusy();
+                ThrowIfBusy();
 
                 UploadTaskHelper.Init();
             }
@@ -34,18 +34,21 @@ public class ImportFileService : IImportFileService
         catch (UploaderIsBusyException ex)
         {
             UploadTaskHelper.SetMessage(ex.Message);
+            throw;
         }
         catch (WorkflowException ex)
         {
             UploadTaskHelper.SetToFinishedWithError(ex.Message);
+            throw;
         }
         catch (Exception ex)
         {
             UploadTaskHelper.SetToFinishedWithError($"Ошибка при импорте данных: {ex}");
+            throw;
         }
     }
     
-    private void ThrowIsBusy()
+    private void ThrowIfBusy()
     {
         if (!UploadTaskHelper.IsFinished)
             throw new UploaderIsBusyException("Выполняется другой процесс . Дождитесь окончания или отмените его.");

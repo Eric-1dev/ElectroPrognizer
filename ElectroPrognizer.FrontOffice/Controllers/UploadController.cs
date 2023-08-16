@@ -23,7 +23,7 @@ public class UploadController : BaseController
         if (!files.Any())
             return Json(OperationResult.Fail("Не выбраны файлы для импорта"));
 
-        var uploadedFIles = new List<FileData>();
+        var uploadedFiles = new List<FileData>();
 
         foreach (var file in files)
         {
@@ -34,12 +34,12 @@ public class UploadController : BaseController
 
             var bytes = ms.ToArray();
 
-            uploadedFIles.Add(new FileData { Name = file.FileName, Content = bytes });
+            uploadedFiles.Add(new FileData { Name = file.FileName, Content = bytes });
         }
 
         var uploadTask = Task.Run(() =>
         {
-            ImportFileService.Import(uploadedFIles, overrideExisting);
+            ImportFileService.Import(uploadedFiles, overrideExisting);
         });
 
         return Json(OperationResult.Success());

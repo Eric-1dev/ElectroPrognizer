@@ -4,19 +4,29 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BundlerMinifier.TagHelpers;
 using ElectroPrognizer.IoC;
+using ElectroPrognizer.SchedulerServices.Extensions;
 using ElectroPrognizer.Utils.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory(builder =>
 {
-    var assembly = Assembly.GetEntryAssembly();
-    var controllers = assembly.GetTypes().Where(type => !type.IsAbstract && type.IsPublic && type.IsAssignableTo(typeof(ControllerBase)));
+    var controllersAssembly = Assembly.GetExecutingAssembly();
+    var controllers = controllersAssembly.GetTypes().Where(type => !type.IsAbstract && type.IsPublic && type.IsAssignableTo<ControllerBase>());
 
     foreach (var controller in controllers)
     {
         builder.RegisterType(controller).PropertiesAutowired();
+    }
+
+    var jobsAssembly = Assembly.GetAssembly(typeof(QuartzExtensions));
+    var jobs = jobsAssembly.GetTypes().Where(x => !x.IsAbstract && x.IsAssignableTo<IJob>());
+
+    foreach (var job in jobs)
+    {
+        builder.RegisterType(job).InstancePerLifetimeScope().PropertiesAutowired();
     }
 
     builder.InitContainer();
@@ -25,7 +35,17 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory(builder
 var connectionString = builder.Configuration.GetConnectionString("Database");
 ConfigurationHelper.SetConnectionString(connectionString);
 
-builder.Services.AddMvc().AddControllersAsServices();
+builder.Services.AddQuartz(config =>
+{
+    config.RegisterJobs();
+});
+
+builder.Services.AddQuartzHostedService();
+
+builder.Services
+    .AddMvc()
+    .AddControllersAsServices();
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpContextAccessor();
@@ -36,7 +56,6 @@ builder.Services.AddBundles(options =>
     options.UseMinifiedFiles = false;
     options.UseBundles = false;
 });
-
 var app = builder.Build();
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);

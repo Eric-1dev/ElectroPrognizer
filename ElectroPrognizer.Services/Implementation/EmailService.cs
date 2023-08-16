@@ -1,3 +1,4 @@
+using System.Text;
 using ElectroPrognizer.Entities.Enums;
 using ElectroPrognizer.Entities.Models;
 using ElectroPrognizer.Services.Interfaces;
@@ -28,32 +29,24 @@ public class EmailService : IEmailService
         }
     }
 
-    public List<FileData> ReceiveNewFiles()
+    public ReceivedEmailFiles[] ReceiveNewFiles()
     {
-        var imapHost = ApplicationSettingsService.GetStringValue(ApplicationSettingEnum.MailImapAddress);
-        var imapPort = ApplicationSettingsService.GetIntValue(ApplicationSettingEnum.MailImapPort);
-        var imapLogin = ApplicationSettingsService.GetStringValue(ApplicationSettingEnum.MailImapUsername);
-        var imapPassword = ApplicationSettingsService.GetStringValue(ApplicationSettingEnum.MailImapPassword);
         var sender = ApplicationSettingsService.GetStringValue(ApplicationSettingEnum.MailDataSenderEmail);
 
-        using var imapClient = new ImapClient();
-
-        imapClient.Connect(imapHost, imapPort, useSsl: true);
-
-        imapClient.Authenticate(imapLogin, imapPassword);
-
-        imapClient.Inbox.Open(FolderAccess.ReadWrite);
+        using var imapClient = GetImapClient(FolderAccess.ReadOnly);
 
         var uids = imapClient.Inbox.Search(SearchQuery.And(SearchQuery.NotSeen, SearchQuery.FromContains(sender)));
 
-        var result = new List<FileData>();
+        var result = new List<ReceivedEmailFiles>();
 
         if (!uids.Any())
-            return result;
+            return result.ToArray();
 
         foreach (var uid in uids)
         {
             var message = imapClient.Inbox.GetMessage(uid);
+
+            var files = new List<FileData>();
 
             // забираем прикрепленные файлы
             foreach (var attachment in message.Attachments)
@@ -63,21 +56,33 @@ public class EmailService : IEmailService
                 if (fileAttachment == null || !fileAttachment.FileName.StartsWith("80020") || fileAttachment.ContentType.MimeType != "text/xml")
                     continue;
 
-                using var ms = new MemoryStream();
+                var bytes = Encoding.UTF8.GetBytes(fileAttachment.Text);
 
-                attachment.WriteTo(ms);
-
-                var bytes = ms.ToArray();
-
-                result.Add(new FileData { Name = fileAttachment.FileName, Content = bytes });
+                files.Add(new FileData { Name = fileAttachment.FileName, Content = bytes });
             }
 
-            imapClient.Inbox.SetFlags(uid, MessageFlags.Seen, silent: false);
+            result.Add(new ReceivedEmailFiles
+            {
+                MailId = uid,
+                FileDatas = files.ToArray()
+            });
         }
 
         imapClient.Disconnect(quit: true);
 
-        return result;
+        return result.ToArray();
+    }
+
+    public void MakeMailsAsSeen(params UniqueId[] mailUids)
+    {
+        using var imapClient = GetImapClient(FolderAccess.ReadWrite);
+
+        foreach (var uid in mailUids)
+        {
+            imapClient.Inbox.SetFlags(uid, MessageFlags.Seen, silent: false);
+        }
+
+        imapClient.Disconnect(quit: true);
     }
 
     private void SendEmail(string recipient, string subject, string body, params FileData[] attachments)
@@ -114,5 +119,23 @@ public class EmailService : IEmailService
         smtpClient.Send(message);
 
         smtpClient.Disconnect(quit: true);
+    }
+
+    private ImapClient GetImapClient(FolderAccess folderAccess)
+    {
+        var imapHost = ApplicationSettingsService.GetStringValue(ApplicationSettingEnum.MailImapAddress);
+        var imapPort = ApplicationSettingsService.GetIntValue(ApplicationSettingEnum.MailImapPort);
+        var imapLogin = ApplicationSettingsService.GetStringValue(ApplicationSettingEnum.MailImapUsername);
+        var imapPassword = ApplicationSettingsService.GetStringValue(ApplicationSettingEnum.MailImapPassword);
+
+        var imapClient = new ImapClient();
+
+        imapClient.Connect(imapHost, imapPort, useSsl: true);
+
+        imapClient.Authenticate(imapLogin, imapPassword);
+
+        imapClient.Inbox.Open(folderAccess);
+
+        return imapClient;
     }
 }
