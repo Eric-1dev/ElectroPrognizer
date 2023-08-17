@@ -1,3 +1,4 @@
+using System.Globalization;
 using ElectroPrognizer.DataModel.Entities;
 using ElectroPrognizer.Entities.Enums;
 using ElectroPrognizer.Services.Models.XmlModels;
@@ -51,7 +52,7 @@ public static class MessageExtensions
                         {
                             ElectricityMeter = electricityMeter,
                             MeasuringChannel = new MeasuringChannel { MeasuringChannelType = measuringChannelType, Description = measuringChannelDescription },
-                            Value = double.Parse(period.Value),
+                            Value = double.Parse(period.Value, CultureInfo.InvariantCulture),
                             StartDate = startDate,
                             EndDate = endDate,
                         };
