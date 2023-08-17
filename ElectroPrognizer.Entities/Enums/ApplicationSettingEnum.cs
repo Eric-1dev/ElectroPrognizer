@@ -22,5 +22,7 @@ public enum ApplicationSettingEnum
 
     MailImapPassword = 10,
 
-    MailDataSenderEmail = 11
+    MailDataSenderEmail = 11,
+
+    MailFolderForProcessedMails = 12,
 }

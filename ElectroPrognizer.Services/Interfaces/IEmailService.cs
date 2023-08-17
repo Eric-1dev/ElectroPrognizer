@@ -10,5 +10,5 @@ public interface IEmailService
 
     ReceivedEmailFiles[] ReceiveNewFiles();
 
-    void MakeMailsAsSeen(params UniqueId[] mailUids);
+    void MoveAndMarkAsSeen(params UniqueId[] mailUids);
 }

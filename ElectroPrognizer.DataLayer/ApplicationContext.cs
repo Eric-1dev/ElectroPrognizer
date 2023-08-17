@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using ElectroPrognizer.DataModel.Entities;
 using ElectroPrognizer.Utils.Helpers;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +11,7 @@ namespace ElectroPrognizer.DataLayer
         public DbSet<ElectricityMeter> ElectricityMeters { get; set; }
         public DbSet<MeasuringChannel> MeasuringChannels { get; set; }
         public DbSet<ApplicationSetting> ApplicationSettings { get; set; }
+        public DbSet<DbLogEntity> Logs { get; set; }
 
         public ApplicationContext()
         {

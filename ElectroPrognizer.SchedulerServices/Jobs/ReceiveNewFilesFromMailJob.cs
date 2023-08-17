@@ -8,6 +8,7 @@ public class ReceiveNewFilesFromMailJob : IJob
 {
     public IEmailService EmailService { get; set; }
     public IImportFileService ImportFileService { get; set; }
+    public IDbLogService DbLogService { get; set; }
 
     public Task Execute(IJobExecutionContext context)
     {
@@ -26,17 +27,20 @@ public class ReceiveNewFilesFromMailJob : IJob
             {
                 try
                 {
-                    // добавить лог запуска, если есть новые письма
+                    if (!mailFileData.FileDatas.Any())
+                        continue;
+
+                    DbLogService.LogInfo("Найдены новые файлы в почте");
 
                     ImportFileService.Import(mailFileData.FileDatas, overrideExisting: false);
 
-                    EmailService.MakeMailsAsSeen(mailFileData.MailId);
+                    EmailService.MoveAndMarkAsSeen(mailFileData.MailId);
 
-                    // добавить лог с количеством файлов
+                    DbLogService.LogInfo($"Успешно обработано файлов: {mailFileData.FileDatas.Length}");
                 }
                 catch (Exception ex)
                 {
-                    // добавить логи
+                    DbLogService.LogError($"При обработке файлов из почты произошла ошибка", ex);
                 }
             }
 

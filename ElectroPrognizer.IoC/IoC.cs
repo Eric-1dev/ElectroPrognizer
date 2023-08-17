@@ -57,6 +57,11 @@ namespace ElectroPrognizer.IoC
                 .As<IEmailService>()
                 .SingleInstance()
                 .PropertiesAutowired();
+
+            builder.RegisterType<DbLogService>()
+                .As<IDbLogService>()
+                .SingleInstance()
+                .PropertiesAutowired();
         }
     }
 }

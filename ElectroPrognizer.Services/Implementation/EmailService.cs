@@ -35,7 +35,7 @@ public class EmailService : IEmailService
 
         using var imapClient = GetImapClient(FolderAccess.ReadOnly);
 
-        var uids = imapClient.Inbox.Search(SearchQuery.And(SearchQuery.NotSeen, SearchQuery.FromContains(sender)));
+        var uids = imapClient.Inbox.Search(SearchQuery.FromContains(sender));
 
         var result = new List<ReceivedEmailFiles>();
 
@@ -56,7 +56,7 @@ public class EmailService : IEmailService
                 if (fileAttachment == null || !fileAttachment.FileName.StartsWith("80020") || fileAttachment.ContentType.MimeType != "text/xml")
                     continue;
 
-                var bytes = Encoding.UTF8.GetBytes(fileAttachment.Text);
+                var bytes = Encoding.GetEncoding(1251).GetBytes(fileAttachment.Text);
 
                 files.Add(new FileData { Name = fileAttachment.FileName, Content = bytes });
             }
@@ -73,13 +73,19 @@ public class EmailService : IEmailService
         return result.ToArray();
     }
 
-    public void MakeMailsAsSeen(params UniqueId[] mailUids)
+    public void MoveAndMarkAsSeen(params UniqueId[] mailUids)
     {
         using var imapClient = GetImapClient(FolderAccess.ReadWrite);
 
         foreach (var uid in mailUids)
         {
             imapClient.Inbox.SetFlags(uid, MessageFlags.Seen, silent: false);
+
+            var folderName = ApplicationSettingsService.GetStringValue(ApplicationSettingEnum.MailFolderForProcessedMails);
+
+            var folderForProcessed = imapClient.GetFolder(folderName);
+
+            imapClient.Inbox.MoveTo(uid, folderForProcessed);
         }
 
         imapClient.Disconnect(quit: true);
