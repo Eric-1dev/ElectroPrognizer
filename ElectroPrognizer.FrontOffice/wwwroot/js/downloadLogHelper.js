@@ -8,41 +8,48 @@ let downloadLogHelper = {
     init: () => {
         let form = $('#prognizer-download-log-form');
 
+        downloadLogHelper._filterForm = form;
+
         downloadLogHelper._loadDataUrl = form.attr('prognizer-load-data-url');
 
         downloadLogHelper._resultTableBody = $('#prognizer-log-table').find('tbody');
+
+        form.submit(downloadLogHelper._onFilterSubmit);
 
         downloadLogHelper._loadData(1, null, null);
     },
 
     _loadDataUrl: '',
     _resultTableBody: {},
+    _filterForm: {},
 
-    _loadData: (pageNumber, dateFrom, dateTo) => {
-        let filter = {
-            pageNumber: pageNumber,
-            dateFrom: dateFrom,
-            dateTo: dateTo
-        };
+    _loadData: () => {
+        if (!downloadLogHelper._filterForm.valid()) {
+            return;
+        }
+
+        let formData = new FormData(downloadLogHelper._filterForm[0]);
 
         $.ajax({
             url: downloadLogHelper._loadDataUrl,
             type: 'POST',
-            data: filter,
+            data: formData,
             success: (data) => {
                 if (data.isSuccess) {
                     downloadLogHelper._handleResult(data.entity);
                 } else {
                     modalWindowHelper.showError(data.message);
                 }
-            }
+            },
+            processData: false,
+            contentType: false
         });
     },
 
-    _handleResult: (logs) => {
+    _handleResult: (result) => {
         downloadLogHelper._resultTableBody.html('');
 
-        logs.forEach((log) => {
+        result.entities.forEach((log) => {
             let tr = $('<tr>')
 
             switch (log.logLevel) {
@@ -86,5 +93,11 @@ let downloadLogHelper = {
             case 3:
                 return 'Ошибка';
         }
+    },
+
+    _onFilterSubmit: (event) => {
+        event.preventDefault();
+
+        downloadLogHelper._loadData();
     }
 };

@@ -1,4 +1,4 @@
-@model int
+@model DownloadLogViewModel
 
 @{
     ViewData["Title"] = "Логи загрузки данных из почты";
@@ -13,20 +13,30 @@
 }
 
 <form id="prognizer-download-log-form" prognizer-load-data-url="@Url.Action("GetLogs", "DownloadLog")">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <span asp-validation-for="DateTo" class="text-danger"></span>
+
     <div class="prognizer-download-log-filter">
         <div>
-            <label for="prognizer-date-from">Дата с</label>
+            <label asp-for="DateFrom" class="control-label"></label>
             <div>
-                <input id="prognizer-date-from" class="form-control" type="date" />
+                <input asp-for="DateFrom" class="form-control" type="date" />
             </div>
         </div>
 
         <div>
-            <label for="prognizer-date-to">Дата по</label>
+            <label asp-for="DateTo" class="control-label"></label>
             <div>
-                <input id="prognizer-date-to" class="form-control" type="date" />
+                <input asp-for="DateTo" class="form-control" type="date" />
             </div>
         </div>
+
+        <div>
+            <button type="submit" class="btn btn-outline-primary">Применить</button>
+        </div>
+
+        <input asp-for="PageNumber" type="hidden" />
     </div>
 </form>
 
@@ -39,13 +49,14 @@
         </tr>
     </thead>
     <tbody>
+
     </tbody>
 </table>
 
 <nav>
     <ul class="pagination">
         <li class="page-item"><a class="page-link" href="#">Назад</a></li>
-        @for (var pageNum = 1; pageNum <= Model; pageNum++)
+        @for (var pageNum = 1; pageNum <= 5; pageNum++)
         {
             <li class="page-item"><a class="page-link" href="#">@pageNum</a></li>
         }

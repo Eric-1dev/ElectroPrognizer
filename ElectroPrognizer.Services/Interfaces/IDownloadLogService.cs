@@ -11,5 +11,5 @@ public interface IDownloadLogService
 
     int GetTotalCount();
 
-    DownloadLogEntity[] GetLogs(DownloadLogFilter filter);
+    DownloadLogResult GetLogs(DownloadLogFilter filter);
 }

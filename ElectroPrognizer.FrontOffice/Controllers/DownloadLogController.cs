@@ -1,6 +1,6 @@
+using ElectroPrognizer.FrontOffice.Models;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models;
-using ElectroPrognizer.Utils.Constants;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElectroPrognizer.FrontOffice.Controllers;
@@ -11,19 +11,27 @@ public class DownloadLogController : BaseController
 
     public IActionResult Index()
     {
-        var pageSize = DownloadLogConstants.PageSize;
+        var model = new DownloadLogViewModel();
 
-        var totalCount = DownloadLogService.GetTotalCount();
-
-        var totalPages = (totalCount + pageSize - 1) / pageSize;
-
-        return View(totalPages);
+        return View(model);
     }
 
-    public JsonResult GetLogs(DownloadLogFilter filter)
+    public JsonResult GetLogs(DownloadLogViewModel inputFilter)
     {
-        var entities = DownloadLogService.GetLogs(filter);
+        inputFilter.PageNumber ??= 1;
 
-        return Success(entities);
+        if (!ModelState.IsValid)
+            return Fail("Некорректные значения фильтра");
+
+        var filter = new DownloadLogFilter
+        {
+            PageNumber = inputFilter.PageNumber.Value,
+            DateFrom = inputFilter.DateFrom,
+            DateTo = inputFilter.DateTo,
+        };
+
+        var result = DownloadLogService.GetLogs(filter);
+
+        return Success(result);
     }
 }

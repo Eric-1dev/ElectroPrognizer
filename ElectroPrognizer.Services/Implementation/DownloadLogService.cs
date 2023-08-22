@@ -9,7 +9,7 @@ namespace ElectroPrognizer.Services.Implementation;
 
 public class DownloadLogService : IDownloadLogService
 {
-    public DownloadLogEntity[] GetLogs(DownloadLogFilter filter)
+    public DownloadLogResult GetLogs(DownloadLogFilter filter)
     {
         using var dbContext = new ApplicationContext();
 
@@ -17,9 +17,8 @@ public class DownloadLogService : IDownloadLogService
         var dateTo = filter.DateTo?.Date.AddDays(1) ?? DateTime.MaxValue;
 
         var pageSize = DownloadLogConstants.PageSize;
-        var pageNumber = filter.PageNumber ?? 1;
 
-        var skipCount = (pageNumber - 1) * pageSize;
+        var skipCount = (filter.PageNumber - 1) * pageSize;
 
         var entities = dbContext.DownloadLogs
             .Where(x => x.Created >= dateFrom && x.Created < dateTo)
@@ -27,7 +26,13 @@ public class DownloadLogService : IDownloadLogService
             .Take(pageSize)
             .ToArray();
 
-        return entities;
+        var result = new DownloadLogResult
+        {
+            TotalPages = (entities.Length + pageSize - 1) / pageSize,
+            Entities = entities
+        };
+
+        return result;
     }
 
     public int GetTotalCount()
