@@ -58,8 +58,8 @@ namespace ElectroPrognizer.IoC
                 .SingleInstance()
                 .PropertiesAutowired();
 
-            builder.RegisterType<DbLogService>()
-                .As<IDbLogService>()
+            builder.RegisterType<DownloadLogService>()
+                .As<IDownloadLogService>()
                 .SingleInstance()
                 .PropertiesAutowired();
         }

@@ -5,12 +5,12 @@
 }
 
 @section Scripts {
-    <bundle name="wwwroot/bundles/js/applicationSettingEdit.bundle.js" />
+    <bundle name="wwwroot/bundles/js/entityEdit.bundle.js" />
 }
 
 <div class="row">
     <div class="col-md-4">
-        <form id="prognizer-application-setting-edit-form" application-setting-save-url="@Url.Action("Save", "ApplicationSettings")">
+        <form id="prognizer-edit-form" prognizer-save-url="@Url.Action("Save", "ApplicationSettings")">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 

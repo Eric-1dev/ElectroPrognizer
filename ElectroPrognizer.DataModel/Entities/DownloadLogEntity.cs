@@ -3,7 +3,7 @@ using ElectroPrognizer.Entities.Enums;
 
 namespace ElectroPrognizer.DataModel.Entities;
 
-public class DbLogEntity : BaseEntity
+public class DownloadLogEntity : BaseEntity
 {
     [Required]
     public LogLevelEnum LogLevel { get; set; }

@@ -141,21 +141,7 @@ let prognizerHelper = {
 
         let date = new Date(dateInput);
 
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-
-        if (day < 10) {
-            day = '0' + day;
-        }
-
-        if (month < 10) {
-            month = `0${month}`;
-        }
-
-        let formatDate = `${day}.${month}.${year}`;
-
-        return formatDate;
+        return date.toLocaleDateString('ru-RU');
     },
 
     _handleValue: (value) => {

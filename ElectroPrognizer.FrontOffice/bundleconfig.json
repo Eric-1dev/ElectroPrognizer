@@ -78,27 +78,28 @@
         }
     },
     {
-        "outputFileName": "wwwroot/bundles/js/substationEdit.bundle.js",
+        "outputFileName": "wwwroot/bundles/js/entityEdit.bundle.js",
         "inputFiles": [
-            "wwwroot/js/substationEditHelper.js"
+            "wwwroot/js/entityEditHelper.js"
+        ],
+        "minify": {
+            "enabled": true
+        }
+    },
+
+    {
+        "outputFileName": "wwwroot/bundles/css/downloadLog.bundle.css",
+        "inputFiles": [
+            "wwwroot/css/downloadLog.css"
         ],
         "minify": {
             "enabled": true
         }
     },
     {
-        "outputFileName": "wwwroot/bundles/js/electricityMeterEdit.bundle.js",
+        "outputFileName": "wwwroot/bundles/js/downloadLog.bundle.js",
         "inputFiles": [
-            "wwwroot/js/electricityMeterEditHelper.js"
-        ],
-        "minify": {
-            "enabled": true
-        }
-    },
-    {
-        "outputFileName": "wwwroot/bundles/js/applicationSettingEdit.bundle.js",
-        "inputFiles": [
-            "wwwroot/js/applicationSettingEditHelper.js"
+            "wwwroot/js/downloadLogHelper.js"
         ],
         "minify": {
             "enabled": true

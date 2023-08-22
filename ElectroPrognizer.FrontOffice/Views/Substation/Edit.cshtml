@@ -4,17 +4,13 @@
     ViewData["Title"] = "Редактирование подстанции";
 }
 
-@section Styles {
-    <bundle name="wwwroot/bundles/css/substationEdit.bundle.css" />
-}
-
 @section Scripts {
-    <bundle name="wwwroot/bundles/js/substationEdit.bundle.js" />
+    <bundle name="wwwroot/bundles/js/entityEdit.bundle.js" />
 }
 
 <div class="row">
     <div class="col-md-4">
-        <form id="prognizer-substation-edit-form" substation-save-url="@Url.Action("Save", "Substation")">
+        <form id="prognizer-edit-form" prognizer-save-url="@Url.Action("Save", "Substation")">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 

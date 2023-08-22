@@ -11,7 +11,7 @@ namespace ElectroPrognizer.DataLayer
         public DbSet<ElectricityMeter> ElectricityMeters { get; set; }
         public DbSet<MeasuringChannel> MeasuringChannels { get; set; }
         public DbSet<ApplicationSetting> ApplicationSettings { get; set; }
-        public DbSet<DbLogEntity> Logs { get; set; }
+        public DbSet<DownloadLogEntity> DownloadLogs { get; set; }
 
         public ApplicationContext()
         {

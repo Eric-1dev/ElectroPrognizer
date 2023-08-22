@@ -8,7 +8,7 @@ public class ReceiveNewFilesFromMailJob : IJob
 {
     public IEmailService EmailService { get; set; }
     public IImportFileService ImportFileService { get; set; }
-    public IDbLogService DbLogService { get; set; }
+    public IDownloadLogService DbLogService { get; set; }
 
     public Task Execute(IJobExecutionContext context)
     {
@@ -32,7 +32,7 @@ public class ReceiveNewFilesFromMailJob : IJob
 
                     DbLogService.LogInfo("Найдены новые файлы в почте");
 
-                    ImportFileService.Import(mailFileData.FileDatas, overrideExisting: false);
+                    ImportFileService.Import(mailFileData.FileDatas, overrideExisting: true);
 
                     EmailService.MoveAndMarkAsSeen(mailFileData.MailId);
 

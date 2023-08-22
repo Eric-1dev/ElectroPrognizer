@@ -83,7 +83,7 @@ public class EmailService : IEmailService
 
             var folderName = ApplicationSettingsService.GetStringValue(ApplicationSettingEnum.MailFolderForProcessedMails);
 
-            var folderForProcessed = imapClient.GetFolder(folderName);
+            var folderForProcessed = imapClient.GetFolder($"INBOX/{folderName}");
 
             imapClient.Inbox.MoveTo(uid, folderForProcessed);
         }

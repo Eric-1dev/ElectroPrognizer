@@ -1,0 +1,13 @@
+.prognizer-download-log-filter {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.prognizer-download-log-filter > div {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: baseline;
+}

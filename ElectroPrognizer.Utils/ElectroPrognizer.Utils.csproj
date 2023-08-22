@@ -10,8 +10,4 @@
     <ProjectReference Include="..\ElectroPrognizer.Entities\ElectroPrognizer.Entities.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Constants\" />
-  </ItemGroup>
-
 </Project>

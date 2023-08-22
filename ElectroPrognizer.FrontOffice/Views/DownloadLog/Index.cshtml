@@ -1,0 +1,54 @@
+@model int
+
+@{
+    ViewData["Title"] = "Логи загрузки данных из почты";
+}
+
+@section Styles {
+    <bundle name="wwwroot/bundles/css/downloadLog.bundle.css" />
+}
+
+@section Scripts {
+    <bundle name="wwwroot/bundles/js/downloadLog.bundle.js" />
+}
+
+<form id="prognizer-download-log-form" prognizer-load-data-url="@Url.Action("GetLogs", "DownloadLog")">
+    <div class="prognizer-download-log-filter">
+        <div>
+            <label for="prognizer-date-from">Дата с</label>
+            <div>
+                <input id="prognizer-date-from" class="form-control" type="date" />
+            </div>
+        </div>
+
+        <div>
+            <label for="prognizer-date-to">Дата по</label>
+            <div>
+                <input id="prognizer-date-to" class="form-control" type="date" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<table id="prognizer-log-table" class="table table-bordered table-hover">
+    <thead>
+        <tr class="alert alert-secondary">
+            <th class="text-center">Дата</th>
+            <th class="text-center">Тип</th>
+            <th class="text-center">Сообщение</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<nav>
+    <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="#">Назад</a></li>
+        @for (var pageNum = 1; pageNum <= Model; pageNum++)
+        {
+            <li class="page-item"><a class="page-link" href="#">@pageNum</a></li>
+        }
+        <li class="page-item"><a class="page-link" href="#">Вперёд</a></li>
+    </ul>
+</nav>
