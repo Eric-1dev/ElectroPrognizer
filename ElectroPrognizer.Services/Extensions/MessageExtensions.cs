@@ -37,10 +37,10 @@ public static class MessageExtensions
 
                 foreach (var measuringChannel in measuringPoint.MeasuringChannel)
                 {
-                    // собиарем данные по одному каналу для объединения временных интервалов
+                    // собираем данные по одному каналу для объединения временных интервалов
                     var measuringChannelData = new List<EnergyConsumption>();
 
-                    foreach (var period in measuringPoint.MeasuringChannel.First(x => x.Code == "01").Period)
+                    foreach (var period in measuringPoint.MeasuringChannel.SelectMany(x => x.Period))
                     {
                         var startDate = ParseDate(period.Start, reportDate);
                         var endDate = ParseDate(period.End, reportDate);
