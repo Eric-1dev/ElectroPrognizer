@@ -1,7 +1,6 @@
 using ElectroPrognizer.Entities.Models;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models;
-using ElectroPrognizer.Utils.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElectroPrognizer.FrontOffice.Controllers;
@@ -43,19 +42,5 @@ public class UploadController : BaseController
         });
 
         return Json(OperationResult.Success());
-    }
-
-    [HttpPost]
-    public JsonResult GetProgressStatus()
-    {
-        return Json(UploadTaskHelper.GetProgressStatus());
-    }
-
-    [HttpPost]
-    public IActionResult CancelUpload()
-    {
-        UploadTaskHelper.Cancel();
-
-        return Ok();
     }
 }

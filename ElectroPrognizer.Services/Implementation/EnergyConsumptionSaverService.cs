@@ -2,23 +2,24 @@ using ElectroPrognizer.DataLayer;
 using ElectroPrognizer.DataModel.Entities;
 using ElectroPrognizer.Entities.Exceptions;
 using ElectroPrognizer.Services.Interfaces;
-using ElectroPrognizer.Utils.Helpers;
 
 namespace ElectroPrognizer.Services.Implementation;
 
 public class EnergyConsumptionSaverService : IEnergyConsumptionSaverService
 {
+    public IUploadService UploadService { get; set; }
+
     public void SaveToDatabase(IEnumerable<EnergyConsumption> energyConsumptions, bool overrideExisting)
     {
         using var dbContext = new ApplicationContext();
 
-        UploadTaskHelper.SetTotalCount(energyConsumptions.Count());
+        UploadService.SetTotalCount(energyConsumptions.Count());
 
         using var tran = dbContext.Database.BeginTransaction();
 
         foreach (var energyConsumption in energyConsumptions)
         {
-            if (UploadTaskHelper.IsCanceled)
+            if (UploadService.IsCanceled)
             {
                 tran.Rollback();
                 throw new WorkflowException("Загрузка прервана пользователем");
@@ -81,7 +82,7 @@ public class EnergyConsumptionSaverService : IEnergyConsumptionSaverService
 
             dbContext.SaveChanges();
 
-            UploadTaskHelper.IncrementCurrentIndex();
+            UploadService.IncrementCurrentIndex();
         }
 
         tran.Commit();

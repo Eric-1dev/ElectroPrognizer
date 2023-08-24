@@ -5,7 +5,8 @@
             "wwwroot/lib/jquery/dist/jquery.min.js",
             "wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
             "wwwroot/lib/jquery-validation/dist/jquery.validate.min.js",
-            "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"
+            "wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js",
+            "wwwroot/lib/signalr/dist/browser/signalr.min.js"
         ],
         "minify": {
             "enabled": false

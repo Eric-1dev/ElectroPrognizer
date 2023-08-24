@@ -1,4 +1,5 @@
 using Autofac;
+using ElectroPrognizer.Services.Hubs;
 using ElectroPrognizer.Services.Implementation;
 using ElectroPrognizer.Services.Interfaces;
 
@@ -61,6 +62,14 @@ namespace ElectroPrognizer.IoC
             builder.RegisterType<DownloadLogService>()
                 .As<IDownloadLogService>()
                 .SingleInstance()
+                .PropertiesAutowired();
+
+            builder.RegisterType<UploadService>()
+                .As<IUploadService>()
+                .SingleInstance()
+                .PropertiesAutowired();
+
+            builder.RegisterType<StatusHub>()
                 .PropertiesAutowired();
         }
     }

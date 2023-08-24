@@ -36,8 +36,6 @@ let uploadHelper = {
                         modalWindowHelper.showInfo('Ошибка при загрузке файлов: ' + data.message);
                         return;
                     }
-
-                    progressBarHelper.startMonitoring();
                 },
                 cache: false,
                 contentType: false,

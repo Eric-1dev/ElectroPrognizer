@@ -1,7 +1,6 @@
 using ElectroPrognizer.Entities.Exceptions;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models;
-using ElectroPrognizer.Utils.Helpers;
 
 namespace ElectroPrognizer.Services.Implementation;
 
@@ -11,6 +10,7 @@ public class ImportFileService : IImportFileService
 
     public IXmlReaderService XmlReaderService { get; set; }
     public IEnergyConsumptionSaverService EnergyConsumptionSaverService { get; set; }
+    public IUploadService UploadService { get; set; }
 
     public void Import(IEnumerable<FileData> uploadedFiles, bool overrideExisting)
     {
@@ -22,35 +22,35 @@ public class ImportFileService : IImportFileService
             {
                 ThrowIfBusy();
 
-                UploadTaskHelper.Init();
+                UploadService.Init();
             }
 
             var energyComsumption = XmlReaderService.ParseXml(uploadedFiles);
 
             EnergyConsumptionSaverService.SaveToDatabase(energyComsumption, overrideExisting);
 
-            UploadTaskHelper.SetToFinished();
+            UploadService.SetToFinished();
         }
         catch (UploaderIsBusyException ex)
         {
-            UploadTaskHelper.SetMessage(ex.Message);
+            UploadService.SendStatus(ex.Message);
             throw;
         }
         catch (WorkflowException ex)
         {
-            UploadTaskHelper.SetToFinishedWithError(ex.Message);
+            UploadService.SetToFinishedWithError(ex.Message);
             throw;
         }
         catch (Exception ex)
         {
-            UploadTaskHelper.SetToFinishedWithError($"Ошибка при импорте данных: {ex}");
+            UploadService.SetToFinishedWithError($"Ошибка при импорте данных: {ex}");
             throw;
         }
     }
     
     private void ThrowIfBusy()
     {
-        if (!UploadTaskHelper.IsFinished)
+        if (!UploadService.IsFinished)
             throw new UploaderIsBusyException("Выполняется другой процесс . Дождитесь окончания или отмените его.");
     }
 }

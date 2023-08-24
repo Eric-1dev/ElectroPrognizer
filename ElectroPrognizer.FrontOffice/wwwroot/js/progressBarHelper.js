@@ -9,57 +9,50 @@ let progressBarHelper = {
         progressBarHelper._getStatusUrl = progressBarHelper._progressBarForm.attr('get-status-url');
         progressBarHelper._cancelUploadUrl = progressBarHelper._progressBarForm.attr('cancel-upload-url');
 
-        progressBarHelper._updateStatus();
+
+        progressBarHelper._hubConnection = new signalR.HubConnectionBuilder()
+            .withUrl('/status')
+            .withAutomaticReconnect([10000, 10000, 10000])
+            .build();
+
+        progressBarHelper._hubConnection.on('ReceiveStatus', (status) => {
+            progressBarHelper._handleStatus(status);
+        });
+
+        progressBarHelper._hubConnection.start()
+            .then(() => {
+                console.log('SignalR connected');
+            })
+            .catch((error) => {
+                return console.error(error.toString());
+            });
 
         $('#progress-bar-cancel-button').click(() => {
-            modalWindowHelper.showConfirmDialog('Действительно хотите отменить импорт данных?', () => { progressBarHelper._cancelUpload(); return true; });
+            modalWindowHelper.showConfirmDialog('Действительно хотите отменить импорт данных?', () => {
+                progressBarHelper._hubConnection.invoke('CancelUpload');
+                progressBarHelper._setPercents(0);
+                return true;
+            });
         });
     },
 
-    startMonitoring: () => {
-        progressBarHelper._setPercents(0);
-        progressBarHelper._updateStatus();
-    },
-
-    _getStatusUrl: '',
-    _cancelUploadUrl: '',
+    _hubConnection: {},
     _progressBarFormWrapper: $('#progress-bar-form-wrapper'),
     _progressBarForm: $('#progress-bar-form'),
 
     _progressUpdateInterval: 3000,
     _timer: {},
 
-    _updateStatus: () => {
-        $.ajax({
-            url: progressBarHelper._getStatusUrl,
-            type: 'POST'
-        }).always((data) => {
-            if (data.message) {
-                modalWindowHelper.showInfo(data.message);
-            }
+    _handleStatus: (status) => {
+        if (status.message) {
+            modalWindowHelper.showInfo(status.message);
+        }
 
-            if (data.isFinished) {
-                progressBarHelper._hideProgressBar();
-            } else {
-                if (data.percents) {
-                    progressBarHelper._setPercents(data.percents);
-                }
-
-                progressBarHelper._timer = setTimeout(() => progressBarHelper._updateStatus(progressBarHelper._onStatusRecieved), progressBarHelper._progressUpdateInterval);
-            }
-        });
-    },
-
-    _cancelUpload: () => {
-        $.ajax({
-            url: progressBarHelper._cancelUploadUrl,
-            type: 'POST',
-            success: () => {
-                progressBarHelper._setPercents(0);
-            }
-        }).fail(() => {
-            progressBarHelper._updateStatus();
-        });
+        if (status.isFinished) {
+            progressBarHelper._hideProgressBar();
+        } else if (status.percents) {
+            progressBarHelper._setPercents(status.percents);
+        }
     },
 
     _hideProgressBar: () => {

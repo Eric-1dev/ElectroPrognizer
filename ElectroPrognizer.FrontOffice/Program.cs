@@ -5,6 +5,7 @@ using Autofac.Extensions.DependencyInjection;
 using BundlerMinifier.TagHelpers;
 using ElectroPrognizer.IoC;
 using ElectroPrognizer.SchedulerServices.Extensions;
+using ElectroPrognizer.Services.Hubs;
 using ElectroPrognizer.Utils.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Quartz;
@@ -56,6 +57,9 @@ builder.Services.AddBundles(options =>
     options.UseMinifiedFiles = false;
     options.UseBundles = false;
 });
+
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -74,5 +78,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapHub<StatusHub>("/status");
 
 app.Run();
