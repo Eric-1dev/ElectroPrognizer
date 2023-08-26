@@ -40,7 +40,7 @@ public static class MessageExtensions
                     // собираем данные по одному каналу для объединения временных интервалов
                     var measuringChannelData = new List<EnergyConsumption>();
 
-                    foreach (var period in measuringPoint.MeasuringChannel.SelectMany(x => x.Period))
+                    foreach (var period in measuringChannel.Period)
                     {
                         var startDate = ParseDate(period.Start, reportDate);
                         var endDate = ParseDate(period.End, reportDate);
@@ -76,7 +76,7 @@ public static class MessageExtensions
 
         foreach (var firstHalfHourData in measuringChannelData.Where(x => x.EndDate.Minute == 30))
         {
-            var secondHalfHourData = measuringChannelData.First(x => x.StartDate == firstHalfHourData.EndDate);
+            var secondHalfHourData = measuringChannelData.Single(x => x.StartDate == firstHalfHourData.EndDate);
 
             secondHalfHourData.StartDate = firstHalfHourData.StartDate;
             secondHalfHourData.Value += firstHalfHourData.Value;
