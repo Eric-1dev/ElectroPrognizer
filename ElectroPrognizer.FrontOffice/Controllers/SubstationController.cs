@@ -64,7 +64,7 @@ public class SubstationController : BaseController
             Id = substation.Id,
             Name = substation.Name,
             Description = substation.Description,
-            AdditionalValueConstant= substation.AdditionalValueConstant
+            AdditionalValueConstant = substation.AdditionalValueConstant
         };
 
         try

@@ -32,7 +32,7 @@ public static class MessageExtensions
                 {
                     Substation = substation,
                     Name = measuringPoint.Name,
-                    IsPositiveCounter = true
+                    IsPositiveCounter = false
                 };
 
                 foreach (var measuringChannel in measuringPoint.MeasuringChannel)
