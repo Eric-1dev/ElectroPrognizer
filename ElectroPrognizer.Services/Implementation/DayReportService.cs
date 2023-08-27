@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Reflection;
 using DocumentFormat.OpenXml.Packaging;
 using ElectroPrognizer.Services.Interfaces;
+using ElectroPrognizer.Services.Models;
 
 namespace ElectroPrognizer.Services.Implementation;
 
@@ -9,7 +10,7 @@ public class DayReportService : IDayReportService
 {
     public IPrognizerService PrognizerService { get; set; }
 
-    public byte[] GenerateDayReport(int substationId, DateTime calculationDate)
+    public FileData GenerateDayReport(int substationId, DateTime calculationDate)
     {
         var totalConsumptionValues = PrognizerService.CalculateTotalValuesForDay(substationId, calculationDate);
 
@@ -40,7 +41,9 @@ public class DayReportService : IDayReportService
 
         var bytes = ms.ToArray();
 
-        return bytes;
+        var fileName = $"Приложение №3 за {calculationDate.ToString("m", new CultureInfo("ru"))} {calculationDate.ToString("yyyy")}.xlsx";
+
+        return new FileData(fileName, bytes);
     }
 
     private static string ValueToMegawatt(double? value)

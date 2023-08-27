@@ -105,5 +105,14 @@
         "minify": {
             "enabled": true
         }
+    },
+    {
+        "outputFileName": "wwwroot/bundles/js/jobExecution.bundle.js",
+        "inputFiles": [
+            "wwwroot/js/jobExecutionHelper.js"
+        ],
+        "minify": {
+            "enabled": true
+        }
     }
 ]

@@ -1,0 +1,18 @@
+@model Dictionary<string, JobInfo>
+
+@{
+    ViewData["Title"] = "Ручной запуск задач планировщика";
+}
+
+@section Scripts {
+    <bundle name="wwwroot/bundles/js/jobExecution.bundle.js" />
+}
+
+<form id="prognizer-job-execution-form" prognizer-job-execution-url="@Url.Action("Execute", "JobExecution")">
+    @foreach (var job in Model)
+    {
+        <div>
+            <button type="button" class="btn btn-outline-primary mb-3 prognizer-job-execute-button" prognizer-job-name="@job.Key">@job.Value.JobDescription</button>
+        </div>
+    }
+</form>

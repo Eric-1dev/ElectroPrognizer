@@ -50,6 +50,6 @@ public class PrognizerController : BaseController
 
         var data = DayReportService.GenerateDayReport(substationId.Value, calculationDate);
 
-        return File(data, "application/octet-stream", "Отчет за день.xlsx");
+        return File(data.Content, "application/octet-stream", data.Name);
     }
 }

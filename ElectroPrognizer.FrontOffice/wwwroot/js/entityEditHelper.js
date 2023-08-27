@@ -1,16 +1,16 @@
 /*jshint esversion: 6 */
 
 $(document).ready(() => {
-    downloadLogHelper.init();
+    entityEditHelper.init();
 });
 
-let downloadLogHelper = {
+let entityEditHelper = {
     init: () => {
-        downloadLogHelper._saveForm = $('#prognizer-edit-form');
-        downloadLogHelper._saveUrl = downloadLogHelper._saveForm.attr('prognizer-save-url');
+        entityEditHelper._saveForm = $('#prognizer-edit-form');
+        entityEditHelper._saveUrl = entityEditHelper._saveForm.attr('prognizer-save-url');
 
-        downloadLogHelper._saveForm.submit((event) => {
-            downloadLogHelper._save(event);
+        entityEditHelper._saveForm.submit((event) => {
+            entityEditHelper._save(event);
         });
     },
 
@@ -29,7 +29,7 @@ let downloadLogHelper = {
         let formData = new FormData(form[0]);
 
         $.ajax({
-            url: downloadLogHelper._saveUrl,
+            url: entityEditHelper._saveUrl,
             type: 'POST',
             data: formData,
             success: (data) => {

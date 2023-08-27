@@ -1,6 +1,8 @@
+using ElectroPrognizer.Services.Models;
+
 namespace ElectroPrognizer.Services.Interfaces;
 
 public interface IDayReportService
 {
-    byte[] GenerateDayReport(int substationId, DateTime calculationDate);
+    FileData GenerateDayReport(int substationId, DateTime calculationDate);
 }

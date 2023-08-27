@@ -1,8 +1,6 @@
-using System.Globalization;
 using ElectroPrognizer.DataLayer;
 using ElectroPrognizer.Entities.Enums;
 using ElectroPrognizer.Services.Interfaces;
-using ElectroPrognizer.Services.Models;
 using Quartz;
 
 namespace ElectroPrognizer.SchedulerServices.Jobs;
@@ -35,14 +33,7 @@ public class SendDayReportToEmailsJob : IJob
 
         foreach (var substationId in substationIds)
         {
-            var reportFileName = $"Приложение №3 за {reportDate.ToString("m", new CultureInfo("ru"))} {reportDate.ToString("yyyy")}.xlsx";
-            var reportContent = DayReportService.GenerateDayReport(substationId, reportDate);
-
-            var reportData = new FileData
-            {
-                Name = reportFileName,
-                Content = reportContent
-            };
+            var reportData = DayReportService.GenerateDayReport(substationId, reportDate);
 
             var sendResult = EmailService.SendDaylyReport(emails, reportData);
 

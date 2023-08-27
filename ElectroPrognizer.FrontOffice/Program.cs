@@ -30,7 +30,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory(builder
         builder.RegisterType(job).InstancePerLifetimeScope().PropertiesAutowired();
     }
 
-    builder.InitContainer();
+    builder.RegisterLocalServices();
 }));
 
 var connectionString = builder.Configuration.GetConnectionString("Database");

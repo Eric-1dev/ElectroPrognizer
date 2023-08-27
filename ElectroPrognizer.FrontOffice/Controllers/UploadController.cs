@@ -1,5 +1,4 @@
 using ElectroPrognizer.Entities.Models;
-using ElectroPrognizer.SchedulerServices.Jobs;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +8,6 @@ namespace ElectroPrognizer.FrontOffice.Controllers;
 public class UploadController : BaseController
 {
     public IImportFileService ImportFileService { get; set; }
-    public ReceiveNewFilesFromMailJob ReceiveNewFilesFromMailJob { get; set; }
 
     public IActionResult Index()
     {
@@ -35,7 +33,7 @@ public class UploadController : BaseController
 
             var bytes = ms.ToArray();
 
-            uploadedFiles.Add(new FileData { Name = file.FileName, Content = bytes });
+            uploadedFiles.Add(new FileData(file.FileName, bytes));
         }
 
         var uploadTask = Task.Run(() =>
@@ -44,13 +42,5 @@ public class UploadController : BaseController
         });
 
         return Json(OperationResult.Success());
-    }
-
-    [HttpPost]
-    public JsonResult UploadFromEmail()
-    {
-        Task.Run(() => ReceiveNewFilesFromMailJob.Execute(null));
-
-        return Success();
     }
 }

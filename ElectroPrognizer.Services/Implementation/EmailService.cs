@@ -19,7 +19,9 @@ public class EmailService : IEmailService
     {
         try
         {
-            SendEmail(recipients, "Отчет за день", "Ежедневный отчет", report);
+            var subject = Path.GetFileNameWithoutExtension(report.Name);
+
+            SendEmail(recipients, subject, "Ежедневный отчет", report);
 
             return OperationResult.Success("Отчет успешно отправлен");
         }
@@ -58,7 +60,7 @@ public class EmailService : IEmailService
 
                 var bytes = Encoding.GetEncoding(1251).GetBytes(fileAttachment.Text);
 
-                files.Add(new FileData { Name = fileAttachment.FileName, Content = bytes });
+                files.Add(new FileData(fileAttachment.FileName, bytes));
             }
 
             result.Add(new ReceivedEmailFiles

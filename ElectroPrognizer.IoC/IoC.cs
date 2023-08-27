@@ -7,7 +7,7 @@ namespace ElectroPrognizer.IoC
 {
     public static class IoC
     {
-        public static void InitContainer(this ContainerBuilder builder)
+        public static void RegisterLocalServices(this ContainerBuilder builder)
         {
             builder.RegisterType<ApplicationSettingsService>()
                 .As<IApplicationSettingsService>()

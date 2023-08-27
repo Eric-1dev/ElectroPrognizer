@@ -18,7 +18,7 @@ public class XmlReaderService : IXmlReaderService
         {
             var bytes = File.ReadAllBytes(fileName);
 
-            files.Add(new FileData { Name = fileName, Content = bytes });
+            files.Add(new FileData(fileName, bytes));
         }
 
         return ParseXml(files);
