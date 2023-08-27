@@ -6,7 +6,7 @@ namespace ElectroPrognizer.Services.Interfaces;
 
 public interface IEmailService
 {
-    OperationResult SendDaylyReport(string recipient, FileData report);
+    OperationResult SendDaylyReport(string[] recipients, FileData report);
 
     ReceivedEmailFiles[] ReceiveNewFiles();
 

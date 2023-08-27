@@ -15,7 +15,7 @@ public class DayReportService : IDayReportService
 
         var placeholderCalculators = new Dictionary<string, Func<string>>
         {
-            { "#{CurrentDayMonth}#", () => calculationDate.ToString("m", new CultureInfo("ru_RU")) },
+            { "#{CurrentDayMonth}#", () => calculationDate.ToString("m", new CultureInfo("ru")) },
             { "#{CurrentYear}#", () => calculationDate.ToString("yyyy") },
             { "#{TotalForDay}#", () => ValueToMegawatt(totalConsumptionValues.TotalForDay) },
             { "#{CumulativeTotal}#", () => ValueToMegawatt(totalConsumptionValues.CumulativeTotalForMonth) },
@@ -46,7 +46,7 @@ public class DayReportService : IDayReportService
     private static string ValueToMegawatt(double? value)
     {
         return value.HasValue
-            ? Math.Round(value.Value / 1000, 2, MidpointRounding.AwayFromZero).ToString()
+            ? Math.Round(value.Value / 1000, 6, MidpointRounding.AwayFromZero).ToString()
             : "-";
     }
 }

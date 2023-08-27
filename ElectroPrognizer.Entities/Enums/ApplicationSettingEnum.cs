@@ -25,4 +25,6 @@ public enum ApplicationSettingEnum
     MailDataSenderEmail = 11,
 
     MailFolderForProcessedMails = 12,
+
+    MailsForDayReport = 13,
 }

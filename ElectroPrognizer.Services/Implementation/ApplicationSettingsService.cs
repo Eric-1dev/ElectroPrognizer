@@ -86,4 +86,16 @@ public class ApplicationSettingsService : IApplicationSettingsService
 
         throw new FormatException("Тип значения не соответствует типу double");
     }
+
+    public string[] GetStringArrayValue(ApplicationSettingEnum applicationSettingType, string delimiter)
+    {
+        var stringValue = GetStringValue(applicationSettingType);
+
+        var stringArray = stringValue
+            .Split(delimiter)
+            .Select(x => x.Trim())
+            .ToArray();
+
+        return stringArray;
+    }
 }

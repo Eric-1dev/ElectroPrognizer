@@ -24,6 +24,7 @@ public class DownloadLogService : IDownloadLogService
             .Where(x => x.Created >= dateFrom && x.Created < dateTo)
             .Skip(skipCount)
             .Take(pageSize)
+            .OrderByDescending(x => x.Id)
             .ToArray();
 
         var result = new DownloadLogResult

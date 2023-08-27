@@ -8,6 +8,7 @@ public static class QuartzExtensions
     public static void RegisterJobs(this IServiceCollectionQuartzConfigurator quartzConfigurator)
     {
         quartzConfigurator.RegisterJob<ReceiveNewFilesFromMailJob>("0 */10 * ? * *");
+        quartzConfigurator.RegisterJob<SendDayReportToEmailsJob>("0 0 7 ? * *");
     }
 
     private static void RegisterJob<T>(this IServiceCollectionQuartzConfigurator quartzConfigurator, string cronExpression) where T : IJob

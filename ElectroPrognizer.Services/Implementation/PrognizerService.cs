@@ -177,7 +177,7 @@ public class PrognizerService : IPrognizerService
             return null;
 
         //var hourForecast = TimeSeries.AdaptiveRateSmoothing(notNullValues, 1, 0.5, 1);
-        var hourForecast = TimeSeries.ExponentialSmoothing(notNullValues, 1, 0.8);
+        var hourForecast = TimeSeries.ExponentialSmoothing(notNullValues, 1, 0.2);
 
         var value = (double)hourForecast.Rows[notNullValues.Length]["Forecast"];
         //var value = prevData.Sum(x => x.Value) / notNullValues.Length;

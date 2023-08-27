@@ -15,4 +15,6 @@ public interface IApplicationSettingsService
     string GetStringValue(ApplicationSettingEnum applicationSettingType);
 
     int GetIntValue(ApplicationSettingEnum applicationSetting);
+
+    string[] GetStringArrayValue(ApplicationSettingEnum applicationSettingType, string delimiter);
 }

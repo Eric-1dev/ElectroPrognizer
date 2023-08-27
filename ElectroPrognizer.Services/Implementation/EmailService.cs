@@ -15,11 +15,11 @@ public class EmailService : IEmailService
 {
     public IApplicationSettingsService ApplicationSettingsService { get; set; }
 
-    public OperationResult SendDaylyReport(string recipient, FileData report)
+    public OperationResult SendDaylyReport(string[] recipients, FileData report)
     {
         try
         {
-            SendEmail(recipient, "Отчет за день", "Ежедневный отчет", report);
+            SendEmail(recipients, "Отчет за день", "Ежедневный отчет", report);
 
             return OperationResult.Success("Отчет успешно отправлен");
         }
@@ -91,7 +91,7 @@ public class EmailService : IEmailService
         imapClient.Disconnect(quit: true);
     }
 
-    private void SendEmail(string recipient, string subject, string body, params FileData[] attachments)
+    private void SendEmail(string[] recipients, string subject, string body, params FileData[] attachments)
     {
         var smtpHost = ApplicationSettingsService.GetStringValue(ApplicationSettingEnum.MailSmtpAddress);
         var smtpPort = ApplicationSettingsService.GetIntValue(ApplicationSettingEnum.MailSmtpPort);
@@ -99,9 +99,13 @@ public class EmailService : IEmailService
         var smtpPassword = ApplicationSettingsService.GetStringValue(ApplicationSettingEnum.MailSmtpPassword);
 
         var message = new MimeMessage();
-        message.From.Add(new MailboxAddress("ElectroPrognizer", smtpLogin));
-        message.To.Add(new MailboxAddress("", recipient));
         message.Subject = subject;
+        message.From.Add(new MailboxAddress("ElectroPrognizer", smtpLogin));
+
+        foreach (var recipient in recipients)
+        {
+            message.To.Add(new MailboxAddress("", recipient));
+        }
 
         var messageBody = new BodyBuilder();
         messageBody.HtmlBody = body;
