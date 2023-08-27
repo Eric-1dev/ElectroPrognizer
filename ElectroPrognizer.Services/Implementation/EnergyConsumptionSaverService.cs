@@ -15,15 +15,10 @@ public class EnergyConsumptionSaverService : IEnergyConsumptionSaverService
 
         UploadService.SetTotalCount(energyConsumptions.Count());
 
-        using var tran = dbContext.Database.BeginTransaction();
-
         foreach (var energyConsumption in energyConsumptions)
         {
             if (UploadService.IsCanceled)
-            {
-                tran.Rollback();
                 throw new WorkflowException("Загрузка прервана пользователем");
-            }
 
             // Substation
             var existingSubstation = dbContext.Substations.FirstOrDefault(x => x.Inn == energyConsumption.ElectricityMeter.Substation.Inn);
@@ -84,7 +79,5 @@ public class EnergyConsumptionSaverService : IEnergyConsumptionSaverService
 
             UploadService.IncrementCurrentIndex();
         }
-
-        tran.Commit();
     }
 }

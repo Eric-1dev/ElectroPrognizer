@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Загрузка данных о потреблении";
 }
 
@@ -10,7 +10,7 @@
     <bundle name="wwwroot/bundles/js/uploadData.bundle.js" />
 }
 
-<form id="file-upload-form" enctype="multipart/form-data" upload-file-action="@Url.Action("UploadInputFiles", "Upload")">
+<form id="file-upload-form" enctype="multipart/form-data" upload-file-action="@Url.Action("UploadInputFiles", "Upload")" upload-from-mail-action="@Url.Action("UploadFromEmail", "Upload")">
     <div class="prognizer-upload-block">
         <div>
             <input class="form-control" type="file" accept=".xml" id="file-upload-input" multiple>
@@ -23,6 +23,9 @@
         </div>
         <div>
             <button type="button" class="btn btn-primary" id="file-upload-button">Загрузить</button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-outline-danger" id="upload-from-mail-button">Загрузить из почты</button>
         </div>
     </div>
 </form>

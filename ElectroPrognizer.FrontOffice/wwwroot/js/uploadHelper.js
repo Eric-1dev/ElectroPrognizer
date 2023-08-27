@@ -8,6 +8,7 @@ let uploadHelper = {
     init: () => {
 
         uploadHelper._fileUploadUrl = $('#file-upload-form').attr('upload-file-action');
+        uploadHelper._uploadFromMailUrl = $('#file-upload-form').attr('upload-from-mail-action');
 
         $('#file-upload-button').click(() => {
             let input = $('#file-upload-input')[0];
@@ -33,7 +34,7 @@ let uploadHelper = {
                 data: formData,
                 success: (data) => {
                     if (data.isFail) {
-                        modalWindowHelper.showInfo('Ошибка при загрузке файлов: ' + data.message);
+                        modalWindowHelper.showError('Ошибка при загрузке файлов: ' + data.message);
                         return;
                     }
                 },
@@ -42,7 +43,21 @@ let uploadHelper = {
                 processData: false
             });
         });
+
+        $('#upload-from-mail-button').click(() => {
+            $.ajax({
+                url: uploadHelper._uploadFromMailUrl,
+                type: 'POST',
+                success: (data) => {
+                    if (data.isSuccess) {
+                        modalWindowHelper.showInfo('Запущена загрузка файлов из почты');
+                        return;
+                    }
+                }
+            });
+        });
     },
 
-    _fileUploadUrl: ''
+    _fileUploadUrl: '',
+    _uploadFromMailUrl: ''
 };
