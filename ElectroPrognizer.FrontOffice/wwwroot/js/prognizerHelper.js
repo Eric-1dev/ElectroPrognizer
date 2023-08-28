@@ -2,8 +2,6 @@
 
 $(document).ready(() => {
     prognizerHelper.init();
-
-    //prognizerHelper.getTableContent();
 });
 
 let prognizerHelper = {
@@ -13,21 +11,25 @@ let prognizerHelper = {
 
         prognizerHelper._resultTable = $('#prognizer-result-table');
 
-        $('.prognizer-date-control').change(prognizerHelper.getTableContent);
-
-        $('#prognizer-button-calculate').click(prognizerHelper.getTableContent);
+        $('#prognizer-button-calculate').click(prognizerHelper._getTableContent);
     },
 
-    getTableContent: () => {
+    _getTableContentUrl: '',
+    _generateDayReportUrl: '',
+    _resultTable: {},
+    _emptyValueString: '-',
+
+    _getTableContent: () => {
         prognizerHelper._resultTable.html('');
 
         let substationId = $('#prognizer-substation-selector').val();
         let calculationDate = $('#prognizer-date-picker').val();
+        let additionalPercent = $('#prognizer-additional-percent').val();
 
         $.ajax({
             url: prognizerHelper._getTableContentUrl,
             type: 'POST',
-            data: { substationId: substationId, calculationDate: calculationDate },
+            data: { substationId: substationId, calculationDate: calculationDate, additionalPercent: additionalPercent },
             success: (data) => {
                 if (data.isFail) {
                     prognizerHelper._resultTable.html(data.message);
@@ -40,11 +42,6 @@ let prognizerHelper = {
             modalWindowHelper.showError('Произошла неизвестная ошибка');
         });
     },
-
-    _getTableContentUrl: '',
-    _generateDayReportUrl: '',
-    _resultTable: {},
-    _emptyValueString: '-',
 
     _drawTable: (tableData) => {
         prognizerHelper._resultTable.html('');

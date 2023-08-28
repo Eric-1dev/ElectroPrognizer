@@ -24,3 +24,7 @@
 .prognizer-prognozed-data {
     background-color: #ffe7e7 !important;
 }
+
+#prognizer-additional-percent {
+    width: 5em;
+}

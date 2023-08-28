@@ -5,7 +5,7 @@ namespace ElectroPrognizer.Services.Interfaces;
 
 public interface IPrognizerService
 {
-    ConsumptionTableData GetTableContent(int sunstationId, DateTime calculationDate);
+    ConsumptionTableData GetTableContent(int sunstationId, DateTime calculationDate, double additionalPercent);
 
     TotalConsumptionValues CalculateTotalValuesForDay(int substationId, DateTime calculationDate, double? additionalValueConstant = null);
 }

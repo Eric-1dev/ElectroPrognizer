@@ -23,18 +23,19 @@ public class PrognizerController : BaseController
             }).ToArray(),
 
             StartDate = DateTime.Now.AddDays(2).ToString("yyyy-MM-dd"),
+            AdditionalPercent = 0,
         };
 
         return View(model);
     }
 
     [HttpPost]
-    public JsonResult GetTableContent(int? substationId, DateTime calculationDate)
+    public JsonResult GetTableContent(int? substationId, DateTime calculationDate, double additionalPercent)
     {
         if (substationId == null)
             return Fail("Не выбрана подстанция");
 
-        var data = PrognizerService.GetTableContent(substationId.Value, calculationDate);
+        var data = PrognizerService.GetTableContent(substationId.Value, calculationDate, additionalPercent);
 
         if (!data.DayDatas.Any())
             return Fail("Нет данных за выбранный период");

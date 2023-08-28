@@ -9,4 +9,7 @@ public class PrognizerViewModel
 
     [Display(Name = "Прогноз на дату")]
     public string StartDate { get; set; }
+
+    [Display(Name = "Добавочный коэффициент в процентах")]
+    public double AdditionalPercent { get; set; }
 }

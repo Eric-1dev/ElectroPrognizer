@@ -12,7 +12,7 @@ public class PrognizerService : IPrognizerService
 {
     public IApplicationSettingsService ApplicationSettingsService { get; set; }
 
-    public ConsumptionTableData GetTableContent(int substationId, DateTime calculationDate)
+    public ConsumptionTableData GetTableContent(int substationId, DateTime calculationDate, double additionalPercent)
     {
         var analizingDayCount = ApplicationSettingsService.GetIntValue(ApplicationSettingEnum.AnalizingDaysCount);
         var prognozeDayCount = ApplicationSettingsService.GetIntValue(ApplicationSettingEnum.PrognizingDaysCount);
@@ -71,7 +71,7 @@ public class PrognizerService : IPrognizerService
                 dayDatas[dayCounter].HourDatas[hourCounter] = new HourData
                 {
                     Hour = hourCounter,
-                    Value = value
+                    Value = value + (value * additionalPercent) / 100
                 };
             }
 
