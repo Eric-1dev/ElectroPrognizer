@@ -4,5 +4,5 @@ namespace ElectroPrognizer.Services.Interfaces;
 
 public interface IImportFileService
 {
-    void Import(IEnumerable<FileData> uploadedFIles, bool overrideExisting);
+    void Import(IEnumerable<FileData> uploadedFIles, bool overrideExisting, bool needToNotify);
 }

@@ -32,7 +32,7 @@ public class ReceiveNewFilesFromMailJob : IJob
 
                     DownloadLogService.LogInfo("Найдены новые файлы в почте");
 
-                    ImportFileService.Import(mailFileData.FileDatas, overrideExisting: true);
+                    ImportFileService.Import(mailFileData.FileDatas, overrideExisting: true, needToNotify: false);
 
                     EmailService.MoveAndMarkAsSeen(mailFileData.MailId);
 

@@ -1,5 +1,6 @@
 using ElectroPrognizer.FrontOffice.Models;
 using ElectroPrognizer.Services.Interfaces;
+using ElectroPrognizer.Services.Models.Prognizer;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElectroPrognizer.FrontOffice.Controllers;
@@ -52,5 +53,15 @@ public class PrognizerController : BaseController
         var data = DayReportService.GenerateDayReport(substationId.Value, calculationDate);
 
         return File(data.Content, "application/octet-stream", data.Name);
+    }
+
+    [HttpPost]
+    public JsonResult SavePrognozeToDatabase(int substationId, DateTime prognozeDate, List<HourData> data)
+    {
+        var result = PrognizerService.SavePrognozeToDatabase(substationId, prognozeDate, data);
+
+        return result.IsSuccess
+            ? Success()
+            : Fail(result.Message);
     }
 }

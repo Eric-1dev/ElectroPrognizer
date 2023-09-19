@@ -20,7 +20,9 @@ public class SubstationService : ISubstationService
             Inn = x.Inn,
             Name = x.Name,
             Description = x.Description,
-            AdditionalValueConstant = x.AdditionalValueConstant
+            AdditionalValueConstant = x.AdditionalValueConstant,
+            Latitude = x.Latitude,
+            Longitude = x.Longitude
         }).ToArray();
     }
 
@@ -39,7 +41,9 @@ public class SubstationService : ISubstationService
             Inn = substation.Inn,
             Name = substation.Name,
             Description = substation.Description,
-            AdditionalValueConstant = substation.AdditionalValueConstant
+            AdditionalValueConstant = substation.AdditionalValueConstant,
+            Latitude = substation.Latitude,
+            Longitude = substation.Longitude,
         };
     }
 
@@ -55,6 +59,8 @@ public class SubstationService : ISubstationService
         existingSubstation.Name = substation.Name;
         existingSubstation.Description = substation.Description;
         existingSubstation.AdditionalValueConstant = substation.AdditionalValueConstant;
+        existingSubstation.Latitude = substation.Latitude;
+        existingSubstation.Longitude = substation.Longitude;
 
         dbContext.SaveChanges();
     }

@@ -1,6 +1,7 @@
 using ElectroPrognizer.DataLayer;
 using ElectroPrognizer.DataModel.Entities;
 using ElectroPrognizer.Entities.Enums;
+using ElectroPrognizer.Entities.Models;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models;
 using ElectroPrognizer.Services.Models.Prognizer;
@@ -183,5 +184,38 @@ public class PrognizerService : IPrognizerService
         //var value = prevData.Sum(x => x.Value) / notNullValues.Length;
 
         return value;
+    }
+
+    public OperationResult SavePrognozeToDatabase(int substationId, DateTime prognozeDate, List<HourData> data)
+    {
+        try
+        {
+            var dbContext = new ApplicationContext();
+
+            var existingValues = dbContext.PrognozedDatas
+                .Where(x => x.SubstationId == substationId
+                    && x.PrognozeDate >= prognozeDate.Date
+                    && x.PrognozeDate < prognozeDate.Date.AddDays(1))
+                .ToArray();
+
+            dbContext.PrognozedDatas.RemoveRange(existingValues);
+
+            var newData = data.Select(x => new PrognozedData
+            {
+                SubstationId = substationId,
+                PrognozeDate = prognozeDate.Date.AddHours(x.Hour),
+                Value = x.Value.Value
+            }).ToArray();
+
+            dbContext.PrognozedDatas.AddRange(newData);
+
+            dbContext.SaveChanges();
+
+            return OperationResult.Success();
+        }
+        catch (Exception ex)
+        {
+            return OperationResult.Fail(ex.Message);
+        }
     }
 }

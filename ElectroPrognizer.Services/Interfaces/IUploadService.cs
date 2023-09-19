@@ -16,7 +16,7 @@ public interface IUploadService
 
     void SetToFinishedWithError(string error);
 
-    void SetToFinished();
+    void SetToFinished(bool needToNotify);
 
     void Cancel();
 }

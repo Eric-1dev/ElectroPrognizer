@@ -12,6 +12,7 @@ namespace ElectroPrognizer.DataLayer
         public DbSet<MeasuringChannel> MeasuringChannels { get; set; }
         public DbSet<ApplicationSetting> ApplicationSettings { get; set; }
         public DbSet<DownloadLogEntity> DownloadLogs { get; set; }
+        public DbSet<PrognozedData> PrognozedDatas { get; set; }
 
         public ApplicationContext()
         {

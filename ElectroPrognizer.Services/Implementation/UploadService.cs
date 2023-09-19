@@ -54,12 +54,12 @@ public class UploadService : IUploadService
 
     public void SetToFinishedWithError(string error)
     {
-        SetToFinished(error);
+        SetToFinished(error, needToNotify: true);
     }
 
-    public void SetToFinished()
+    public void SetToFinished(bool needToNotify)
     {
-        SetToFinished("Импорт успешно завершен");
+        SetToFinished("Импорт успешно завершен", needToNotify);
     }
 
     public void Cancel()
@@ -73,10 +73,11 @@ public class UploadService : IUploadService
         return UploadProgressStatus.Create(IsFinished, message, percents);
     }
 
-    private void SetToFinished(string message)
+    private void SetToFinished(string message, bool needToNotify)
     {
         IsFinished = true;
 
-        AsyncHelper.Wait(StatusHub.Clients.All.SendAsync("ReceiveStatus", GetProgressStatus(message)));
+        if (needToNotify)
+            AsyncHelper.Wait(StatusHub.Clients.All.SendAsync("ReceiveStatus", GetProgressStatus(message)));
     }
 }

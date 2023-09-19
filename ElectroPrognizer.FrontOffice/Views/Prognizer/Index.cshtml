@@ -17,7 +17,7 @@
     <bundle name="wwwroot/bundles/js/prognizer.bundle.js" />
 }
 
-<div id="prognizer-date-selector" class="mb-3" table-content-url="@Url.Action("GetTableContent", "Prognizer")" day-report-url="@Url.Action("GenerateDayReport", "Prognizer")">
+<div id="prognizer-date-selector" class="mb-3" table-content-url="@Url.Action("GetTableContent", "Prognizer")" day-report-url="@Url.Action("GenerateDayReport", "Prognizer")" save-prognoze-url="@Url.Action("SavePrognozeToDatabase", "Prognizer")">
 
     @Html.LabelFor(x => x.Substations, new { @for="prognizer-substation" })
     <div>

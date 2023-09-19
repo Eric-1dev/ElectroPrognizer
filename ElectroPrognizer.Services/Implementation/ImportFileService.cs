@@ -12,7 +12,7 @@ public class ImportFileService : IImportFileService
     public IEnergyConsumptionSaverService EnergyConsumptionSaverService { get; set; }
     public IUploadService UploadService { get; set; }
 
-    public void Import(IEnumerable<FileData> uploadedFiles, bool overrideExisting)
+    public void Import(IEnumerable<FileData> uploadedFiles, bool overrideExisting, bool needToNotify)
     {
         try
         {
@@ -29,7 +29,7 @@ public class ImportFileService : IImportFileService
 
             EnergyConsumptionSaverService.SaveToDatabase(energyComsumption, overrideExisting);
 
-            UploadService.SetToFinished();
+            UploadService.SetToFinished(needToNotify);
         }
         catch (UploaderIsBusyException ex)
         {

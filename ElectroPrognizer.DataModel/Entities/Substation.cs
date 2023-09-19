@@ -17,4 +17,8 @@ public class Substation : IdentityEntity
     public virtual ICollection<ElectricityMeter> ElectricityMeters { get; set; }
 
     public double AdditionalValueConstant { get; set; }
+
+    public double? Latitude { get; set; }
+
+    public double? Longitude { get; set; }
 }

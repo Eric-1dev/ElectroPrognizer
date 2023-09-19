@@ -8,6 +8,7 @@ let prognizerHelper = {
     init: () => {
         prognizerHelper._getTableContentUrl = $('#prognizer-date-selector').attr('table-content-url');
         prognizerHelper._generateDayReportUrl = $('#prognizer-date-selector').attr('day-report-url');
+        prognizerHelper._savePrognozeToDbUrl = $('#prognizer-date-selector').attr('save-prognoze-url');
 
         prognizerHelper._resultTable = $('#prognizer-result-table');
 
@@ -16,6 +17,7 @@ let prognizerHelper = {
 
     _getTableContentUrl: '',
     _generateDayReportUrl: '',
+    _savePrognozeToDbUrl: '',
     _resultTable: {},
     _emptyValueString: '-',
 
@@ -113,9 +115,17 @@ let prognizerHelper = {
                     td.html(value);
                     td.addClass('fw-bold');
                 } else if (hourCounter === 25) {
-                    let value = prognizerHelper._handleValue(tableData.dayDatas[dayCounter].cumulativeTotal);
-                    td.html(value);
-                    td.addClass('fw-bold');
+                    if (!tableData.dayDatas[dayCounter].isRealData) {
+                        const saveButton = $('<button class="btn btn-sm btn-outline-primary" type="button">');
+                        saveButton.html('Сохранить');
+                        saveButton.attr('date', tableData.dayDatas[dayCounter].date);
+                        saveButton.click((event) => prognizerHelper._savePrognozeToDb(event));
+                        td.html(saveButton);
+                    } else {
+                        let value = prognizerHelper._handleValue(tableData.dayDatas[dayCounter].cumulativeTotal);
+                        td.html(value);
+                        td.addClass('fw-bold');
+                    }
                 } else {
                     let value = prognizerHelper._handleValue(tableData.dayDatas[dayCounter].hourDatas[hourCounter].value);
 
@@ -125,6 +135,7 @@ let prognizerHelper = {
                             td.html(value);
                         } else {
                             td.addClass('prognizer-prognozed-data');
+                            td.attr('hour', hourCounter);
                             const input = $('<input>');
                             input.val(value);
                             td.html(input);
@@ -173,20 +184,66 @@ let prognizerHelper = {
     _copyPrognoze: (event) => {
         event.preventDefault();
 
-        const th = $(event.target);
-
-        const columnNumber = th.attr('column');
-
-        const data = $('td.prognizer-prognozed-data')
-            .filter((_, item) => $(item).attr('column') === columnNumber)
-            .map((_, item) => $(item).find('input').val());
-
         let dataToCopy = '';
 
-        Object.values(data).slice(0, 24).forEach((item) => {
-            dataToCopy += item.replace('.', ',') + '\r\n';
+        const data = prognizerHelper._collectColumnData(event.target);
+
+        data.forEach((item) => {
+            dataToCopy += item.value.replace('.', ',') + '\r\n';
         });
 
         navigator.clipboard.writeText(dataToCopy);
+    },
+
+    _savePrognozeToDb: (event) => {
+        event.preventDefault();
+
+        const substationId = $('#prognizer-substation-selector').val();
+        const data = prognizerHelper._collectColumnData(event.target).map((item) => {
+            return {
+                hour: item.hour,
+                value: item.value.replace('.', ',')
+            };
+        });
+        const prognozeDate = $(event.target).attr('date');
+
+        $.ajax({
+            url: prognizerHelper._savePrognozeToDbUrl,
+            type: 'POST',
+            data:
+            {
+                substationId: substationId,
+                prognozeDate: prognozeDate,
+                data: data
+            },
+            success: (data) => {
+                if (data.isSuccess) {
+                    modalWindowHelper.showInfo('Сохранено');
+                    return;
+                }
+
+                modalWindowHelper.showError(data.message);
+            }
+        }).fail(() => {
+            modalWindowHelper.showError('Произошла неизвестная ошибка');
+        });
+
+    },
+
+    _collectColumnData: (target) => {
+        const el = $(target);
+
+        const columnNumber = el.closest('td, th').attr('column');
+
+        const data = $('td.prognizer-prognozed-data')
+            .filter((_, item) => $(item).attr('column') === columnNumber)
+            .map((_, item) => {
+                return {
+                    hour: $(item).attr('hour'),
+                    value: $(item).find('input').val()
+                };
+            });
+
+        return Object.values(data).slice(0, 24);
     }
 };

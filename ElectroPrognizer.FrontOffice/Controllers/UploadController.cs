@@ -38,7 +38,7 @@ public class UploadController : BaseController
 
         var uploadTask = Task.Run(() =>
         {
-            ImportFileService.Import(uploadedFiles, overrideExisting);
+            ImportFileService.Import(uploadedFiles, overrideExisting, needToNotify: true);
         });
 
         return Json(OperationResult.Success());

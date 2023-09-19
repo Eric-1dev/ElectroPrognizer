@@ -25,4 +25,10 @@ public class SubstationViewModel
 
     [DisplayName("Константа, добавляемая к значению (в мегаваттах)")]
     public double AdditionalValueConstant { get; set; }
+
+    [DisplayName("Широта")]
+    public double? Latitude { get; set; }
+
+    [DisplayName("Долгота")]
+    public double? Longitude { get; set; }
 }
