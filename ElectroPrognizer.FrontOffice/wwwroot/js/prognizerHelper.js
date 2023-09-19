@@ -63,12 +63,18 @@ let prognizerHelper = {
 
         for (let i = 0; i < dayCount; i++) {
             let th = $('<th>');
+            th.attr('column', i);
 
             if (tableData.dayDatas[i].isRealData && tableData.dayDatas[i].cumulativeTotal != null) {
                 let cellContent = prognizerHelper._generateDayReportLink(tableData.dayDatas[i].date, tableData.substationId)
                 th.html(cellContent);
             } else {
                 th.html(prognizerHelper._formatDate(tableData.dayDatas[i].date));
+                th.attr('title', 'Скопировать столбец');
+                th.addClass('ep-cursor-pointer');
+                th.click((event) => {
+                    prognizerHelper._copyPrognoze(event);
+                });
             }
 
             tr.append(th);
@@ -100,6 +106,7 @@ let prognizerHelper = {
 
             for (var dayCounter = 0; dayCounter < dayCount; dayCounter++) {
                 let td = $('<td>');
+                td.attr('column', dayCounter);
 
                 if (hourCounter === 24) {
                     let value = prognizerHelper._handleValue(tableData.dayDatas[dayCounter].total);
@@ -114,13 +121,15 @@ let prognizerHelper = {
 
                     if (value !== prognizerHelper._emptyValueString) {
                         if (tableData.dayDatas[dayCounter].isRealData) {
-                            td.addClass('prognizer-real-data')
+                            td.addClass('prognizer-real-data');
+                            td.html(value);
                         } else {
-                            td.addClass('prognizer-prognozed-data')
+                            td.addClass('prognizer-prognozed-data');
+                            const input = $('<input>');
+                            input.val(value);
+                            td.html(input);
                         }
                     }
-
-                    td.html(value);
                 }
 
                 tr.append(td);
@@ -159,5 +168,25 @@ let prognizerHelper = {
         link.html(prognizerHelper._formatDate(date));
 
         return link;
+    },
+
+    _copyPrognoze: (event) => {
+        event.preventDefault();
+
+        const th = $(event.target);
+
+        const columnNumber = th.attr('column');
+
+        const data = $('td.prognizer-prognozed-data')
+            .filter((_, item) => $(item).attr('column') === columnNumber)
+            .map((_, item) => $(item).find('input').val());
+
+        let dataToCopy = '';
+
+        Object.values(data).slice(0, 24).forEach((item) => {
+            dataToCopy += item.replace('.', ',') + '\r\n';
+        });
+
+        navigator.clipboard.writeText(dataToCopy);
     }
 };

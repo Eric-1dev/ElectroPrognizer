@@ -21,10 +21,15 @@
     background-color: #f2fff3 !important;
 }
 
-.prognizer-prognozed-data {
+.prognizer-prognozed-data input {
     background-color: #ffe7e7 !important;
+    width: 80px;
 }
 
 #prognizer-additional-percent {
     width: 5em;
+}
+
+.ep-cursor-pointer {
+    cursor: pointer;
 }
