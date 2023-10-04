@@ -2,6 +2,7 @@ using ElectroPrognizer.FrontOffice.Models;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models.Prognizer;
 using Microsoft.AspNetCore.Mvc;
+using NUglify.JavaScript.Syntax;
 
 namespace ElectroPrognizer.FrontOffice.Controllers;
 
@@ -25,6 +26,18 @@ public class PrognizerController : BaseController
 
             StartDate = DateTime.Now.AddDays(2).ToString("yyyy-MM-dd"),
             AdditionalPercent = 0,
+        };
+
+        return View(model);
+    }
+
+    public IActionResult PreviousPrognozes()
+    {
+        var now = DateTime.Now;
+
+        var model = new PreviousPrognozesViewModel
+        {
+            CurrentPeriod = new DateTime(now.Year, now.Month, 1)
         };
 
         return View(model);
