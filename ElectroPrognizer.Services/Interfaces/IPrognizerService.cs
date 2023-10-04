@@ -11,4 +11,6 @@ public interface IPrognizerService
     TotalConsumptionValues CalculateTotalValuesForDay(int substationId, DateTime calculationDate, double? additionalValueConstant = null);
 
     OperationResult SavePrognozeToDatabase(int substationId, DateTime prognozeDate, List<HourData> data);
+
+    int[] GetSavedPrognozesYearsArray();
 }

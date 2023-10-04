@@ -16,7 +16,8 @@ public class JobExecutionController : BaseController
         _jodDictionary = new Dictionary<string, JobInfo>
         {
             {nameof(SendDayReportToEmailsJob), new JobInfo(typeof(SendDayReportToEmailsJob), "Отправка ежедневнго отчета") },
-            {nameof(ReceiveNewFilesFromMailJob), new JobInfo(typeof(ReceiveNewFilesFromMailJob), "Загрузка данных из почты") }
+            {nameof(ReceiveNewFilesFromMailJob), new JobInfo(typeof(ReceiveNewFilesFromMailJob), "Загрузка данных из почты") },
+            {nameof(ReceiveWeatherForecastJob), new JobInfo(typeof(ReceiveWeatherForecastJob), "Загрузка данных о погоде") }
         };
     }
 

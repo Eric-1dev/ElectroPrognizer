@@ -1,7 +1,6 @@
-﻿namespace ElectroPrognizer.Services.Interfaces
+﻿namespace ElectroPrognizer.Services.Interfaces;
+
+public interface IExcelConsumptionReader
 {
-    public interface IExcelConsumptionReader
-    {
-        void LoadFileContent(string[] fileNames);
-    }
+    void LoadFileContent(string[] fileNames);
 }

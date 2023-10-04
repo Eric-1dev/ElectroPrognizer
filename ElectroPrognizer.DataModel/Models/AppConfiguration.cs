@@ -1,7 +1,6 @@
-﻿namespace ElectroPrognizer.DataModel.Models
+﻿namespace ElectroPrognizer.DataModel.Models;
+
+public class AppConfiguration
 {
-    public class AppConfiguration
-    {
-        public int TestOption { get; set; }
-    }
+    public int TestOption { get; set; }
 }

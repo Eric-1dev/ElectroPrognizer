@@ -190,7 +190,7 @@ public class PrognizerService : IPrognizerService
     {
         try
         {
-            var dbContext = new ApplicationContext();
+            using var dbContext = new ApplicationContext();
 
             var existingValues = dbContext.PrognozedDatas
                 .Where(x => x.SubstationId == substationId
@@ -217,5 +217,18 @@ public class PrognizerService : IPrognizerService
         {
             return OperationResult.Fail(ex.Message);
         }
+    }
+
+    public int[] GetSavedPrognozesYearsArray()
+    {
+        using var dbContext = new ApplicationContext();
+
+        var years = dbContext.PrognozedDatas
+            .Select(x => x.PrognozeDate.Year)
+            .Distinct()
+            .OrderBy(x => x)
+            .ToArray();
+
+        return years;
     }
 }

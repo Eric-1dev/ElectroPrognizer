@@ -3,10 +3,10 @@
 @{
     ViewData["Title"] = "Прогнозирование потребления энергии";
 
-    var currentDate = DateTime.Now;
+var currentDate = DateTime.Now;
 
-    var currentYear = currentDate.Year;
-    var currentMonth = currentDate.Month;
+var currentYear = currentDate.Year;
+var currentMonth = currentDate.Month;
 }
 
 @section Styles {
@@ -23,9 +23,9 @@
     <div>
         <select id="prognizer-substation-selector" class="form-select">
             @foreach (var substation in Model.Substations)
-            {
-                <!option value="@substation.Id">@substation.Name</!option>
-            }
+        {
+            <!option value="@substation.Id">@substation.Name</!option>
+        }
         </select>
     </div>
 

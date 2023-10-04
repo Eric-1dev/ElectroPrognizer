@@ -1,11 +1,10 @@
-﻿namespace ElectroPrognizer.Utils.Helpers
+﻿namespace ElectroPrognizer.Utils.Helpers;
+
+public static class CancellationTokenHelper
 {
-    public static class CancellationTokenHelper
-    {
-        private static readonly CancellationTokenSource _cancellationTokenSource = new();
+    private static readonly CancellationTokenSource _cancellationTokenSource = new();
 
-        public static CancellationToken Token => _cancellationTokenSource.Token;
+    public static CancellationToken Token => _cancellationTokenSource.Token;
 
-        public static void Cancel() => _cancellationTokenSource.Cancel();
-    }
+    public static void Cancel() => _cancellationTokenSource.Cancel();
 }

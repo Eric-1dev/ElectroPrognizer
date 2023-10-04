@@ -27,13 +27,15 @@
     <div class="prognizer-sidebar">
         <div class="btn-group-vertical prognizer-sidebar-menu">
             <div class="prognizer-sidebar-menu-header">Меню</div>
-            @{ RenderNavItem(Url.Action("Index", "Home"), "Домашняя"); }
-            @{ RenderNavItem(Url.Action("Index", "Upload"), "Загрузка данных"); }
-            @{ RenderNavItem(Url.Action("Index", "Prognizer"), "Прогноз протребления"); }
-            @{ RenderNavItem(Url.Action("PreviousPrognozes", "Prognizer"), "Предыдущие прогнозы"); }
-            @{ RenderNavItem(Url.Action("Index", "JobExecution"), "Ручной запуск заданий планировщика"); }
-            @{ RenderNavItem(Url.Action("Index", "DownloadLog"), "Логи загрузки данных"); }
-            @{ RenderNavItem(Url.Action("Index", "Settings"), "Настройки"); }
+            @{
+                RenderNavItem(Url.Action("Index", "Home"), "Домашняя");
+                RenderNavItem(Url.Action("Index", "Upload"), "Загрузка данных");
+                RenderNavItem(Url.Action("Index", "Prognizer"), "Прогноз протребления");
+                RenderNavItem(Url.Action("PreviousPrognozes", "Prognizer"), "Предыдущие прогнозы");
+                RenderNavItem(Url.Action("Index", "JobExecution"), "Ручной запуск заданий планировщика");
+                RenderNavItem(Url.Action("Index", "DownloadLog"), "Логи загрузки данных");
+                RenderNavItem(Url.Action("Index", "Settings"), "Настройки");
+            }
         </div>
     </div>
 
@@ -77,5 +79,5 @@
         var additionalClass = HttpContextAccessor.HttpContext.Request.Path == url ? "btn-primary" : "";
 
         <a class="btn @additionalClass" href="@url">@name</a>
-    }        
+    }
 }

@@ -2,7 +2,6 @@ using ElectroPrognizer.FrontOffice.Models;
 using ElectroPrognizer.Services.Interfaces;
 using ElectroPrognizer.Services.Models.Prognizer;
 using Microsoft.AspNetCore.Mvc;
-using NUglify.JavaScript.Syntax;
 
 namespace ElectroPrognizer.FrontOffice.Controllers;
 
@@ -35,9 +34,17 @@ public class PrognizerController : BaseController
     {
         var now = DateTime.Now;
 
+        var availableYears = PrognizerService.GetSavedPrognozesYearsArray();
+
+        var currentYear = availableYears.Contains(now.Year) || !availableYears.Any()
+            ? now.Year
+            : availableYears.Last();
+
         var model = new PreviousPrognozesViewModel
         {
-            CurrentPeriod = new DateTime(now.Year, now.Month, 1)
+            AvailableYears = availableYears,
+            CurrentYear = currentYear,
+            CurrentMonth = now.Month
         };
 
         return View(model);

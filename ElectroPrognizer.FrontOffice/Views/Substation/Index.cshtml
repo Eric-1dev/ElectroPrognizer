@@ -16,14 +16,14 @@
         </thead>
         <tbody>
             @foreach (var substation in Model)
-            {
-                <tr>
+        {
+            <tr>
                     <td>@substation.Inn</td>
                     <td>@substation.Name</td>
                     <td>@substation.Description</td>
                     <td><a href="@Url.Action("Edit", "Substation", new { Id = substation.Id })" class="btn btn-primary">Настройка</a></td>
                 </tr>
-            }
+        }
         </tbody>
     </table>
 </div>

@@ -10,9 +10,9 @@
 
 <form id="prognizer-job-execution-form" prognizer-job-execution-url="@Url.Action("Execute", "JobExecution")">
     @foreach (var job in Model)
-    {
-        <div>
+{
+    <div>
             <button type="button" class="btn btn-outline-primary mb-3 prognizer-job-execute-button" prognizer-job-name="@job.Key">@job.Value.JobDescription</button>
         </div>
-    }
+}
 </form>

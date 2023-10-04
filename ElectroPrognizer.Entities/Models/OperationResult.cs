@@ -1,4 +1,4 @@
-﻿namespace ElectroPrognizer.Entities.Models;
+namespace ElectroPrognizer.Entities.Models;
 
 public class OperationResult
 {
@@ -42,6 +42,15 @@ public class OperationResult<T> : OperationResult
             IsSuccess = true,
             Message = message,
             Entity = entity
+        };
+    }
+
+    public static OperationResult<T> Fail(string message)
+    {
+        return new OperationResult<T>
+        {
+            IsSuccess = false,
+            Message = message
         };
     }
 }

@@ -1,9 +1,8 @@
 ﻿using ElectroPrognizer.DataModel.Entities;
 
-namespace ElectroPrognizer.Services.Interfaces
+namespace ElectroPrognizer.Services.Interfaces;
+
+public interface IEnergyConsumptionSaverService
 {
-    public interface IEnergyConsumptionSaverService
-    {
-        void SaveToDatabase(IEnumerable<EnergyConsumption> energyConsumptions, bool overrideExisting);
-    }
+    void SaveToDatabase(IEnumerable<EnergyConsumption> energyConsumptions, bool overrideExisting);
 }

@@ -15,13 +15,13 @@
     </thead>
     <tbody>
         @foreach (var setting in Model)
-        {
-            <tr>
+    {
+        <tr>
                 <td>@setting.InternalName</td>
                 <td>@setting.Description</td>
                 <td>@setting.Value</td>
                 <td><a asp-controller="ApplicationSettings" asp-action="Edit" asp-route-id="@setting.Id" class="btn btn-primary">Изменить</a></td>
             </tr>
-        }
+    }
     </tbody>
 </table>

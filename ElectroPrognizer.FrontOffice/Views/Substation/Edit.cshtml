@@ -85,17 +85,17 @@
                 </thead>
                 <tbody>
                     @foreach (var electricityMeter in Model.ElectricityMeters)
-                    {
-                        var isPositiveCounter = electricityMeter.IsPositiveCounter ? "Да" : "Нет";
+                {
+                    var isPositiveCounter = electricityMeter.IsPositiveCounter ? "Да" : "Нет";
 
-                        <tr>
+                    <tr>
                             <td>@electricityMeter.Id</td>
                             <td>@electricityMeter.Name</td>
                             <td>@electricityMeter.Description</td>
                             <td>@isPositiveCounter</td>
                             <td><a href="@Url.Action("Edit", "ElectricityMeter", new { Id = electricityMeter.Id })" class="btn btn-primary">Настройка</a></td>
                         </tr>
-                    }
+                }
                 </tbody>
             </table>
         </div>
