@@ -16,7 +16,7 @@ public class YandexWeatherIntegrationService : IWeatherIntegrationService
         request.AddQueryParameter("lat", latitude.ToString().Replace(",", "."));
         request.AddQueryParameter("lon", longitude.ToString().Replace(",", "."));
         request.AddQueryParameter("units", "metric");
-        request.AddQueryParameter("appid", "b92304653485427e65cb1d901c95f452");
+        request.AddQueryParameter("appid", "");
 
         var response = client.ExecuteGet<WeatherForecastData>(request);
         
