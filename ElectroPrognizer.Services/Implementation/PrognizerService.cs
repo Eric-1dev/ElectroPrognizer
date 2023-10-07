@@ -231,4 +231,51 @@ public class PrognizerService : IPrognizerService
 
         return years;
     }
+
+    public PrevPrognozeTableData GetPrevPrognozeTableContent(int substationId, int year, int month)
+    {
+        using var dbContext = new ApplicationContext();
+
+        var dateStart = new DateTime(year, month, 1);
+        var dateEnd = dateStart.AddMonths(1);
+
+        var additionalValueConstant = dbContext.Substations.Where(x => x.Id == substationId).Select(x => x.AdditionalValueConstant).Single() * 1000;
+
+        var savedDatas = dbContext.PrognozedDatas
+            .Where(x => x.SubstationId == substationId && x.PrognozeDate >= dateStart && x.PrognozeDate < dateEnd)
+            .OrderBy(x => x.PrognozeDate)
+            .ToArray();
+
+        var energyConsuptions = dbContext.EnergyConsumptions
+            .Where(x => x.ElectricityMeter.SubstationId == substationId
+                && x.MeasuringChannel.MeasuringChannelType == MeasuringChannelTypeEnum.ActiveInput
+                && x.StartDate >= dateStart
+                && x.StartDate < dateEnd)
+            .Include(x => x.ElectricityMeter)
+            .ToArray();
+
+        var result = new PrevPrognozeTableData();
+
+        foreach (var savedData in savedDatas)
+        {
+            var allRealData = energyConsuptions.Where(x => x.StartDate == savedData.PrognozeDate).ToArray();
+            var hourData = allRealData.Aggregate(0.0, ValueAggregateFunction) + additionalValueConstant;
+
+            var day = result.Days.FirstOrDefault(x => x.Date == savedData.PrognozeDate.Date);
+            if (day == null)
+            {
+                day = new PrevPrognozeDayData(savedData.PrognozeDate.Date);
+                result.Days.Add(day);
+            }
+
+            day.Hours.Add(new PrevPrognozeHourData
+            {
+                Hour = savedData.PrognozeDate.Hour,
+                PrognozedValue = savedData.Value * 1000,
+                RealValue = hourData
+            });
+        }
+
+        return result;
+    }
 }

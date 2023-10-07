@@ -40,11 +40,18 @@ public class PrognizerController : BaseController
             ? now.Year
             : availableYears.Last();
 
+        var substations = SubstationService.GetAll();
+
         var model = new PreviousPrognozesViewModel
         {
             AvailableYears = availableYears,
             CurrentYear = currentYear,
-            CurrentMonth = now.Month
+            CurrentMonth = now.Month,
+            Substations = substations.Select(s => new SubstationViewModel
+            {
+                Id = s.Id,
+                Name = s.Name
+            }).ToArray(),
         };
 
         return View(model);
@@ -83,5 +90,12 @@ public class PrognizerController : BaseController
         return result.IsSuccess
             ? Success()
             : Fail(result.Message);
+    }
+
+    [HttpPost]
+    public JsonResult LoadPrevPrognozeData(int substationId, int year, int month)
+    {
+        var prognozedData = PrognizerService.GetPrevPrognozeTableContent(substationId, year, month);
+        return Success(prognozedData);
     }
 }

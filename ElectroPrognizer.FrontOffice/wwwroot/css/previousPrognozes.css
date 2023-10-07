@@ -1,0 +1,6 @@
+#prognizer-input-params {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 20px;
+}

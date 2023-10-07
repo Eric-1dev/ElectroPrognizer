@@ -87,7 +87,6 @@
             "enabled": true
         }
     },
-
     {
         "outputFileName": "wwwroot/bundles/css/downloadLog.bundle.css",
         "inputFiles": [
@@ -110,6 +109,24 @@
         "outputFileName": "wwwroot/bundles/js/jobExecution.bundle.js",
         "inputFiles": [
             "wwwroot/js/jobExecutionHelper.js"
+        ],
+        "minify": {
+            "enabled": true
+        }
+    },
+    {
+        "outputFileName": "wwwroot/bundles/css/previousPrognozes.bundle.css",
+        "inputFiles": [
+            "wwwroot/css/previousPrognozes.css"
+        ],
+        "minify": {
+            "enabled": true
+        }
+    },
+    {
+        "outputFileName": "wwwroot/bundles/js/previousPrognozes.bundle.js",
+        "inputFiles": [
+            "wwwroot/js/previousPrognozesHelper.js"
         ],
         "minify": {
             "enabled": true

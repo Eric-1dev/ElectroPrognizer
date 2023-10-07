@@ -3,3 +3,48 @@
 @{
     ViewData["Title"] = "Предыдущие прогнозы и погрешности";
 }
+
+@section Styles {
+    <bundle name="wwwroot/bundles/css/previousPrognozes.bundle.css" />
+}
+
+@section Scripts {
+    <bundle name="wwwroot/bundles/js/previousPrognozes.bundle.js" />
+}
+
+<div id="prognizer-input-params" load-data-url="@Url.Action("LoadPrevPrognozeData", "Prognizer")">
+    @Html.LabelFor(x => x.Substations, new { @for="prognizer-substation-picker" })
+    <div>
+        <select class="form-select prognizer-param" id="prognizer-substation-picker">
+            @foreach (var substation in Model.Substations)
+            {
+                <!option value="@substation.Id">@substation.Name</!option>
+            }
+        </select>
+    </div>
+
+    @Html.LabelFor(x => x.AvailableMonths, new { @for="prognizer-month-picker" })
+    <div>
+        <select class="form-select prognizer-param" id="prognizer-month-picker">
+            @foreach (var month in Model.AvailableMonths)
+            {
+                var selectedAttr = month.Key == Model.CurrentMonth ? "selected" : string.Empty;
+                <!option value="@month.Key" @selectedAttr>@month.Value</!option>
+            }
+        </select>
+    </div>
+
+    @Html.LabelFor(x => x.AvailableYears, new { @for="prognizer-year-picker" })
+    <div>
+        <select class="form-select prognizer-param" id="prognizer-year-picker">
+            @foreach (var year in Model.AvailableYears)
+            {
+                var selectedAttr = year == Model.CurrentYear ? "selected" : string.Empty;
+                <!option value="@year" @selectedAttr>@year</!option>
+            }
+        </select>
+    </div>
+</div>
+
+<div id="prognizer-prev-data-result">
+</div>

@@ -1,16 +1,21 @@
-using ElectroPrognizer.Services.Models.Prognizer;
+using System.ComponentModel;
 
 namespace ElectroPrognizer.FrontOffice.Models;
 
 public class PreviousPrognozesViewModel
 {
+    [DisplayName("Год")]
     public int[] AvailableYears { get; set; }
 
+    [DisplayName("Месяц")]
     public Dictionary<int, string> AvailableMonths { get; }
 
     public int CurrentYear { get; set; }
 
     public int CurrentMonth { get; set; }
+
+    [DisplayName("Подстанция")]
+    public SubstationViewModel[] Substations { get; set; }
 
     public PreviousPrognozesViewModel()
     {

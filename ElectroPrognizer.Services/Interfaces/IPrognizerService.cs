@@ -13,4 +13,6 @@ public interface IPrognizerService
     OperationResult SavePrognozeToDatabase(int substationId, DateTime prognozeDate, List<HourData> data);
 
     int[] GetSavedPrognozesYearsArray();
+
+    PrevPrognozeTableData GetPrevPrognozeTableContent(int substationId, int year, int month);
 }
