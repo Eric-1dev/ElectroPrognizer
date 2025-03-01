@@ -39,7 +39,32 @@ let previousPrognozesHelper = {
         });
     },
 
-    _fillResult: () => {
-        previousPrognozesHelper._resultBlock.html('sdf');
+    _fillResult: (data) => {
+        const table = $('<table class="table table-bordered table-striped table-hover">');
+
+        data.days.forEach((day) => {
+            const date = day.date;
+
+            day.hours.forEach((hour) => {
+                const row = $('<tr>');
+
+                const realDataCell = $('<td>');
+                realDataCell.html(hour.realValue);
+
+                const prognozedDataCell = $('<td>');
+                prognozedDataCell.html(hour.prognozedValue);
+
+                const percentCell = $('<td>');
+                percentCell.html(hour.errorPercent);
+
+                row.append(realDataCell);
+                row.append(prognozedDataCell);
+                row.append(percentCell);
+                debugger
+                table.append(row);
+            });
+        });
+
+        previousPrognozesHelper._resultBlock.html(table);
     }
 };
